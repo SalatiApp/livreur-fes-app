@@ -2,9 +2,11 @@ package com.example
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.webkit.ConsoleMessage
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -18,10 +20,12 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
@@ -43,12 +47,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun HybridAppScreen() {
   val isDark = isSystemInDarkTheme()
-  var webViewInstance: WebView? = remember { null }
+  var webViewInstance by remember { mutableStateOf<WebView?>(null) }
 
-  BackHandler {
-    if (webViewInstance?.canGoBack() == true) {
-      webViewInstance?.goBack()
-    }
+  BackHandler(enabled = webViewInstance?.canGoBack() == true) {
+    webViewInstance?.goBack()
   }
 
   Box(
@@ -61,15 +63,26 @@ fun HybridAppScreen() {
       modifier = Modifier.fillMaxSize(),
       factory = { context ->
         WebView(context).apply {
+          // Configure layer and settings for emulator and device stability
+          setLayerType(View.LAYER_TYPE_HARDWARE, null)
+
           settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            databaseEnabled = true
             allowFileAccess = true
             allowContentAccess = true
             cacheMode = WebSettings.LOAD_DEFAULT
             useWideViewPort = true
             loadWithOverviewMode = true
+            displayZoomControls = false
+            builtInZoomControls = false
+            textZoom = 100
+          }
+
+          webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+              return true
+            }
           }
 
           webViewClient = object : WebViewClient() {
@@ -79,18 +92,21 @@ fun HybridAppScreen() {
             ): Boolean {
               val url = request?.url?.toString() ?: return false
               if (url.startsWith("tel:")) {
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
-                context.startActivity(intent)
+                try {
+                  val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+                  context.startActivity(intent)
+                } catch (_: Exception) {}
                 return true
               }
               if (url.startsWith("https://wa.me") || url.startsWith("whatsapp://")) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 try {
+                  val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                   context.startActivity(intent)
-                } catch (e: Exception) {
-                  // Fallback to browser
-                  val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                  context.startActivity(browserIntent)
+                } catch (_: Exception) {
+                  try {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    context.startActivity(browserIntent)
+                  } catch (_: Exception) {}
                 }
                 return true
               }

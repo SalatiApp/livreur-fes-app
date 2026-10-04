@@ -1698,12 +1698,17 @@
     /* ==========================================================================
        5. INITIALIZATION
        ========================================================================== */
-    window.addEventListener('DOMContentLoaded', () => {
+    function startApp() {
       DataService.init();
       initTheme();
       updateRoleHeader();
       renderPage('home');
-    });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startApp);
+    } else {
+      startApp();
+    }
   </script>
 </body>
 </html>
