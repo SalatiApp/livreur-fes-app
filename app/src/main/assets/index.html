@@ -47,13 +47,13 @@
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
   <!-- Top App Bar -->
-  <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2 sm:px-3 h-14 sm:h-16 flex items-center justify-between gap-1 sm:gap-2">
+  <header class="sticky top-0 z-40 bg-[#0c1421] text-white border-b border-slate-800/60 shadow-lg select-none">
+    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-2">
       
       <!-- Right: Morocco Map + App Title & Subtitle -->
       <div class="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onclick="navigateTo('home')">
         <!-- Glowing Red Morocco Map Silhouette -->
-        <div class="w-7 h-9 sm:w-8 sm:h-10 shrink-0 flex items-center justify-center filter drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]">
+        <div class="w-8 h-10 sm:w-9 sm:h-11 shrink-0 flex items-center justify-center filter drop-shadow-[0_0_8px_rgba(239,68,68,0.75)]">
           <svg viewBox="0 0 100 110" class="w-full h-full" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <path d="M50 6 L74 12 L90 22 L88 34 L72 46 L66 56 L56 68 L44 83 L34 94 L24 94 L22 84 L26 70 L34 56 L42 42 L46 30 L48 16 Z" fill="rgba(220, 38, 38, 0.45)" stroke="#ef4444" stroke-width="2" stroke-linejoin="round"/>
             <path d="M50 6 L60 24 M74 12 L56 34 M90 22 L70 38 M72 46 L54 48 M66 56 L48 60 M56 68 L38 72 M44 83 L30 83" stroke="#f87171" stroke-width="1" stroke-dasharray="1.5 1"/>
@@ -67,14 +67,14 @@
         </div>
         <!-- Title & Subtitle -->
         <div class="text-right flex flex-col justify-center">
-          <h1 class="font-black text-lg sm:text-xl text-white tracking-tight leading-none">ليفرور</h1>
-          <p class="text-[7.5px] sm:text-[8.5px] text-slate-200 font-medium leading-tight mt-0.5 whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
+          <h1 class="font-black text-xl sm:text-2xl text-white tracking-wide leading-none">ليفرور</h1>
+          <p class="text-[8px] sm:text-[9px] text-slate-200 font-medium leading-tight mt-0.5 whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
       </div>
 
       <!-- Center: Delivery Scooter Rider with Speed Trails -->
       <div class="flex items-center justify-center shrink-0">
-        <svg viewBox="0 0 115 80" class="w-10 h-8 sm:w-12 sm:h-9" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 115 80" class="w-11 h-9 sm:w-13 sm:h-10" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
           <line x1="72" y1="20" x2="112" y2="20" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
           <line x1="68" y1="26" x2="102" y2="26" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
           <line x1="76" y1="34" x2="108" y2="34" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
@@ -105,9 +105,9 @@
       <!-- Left: Day/Night Toggle + Role Selector Pill -->
       <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
         <!-- Day/Night Toggle Button -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700 flex items-center justify-center transition-all active:scale-95 shadow-sm shrink-0">
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 flex items-center justify-center transition-all active:scale-95 shadow-sm shrink-0">
           <span id="themeIconContainer" class="flex items-center justify-center">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5" fill="currentColor">
+            <svg viewBox="0 0 24 24" class="w-4.5 h-4.5 sm:w-5 sm:h-5" fill="currentColor">
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity="0.3"/>
               <path d="M12 4a8 8 0 0 0 0 16V4z" fill="#f59e0b"/>
               <path d="M12 4a8 8 0 0 1 0 16 7 7 0 0 0 0-14 8 8 0 0 1 0-2z" fill="#93c5fd"/>
@@ -119,11 +119,11 @@
         </button>
 
         <!-- Role Selector Pill Button -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-100 text-slate-900 rounded-full px-2 sm:px-2.5 py-1 shadow-md flex items-center gap-1 sm:gap-1.5 transition-all active:scale-95 border border-slate-200 shrink-0">
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-100 text-slate-900 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-md flex items-center gap-1.5 transition-all active:scale-95 border border-slate-200 shrink-0">
           <i class="fa-solid fa-caret-down text-blue-700 text-[9px] sm:text-[10px]"></i>
           <div class="text-right flex flex-col">
-            <span class="text-[8.5px] sm:text-[9.5px] font-black text-[#1e3a8a] leading-tight whitespace-nowrap">اختر نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[7px] sm:text-[8px] font-bold text-[#1d4ed8] leading-none mt-0.5 whitespace-nowrap">(صاحب محل/ليفرور)</span>
+            <span class="text-[9px] sm:text-[10px] font-black text-[#1e3a8a] leading-tight whitespace-nowrap">اختر نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[7.5px] sm:text-[8.5px] font-bold text-[#1d4ed8] leading-none mt-0.5 whitespace-nowrap">(صاحب محل/ليفرور)</span>
           </div>
         </button>
       </div>
