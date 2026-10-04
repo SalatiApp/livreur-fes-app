@@ -47,41 +47,44 @@
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
   <!-- Top App Bar -->
-  <header class="sticky top-0 z-40 bg-[#0b1120] text-white border-b border-slate-800/80 shadow-md">
-    <div class="max-w-md mx-auto px-2.5 sm:px-3 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-2">
+  <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md">
+    <div class="max-w-md mx-auto px-2 sm:px-3 py-2 flex items-center justify-between gap-1 sm:gap-2">
       
-      <!-- Right: Morocco Map + App Title -->
-      <div class="flex items-center gap-2 sm:gap-2.5 cursor-pointer shrink-0" onclick="navigateTo('home')">
-        <!-- Morocco Map Card with Red Ambient Glow -->
-        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#2a0b12] to-[#120407] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] flex items-center justify-center p-1 relative overflow-hidden shrink-0">
-          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 8 L72 14 L86 24 L84 36 L70 48 L64 58 L54 70 L42 85 L32 94 L24 94 L22 84 L26 70 L34 56 L42 42 L46 30 L48 18 Z" fill="rgba(239, 68, 68, 0.22)" stroke="#ef4444" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M50 8 L60 26 M72 14 L55 35 M86 24 L68 40 M70 48 L52 50 M64 58 L46 62 M54 70 L36 74 M42 85 L28 85" stroke="#f87171" stroke-width="0.9" stroke-dasharray="1.5 1"/>
-            <circle cx="68" cy="22" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
-            <circle cx="58" cy="32" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
-            <circle cx="74" cy="35" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
-            <circle cx="50" cy="46" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
-            <circle cx="40" cy="62" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
-            <circle cx="30" cy="78" r="2.2" fill="#fca5a5" stroke="#ef4444" stroke-width="0.8"/>
+      <!-- Right: Morocco Map + App Title & Subtitle -->
+      <div class="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onclick="navigateTo('home')">
+        <!-- Glowing Red Morocco Map Silhouette -->
+        <div class="w-9 h-11 sm:w-11 sm:h-12 shrink-0 flex items-center justify-center filter drop-shadow-[0_0_9px_rgba(239,68,68,0.75)]">
+          <svg viewBox="0 0 100 110" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 6 L74 12 L90 22 L88 34 L72 46 L66 56 L56 68 L44 83 L34 94 L24 94 L22 84 L26 70 L34 56 L42 42 L46 30 L48 16 Z" fill="rgba(220, 38, 38, 0.45)" stroke="#ef4444" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M50 6 L60 24 M74 12 L56 34 M90 22 L70 38 M72 46 L54 48 M66 56 L48 60 M56 68 L38 72 M44 83 L30 83" stroke="#f87171" stroke-width="1" stroke-dasharray="1.5 1"/>
+            <circle cx="70" cy="20" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
+            <circle cx="60" cy="30" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
+            <circle cx="76" cy="33" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
+            <circle cx="52" cy="44" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
+            <circle cx="42" cy="60" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
+            <circle cx="32" cy="76" r="2.2" fill="#ffffff" stroke="#ef4444" stroke-width="0.8"/>
           </svg>
         </div>
         <!-- Title & Subtitle -->
-        <div class="text-right">
+        <div class="text-right flex flex-col justify-center">
           <h1 class="font-black text-xl sm:text-2xl text-white tracking-tight leading-none">ليفرور</h1>
-          <p class="text-[8.5px] sm:text-[9.5px] text-slate-300 font-medium leading-tight mt-0.5 whitespace-nowrap">منصة ربط المحلات والليفرورات</p>
+          <p class="text-[8px] sm:text-[9px] text-slate-200 font-medium leading-tight mt-0.5 whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
       </div>
 
-      <!-- Center: Delivery Rider Vector Graphic with Speed Trails -->
+      <!-- Center: Delivery Scooter Rider with Speed Trails -->
       <div class="flex items-center justify-center shrink-0 px-0.5">
-        <svg viewBox="0 0 110 80" class="w-10 h-8 sm:w-12 sm:h-9 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="70" y1="20" x2="108" y2="20" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-          <line x1="66" y1="26" x2="98" y2="26" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
-          <line x1="74" y1="34" x2="104" y2="34" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
-          <line x1="60" y1="44" x2="92" y2="44" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
-          <line x1="56" y1="66" x2="90" y2="66" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
-          <rect x="60" y="22" width="16" height="15" rx="3" fill="#f97316" stroke="#ea580c" stroke-width="1.2"/>
-          <path d="M64 29h8" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+        <svg viewBox="0 0 115 80" class="w-11 h-9 sm:w-14 sm:h-11 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="72" y1="20" x2="112" y2="20" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+          <line x1="68" y1="26" x2="102" y2="26" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.9"/>
+          <line x1="76" y1="34" x2="108" y2="34" stroke="#ef4444" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+          <line x1="62" y1="44" x2="96" y2="44" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+          <line x1="56" y1="66" x2="94" y2="66" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+          
+          <rect x="62" y="21" width="18" height="16" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
+          <rect x="64" y="23" width="14" height="12" rx="1.5" fill="#1e293b"/>
+          <text x="71" y="32" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
+          
           <ellipse cx="44" cy="15" rx="7" ry="8" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
           <path d="M40 14 Q36 16 40 19" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
           <path d="M43 23 L56 29 L53 47 L41 47 L37 31 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
@@ -99,19 +102,28 @@
         </svg>
       </div>
 
-      <!-- Left: Settings Button + Role Selector Pill -->
+      <!-- Left: Day/Night Toggle + Role Selector Pill -->
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <!-- Settings Button with Gear Icon -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="الإعدادات والمظهر" class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700/70 text-amber-400 flex items-center justify-center transition-all active:scale-95 shadow-sm shrink-0">
-          <i id="themeIcon" class="fa-solid fa-gear text-amber-400 text-xs sm:text-sm"></i>
+        <!-- Day/Night Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 flex items-center justify-center transition-all active:scale-95 shadow-sm shrink-0">
+          <span id="themeIconContainer" class="flex items-center justify-center">
+            <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity="0.3"/>
+              <path d="M12 4a8 8 0 0 0 0 16V4z" fill="#f59e0b"/>
+              <path d="M12 4a8 8 0 0 1 0 16 7 7 0 0 0 0-14 8 8 0 0 1 0-2z" fill="#93c5fd"/>
+              <circle cx="8" cy="12" r="1.5" fill="#fef08a"/>
+              <circle cx="15.5" cy="9.5" r="0.8" fill="#ffffff"/>
+              <circle cx="16" cy="14.5" r="0.8" fill="#ffffff"/>
+            </svg>
+          </span>
         </button>
 
         <!-- Role Selector Pill Button -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-100 text-brand-900 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-md flex items-center gap-1.5 sm:gap-2 transition-all active:scale-95 border border-white/20 shrink-0">
-          <i class="fa-solid fa-caret-down text-brand-700 text-[10px] sm:text-xs"></i>
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-100 text-slate-900 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-md flex items-center gap-1.5 sm:gap-2 transition-all active:scale-95 border border-slate-200 shrink-0">
+          <i class="fa-solid fa-caret-down text-blue-700 text-xs"></i>
           <div class="text-right flex flex-col">
-            <span class="text-[9.5px] sm:text-[10.5px] font-black text-brand-900 leading-tight">اختر نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[8px] sm:text-[9px] font-bold text-brand-600 leading-none mt-0.5">(صاحب محل/ليفرور)</span>
+            <span class="text-[9.5px] sm:text-[10.5px] font-black text-[#1e3a8a] leading-tight">اختر نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[8px] sm:text-[9px] font-bold text-[#1d4ed8] leading-none mt-0.5">(صاحب محل/ليفرور)</span>
           </div>
         </button>
       </div>
@@ -689,9 +701,27 @@
 
     function updateThemeIcon() {
       const isDark = document.documentElement.classList.contains('dark');
-      const icon = document.getElementById('themeIcon');
-      if (icon) {
-        icon.className = isDark ? 'fa-solid fa-gear text-amber-400 text-xs sm:text-sm' : 'fa-solid fa-gear text-amber-500 text-xs sm:text-sm';
+      const container = document.getElementById('themeIconContainer');
+      if (container) {
+        container.innerHTML = isDark ? `
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity="0.3"/>
+            <path d="M12 4a8 8 0 0 0 0 16V4z" fill="#f59e0b"/>
+            <path d="M12 4a8 8 0 0 1 0 16 7 7 0 0 0 0-14 8 8 0 0 1 0-2z" fill="#93c5fd"/>
+            <circle cx="8" cy="12" r="1.5" fill="#fef08a"/>
+            <circle cx="15.5" cy="9.5" r="0.8" fill="#ffffff"/>
+            <circle cx="16" cy="14.5" r="0.8" fill="#ffffff"/>
+          </svg>
+        ` : `
+          <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity="0.3"/>
+            <path d="M12 4a8 8 0 0 1 0 16V4z" fill="#3b82f6"/>
+            <path d="M12 4a8 8 0 0 0 0 16 7 7 0 0 1 0-14 8 8 0 0 0 0-2z" fill="#f59e0b"/>
+            <circle cx="16" cy="12" r="1.5" fill="#fef08a"/>
+            <circle cx="8.5" cy="9.5" r="0.8" fill="#ffffff"/>
+            <circle cx="8" cy="14.5" r="0.8" fill="#ffffff"/>
+          </svg>
+        `;
       }
     }
 
