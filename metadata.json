@@ -1,0 +1,6 @@
+{
+  "name": "ليفرور فاس",
+  "description": "منصة مجانية تربط بين أصحاب المحلات والليفرورات في مدينة فاس",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

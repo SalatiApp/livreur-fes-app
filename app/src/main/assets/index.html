@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ليفرور فاس | Livrer Fès</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            },
+            accent: {
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pb-safe {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+  <!-- Top App Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-800 to-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+          <i class="fa-solid fa-motorcycle text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white leading-none">ليفرور فاس</h1>
+            <span class="text-[10px] bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold px-1.5 py-0.5 rounded border border-amber-500/20">Fès</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">منصة ربط المحلات بالليفرورات</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 transition-colors">
+          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+        <button onclick="openQuickRoleModal()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+          <span id="headerRoleBadge">صاحب محل</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main id="appContainer" class="max-w-md mx-auto px-4 pt-4 pb-safe">
+    <!-- Dynamic views injected here -->
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
+    <div class="max-w-md mx-auto flex items-center justify-around py-2 px-1">
+      <button onclick="navigateTo('home')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="home">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[11px] font-bold">الرئيسية</span>
+      </button>
+      <button onclick="navigateTo('offers')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="offers">
+        <i class="fa-solid fa-briefcase text-lg"></i>
+        <span class="text-[11px] font-bold">العروض</span>
+      </button>
+      <button onclick="navigateTo('create')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-brand-600" data-page="create">
+        <div class="w-10 h-10 -mt-4 rounded-full bg-gradient-to-tr from-brand-700 to-brand-500 text-white flex items-center justify-center shadow-lg shadow-brand-500/30">
+          <i class="fa-solid fa-plus text-base"></i>
+        </div>
+        <span class="text-[11px] font-bold mt-[-2px]">إضافة</span>
+      </button>
+      <button onclick="navigateTo('drivers')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="drivers">
+        <i class="fa-solid fa-helmet-safety text-lg"></i>
+        <span class="text-[11px] font-bold">الليفرورات</span>
+      </button>
+      <button onclick="navigateTo('account')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="account">
+        <i class="fa-solid fa-user text-lg"></i>
+        <span class="text-[11px] font-bold">حسابي</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Custom Toast Notification -->
+  <div id="toastContainer" class="fixed top-16 left-4 right-4 z-50 pointer-events-none flex flex-col items-center gap-2 max-w-sm mx-auto"></div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up">
+      <div id="confirmIconBox" class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400 flex items-center justify-center text-xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="confirmTitle" class="text-base font-extrabold text-slate-900 dark:text-white mb-2">تأكيد الإجراء</h3>
+      <p id="confirmMessage" class="text-xs text-slate-600 dark:text-slate-400 mb-6">واش متأكد بغيتي تكمل هاد الإجراء؟</p>
+      <div class="flex gap-2">
+        <button id="confirmCancelBtn" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs">إلغاء</button>
+        <button id="confirmOkBtn" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs shadow-md shadow-red-500/20">تأكيد</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Role Quick Switcher Modal -->
+  <div id="roleModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center">
+      <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-1">اختر نوع الاستخدام</h3>
+      <p class="text-xs text-slate-500 mb-5">كي يخصص التطبيق تجربتك بشكل أفضل</p>
+      <div class="space-y-3">
+        <button onclick="setUserRole('shop')" class="w-full p-4 rounded-2xl border-2 border-brand-500/20 hover:border-brand-500 bg-brand-50/50 dark:bg-slate-800/80 flex items-center gap-3 text-right">
+          <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center text-lg"><i class="fa-solid fa-store"></i></div>
+          <div>
+            <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">أنا صاحب محل / مطعم</h4>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">أبحث عن ليفرور لتوصيل الطلبات</p>
+          </div>
+        </button>
+        <button onclick="setUserRole('driver')" class="w-full p-4 rounded-2xl border-2 border-amber-500/20 hover:border-amber-500 bg-amber-50/50 dark:bg-slate-800/80 flex items-center gap-3 text-right">
+          <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg"><i class="fa-solid fa-motorcycle"></i></div>
+          <div>
+            <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">أنا ليفرور (سائق توصيل)</h4>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">أبحث عن عروض عمل وتوصيل</p>
+          </div>
+        </button>
+      </div>
+      <button onclick="closeRoleModal()" class="mt-4 text-xs font-bold text-slate-400">إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. DATA CONSTANTS & STORAGE REPOSITORY
+       Architecture prepared for easy drop-in replacement with Firebase Firestore
+       ========================================================================== */
+    const CITIES = [
+      { id: 'fes', nameAr: 'فاس', nameFr: 'Fès' },
+      { id: 'casablanca', nameAr: 'الدار البيضاء', nameFr: 'Casablanca' },
+      { id: 'rabat', nameAr: 'الرباط', nameFr: 'Rabat' },
+      { id: 'marrakech', nameAr: 'مراكش', nameFr: 'Marrakech' },
+      { id: 'meknes', nameAr: 'مكناس', nameFr: 'Meknès' },
+      { id: 'tangier', nameAr: 'طنجة', nameFr: 'Tanger' },
+      { id: 'agadir', nameAr: 'أكادير', nameFr: 'Agadir' }
+    ];
+
+    const FES_DISTRICTS = [
+      'أكدال',
+      'المرينيين',
+      'زواغة',
+      'سائس',
+      'فاس المدينة',
+      'النرجس',
+      'طريق صفرو',
+      'بنسودة',
+      'طارق',
+      'عين هارون',
+      'سهب الورد'
+    ];
+
+    const VEHICLE_TYPES = [
+      'دراجة نارية',
+      'دراجة هوائية',
+      'سيارة',
+      'هوندا'
+    ];
+
+    const PAYMENT_TYPES = [
+      'يومي (باليوم)',
+      'بالتوصيلة (لكل كورس)',
+      'شهري',
+      'أسبوعي'
+    ];
+
+    // Mock initial data
+    const INITIAL_OFFERS = [
+      {
+        id: 'off-1',
+        shopName: 'مطعم فاس الأصيل',
+        shopType: 'مأكولات ووجبات مغربية',
+        district: 'فاس المدينة',
+        vehicle: 'دراجة نارية',
+        paymentType: 'يومي (باليوم)',
+        price: 180,
+        workingHours: '12:00 - 22:00',
+        phone: '0661234567',
+        whatsapp: '0661234567',
+        description: 'توصيل وجبات الغداء والعشاء للزبائن داخل المدينة القديمة والنواحي، يشترط الجدية والانضباط.',
+        notes: 'بنزين الدراجة مدفوع + وجبة غداء يومية مجاناً',
+        status: 'open',
+        createdAt: '2026-10-01'
+      },
+      {
+        id: 'off-2',
+        shopName: 'سناك البركة',
+        shopType: 'سناك ومأكولات خفيفة',
+        district: 'أكدال',
+        vehicle: 'دراجة نارية',
+        paymentType: 'بالتوصيلة (لكل كورس)',
+        price: 15,
+        workingHours: '16:00 - 00:00',
+        phone: '0662345678',
+        whatsapp: '0662345678',
+        description: 'مطلوب سائق دراجة نارية لنقل طلبات السناك والسندويتشات في حي أكدال والجامعة.',
+        notes: 'توصيلات سريعة ومتتالية، مداخيل ممتازة في نهاية الأسبوع.',
+        status: 'open',
+        createdAt: '2026-10-02'
+      },
+      {
+        id: 'off-3',
+        shopName: 'صيدلية النرجس',
+        shopType: 'صيدلية وشبه طبية',
+        district: 'النرجس',
+        vehicle: 'دراجة هوائية',
+        paymentType: 'يومي (باليوم)',
+        price: 120,
+        workingHours: '09:00 - 17:00',
+        phone: '0663456789',
+        whatsapp: '0663456789',
+        description: 'توصيل أدوية ومستلزمات طبية للمنازل القريبة داخل حي النرجس والمحايدة له.',
+        notes: 'عمل هادئ ومناسب لدراجة هوائية عادية أو كهربائية.',
+        status: 'open',
+        createdAt: '2026-10-02'
+      },
+      {
+        id: 'off-4',
+        shopName: 'مخبزة وحلويات الرياض',
+        shopType: 'مخبزة وحلويات',
+        district: 'سائس',
+        vehicle: 'سيارة',
+        paymentType: 'شهري',
+        price: 4500,
+        workingHours: '07:00 - 15:00',
+        phone: '0664567890',
+        whatsapp: '0664567890',
+        description: 'توزيع الحلويات والمخبوزات على المقاهي ومحلات البقالة في مقاطعة سائس.',
+        notes: 'سيارة صغيرة أو كونغو، خبرة سابقة في التوزيع مطلوبة.',
+        status: 'open',
+        createdAt: '2026-10-03'
+      },
+      {
+        id: 'off-5',
+        shopName: 'سوق الخضار والفواكه الطازجة',
+        shopType: 'تجارة المواد الغذائية',
+        district: 'بنسودة',
+        vehicle: 'هوندا',
+        paymentType: 'بالتوصيلة (لكل كورس)',
+        price: 40,
+        workingHours: '08:00 - 14:00',
+        phone: '0665678901',
+        whatsapp: '0665678901',
+        description: 'نقل صناديق الخضر والفواكه والطلبيات الكبيرة للمطاعم في بنسودة والحي الصناعي.',
+        notes: 'حمولة متوسطة، الدفع فوري بعد كل توصيلة.',
+        status: 'open',
+        createdAt: '2026-10-03'
+      },
+      {
+        id: 'off-6',
+        shopName: 'بيتزا إيطاليانو',
+        shopType: 'مطعم وبيتزاريا',
+        district: 'طريق صفرو',
+        vehicle: 'دراجة نارية',
+        paymentType: 'يومي (باليوم)',
+        price: 160,
+        workingHours: '18:00 - 01:00',
+        phone: '0666789012',
+        whatsapp: '0666789012',
+        description: 'ليفرور مسائي لتوصيل البيتزا، توفير صندوق حراري حافظ للحرارة.',
+        notes: 'أجواء عمل ودية وبوربوار ممتاز من الزبناء.',
+        status: 'open',
+        createdAt: '2026-10-03'
+      },
+      {
+        id: 'off-7',
+        shopName: 'متجر الهواتف والإلكترونيات',
+        shopType: 'إلكترونيات وإكسسوارات',
+        district: 'زواغة',
+        vehicle: 'دراجة نارية',
+        paymentType: 'بالتوصيلة (لكل كورس)',
+        price: 20,
+        workingHours: '10:00 - 20:00',
+        phone: '0667890123',
+        whatsapp: '0667890123',
+        description: 'توصيل الهواتف والأجهزة المصلحة إلى الزبائن في زواغة وعين هارون.',
+        notes: 'أمانة عالية مطلوبة، تسليم واستلام مالي دقيق.',
+        status: 'open',
+        createdAt: '2026-10-03'
+      },
+      {
+        id: 'off-8',
+        shopName: 'كافيه دي باريس',
+        shopType: 'مقهى ومرطبات',
+        district: 'المرينيين',
+        vehicle: 'دراجة نارية',
+        paymentType: 'يومي (باليوم)',
+        price: 150,
+        workingHours: '08:00 - 16:00',
+        phone: '0668901234',
+        whatsapp: '0668901234',
+        description: 'توصيل القهوة والفطور الصباحي للمكاتب والإدارات في المرينيين.',
+        notes: 'السرعة واللباقة مع الزبناء شرط أساسي.',
+        status: 'closed',
+        createdAt: '2026-09-28'
+      }
+    ];
+
+    const INITIAL_DRIVERS = [
+      {
+        id: 'drv-1',
+        name: 'ياسين الفاسي',
+        district: 'أكدال',
+        vehicle: 'دراجة نارية',
+        phone: '0671112233',
+        whatsapp: '0671112233',
+        freeHours: 'مساءً (17:00 - 00:00)',
+        experience: 'سنتان في توصيل المطاعم (Glovo سابقاً)',
+        isAvailable: true,
+        notes: 'عندي صندوق حراري ودراجة نارية جديدة واقتصادية، أعرف أحياء فاس كاملة.',
+        createdAt: '2026-10-01'
+      },
+      {
+        id: 'drv-2',
+        name: 'عمر الإدريسي',
+        district: 'سائس',
+        vehicle: 'دراجة نارية',
+        phone: '0672223344',
+        whatsapp: '0672223344',
+        freeHours: 'طيلة اليوم (تفرغ كامل)',
+        experience: '3 سنوات في التوصيل الحر مع المحلات',
+        isAvailable: true,
+        notes: 'أبحث عن عمل قار مع مطعم أو محل تجاري، منضبط وجاد.',
+        createdAt: '2026-10-02'
+      },
+      {
+        id: 'drv-3',
+        name: 'حمزة المريني',
+        district: 'فاس المدينة',
+        vehicle: 'دراجة هوائية',
+        phone: '0673334455',
+        whatsapp: '0673334455',
+        freeHours: 'صباحاً (09:00 - 15:00)',
+        experience: 'سنة في توصيل الطرود الخفيفة',
+        isAvailable: true,
+        notes: 'توصيل سريع داخل أزقة المدينة القديمة وأكدال بالدراجة الهوائية.',
+        createdAt: '2026-10-02'
+      },
+      {
+        id: 'drv-4',
+        name: 'كريم الصقلي',
+        district: 'طريق صفرو',
+        vehicle: 'سيارة',
+        phone: '0674445566',
+        whatsapp: '0674445566',
+        freeHours: 'أوقات متفرقة / نهاية الأسبوع',
+        experience: 'سائق مهني منذ 5 سنوات',
+        isAvailable: false,
+        notes: 'سيارة داسيا نظيفة جاهزة لنقل السلع والمشتريات المتوسطة والكبيرة.',
+        createdAt: '2026-10-02'
+      },
+      {
+        id: 'drv-5',
+        name: 'رشيد بنسودة',
+        district: 'زواغة',
+        vehicle: 'هوندا',
+        phone: '0675556677',
+        whatsapp: '0675556677',
+        freeHours: 'الصباح والظهيرة',
+        experience: '4 سنوات في نقل البضائع والمشتريات',
+        isAvailable: true,
+        notes: 'متوفر لنقل شحنات المحلات وتوزيع البضائع في فاس وضواحيها.',
+        createdAt: '2026-10-03'
+      },
+      {
+        id: 'drv-6',
+        name: 'أمين التازي',
+        district: 'النرجس',
+        vehicle: 'دراجة نارية',
+        phone: '0676667788',
+        whatsapp: '0676667788',
+        freeHours: '14:00 - 22:00',
+        experience: 'سنة ونصف في توصيل المأكولات السريعة',
+        isAvailable: true,
+        notes: 'سرعة ودقة في المواعيد، هاتف ذكي ونظام GPS مفعل.',
+        createdAt: '2026-10-03'
+      }
+    ];
+
+    /* Data Service Interface */
+    const DataService = {
+      KEY_OFFERS: 'livrer_fes_offers_v1',
+      KEY_DRIVERS: 'livrer_fes_drivers_v1',
+      KEY_ROLE: 'livrer_fes_user_role',
+      KEY_CITY: 'livrer_fes_city',
+      KEY_THEME: 'livrer_fes_theme',
+
+      init() {
+        if (!localStorage.getItem(this.KEY_OFFERS)) {
+          localStorage.setItem(this.KEY_OFFERS, JSON.stringify(INITIAL_OFFERS));
+        }
+        if (!localStorage.getItem(this.KEY_DRIVERS)) {
+          localStorage.setItem(this.KEY_DRIVERS, JSON.stringify(INITIAL_DRIVERS));
+        }
+        if (!localStorage.getItem(this.KEY_ROLE)) {
+          localStorage.setItem(this.KEY_ROLE, 'shop');
+        }
+        if (!localStorage.getItem(this.KEY_CITY)) {
+          localStorage.setItem(this.KEY_CITY, 'fes');
+        }
+      },
+
+      getOffers() {
+        try {
+          return JSON.parse(localStorage.getItem(this.KEY_OFFERS)) || [];
+        } catch (e) {
+          return INITIAL_OFFERS;
+        }
+      },
+
+      saveOffers(offers) {
+        localStorage.setItem(this.KEY_OFFERS, JSON.stringify(offers));
+      },
+
+      addOffer(offer) {
+        const offers = this.getOffers();
+        offer.id = 'off-' + Date.now();
+        offer.createdAt = new Date().toISOString().split('T')[0];
+        offer.status = 'open';
+        offers.unshift(offer);
+        this.saveOffers(offers);
+        return offer;
+      },
+
+      updateOffer(id, updatedFields) {
+        const offers = this.getOffers();
+        const index = offers.findIndex(o => o.id === id);
+        if (index !== -1) {
+          offers[index] = { ...offers[index], ...updatedFields };
+          this.saveOffers(offers);
+          return offers[index];
+        }
+        return null;
+      },
+
+      deleteOffer(id) {
+        let offers = this.getOffers();
+        offers = offers.filter(o => o.id !== id);
+        this.saveOffers(offers);
+      },
+
+      getDrivers() {
+        try {
+          return JSON.parse(localStorage.getItem(this.KEY_DRIVERS)) || [];
+        } catch (e) {
+          return INITIAL_DRIVERS;
+        }
+      },
+
+      saveDrivers(drivers) {
+        localStorage.setItem(this.KEY_DRIVERS, JSON.stringify(drivers));
+      },
+
+      addDriver(driver) {
+        const drivers = this.getDrivers();
+        driver.id = 'drv-' + Date.now();
+        driver.createdAt = new Date().toISOString().split('T')[0];
+        driver.isAvailable = true;
+        drivers.unshift(driver);
+        this.saveDrivers(drivers);
+        return driver;
+      },
+
+      updateDriver(id, updatedFields) {
+        const drivers = this.getDrivers();
+        const index = drivers.findIndex(d => d.id === id);
+        if (index !== -1) {
+          drivers[index] = { ...drivers[index], ...updatedFields };
+          this.saveDrivers(drivers);
+          return drivers[index];
+        }
+        return null;
+      },
+
+      deleteDriver(id) {
+        let drivers = this.getDrivers();
+        drivers = drivers.filter(d => d.id !== id);
+        this.saveDrivers(drivers);
+      },
+
+      getUserRole() {
+        return localStorage.getItem(this.KEY_ROLE) || 'shop';
+      },
+
+      setUserRole(role) {
+        localStorage.setItem(this.KEY_ROLE, role);
+      },
+
+      resetAllData() {
+        localStorage.setItem(this.KEY_OFFERS, JSON.stringify(INITIAL_OFFERS));
+        localStorage.setItem(this.KEY_DRIVERS, JSON.stringify(INITIAL_DRIVERS));
+      }
+    };
+
+    /* ==========================================================================
+       2. UTILITIES (SECURITY, FORMATTING, TOASTS, MODALS)
+       ========================================================================== */
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function cleanPhoneNumber(phone) {
+      if (!phone) return '';
+      let clean = phone.replace(/[^0-9]/g, '');
+      if (clean.startsWith('0')) {
+        clean = '212' + clean.substring(1);
+      } else if (!clean.startsWith('212')) {
+        clean = '212' + clean;
+      }
+      return clean;
+    }
+
+    function makeWhatsAppLink(phone, contextTitle) {
+      const cleaned = cleanPhoneNumber(phone);
+      const text = encodeURIComponent(`السلام عليكم، تواصلت معك عبر تطبيق ليفرور فاس بخصوص ${contextTitle || 'خدمة التوصيل'}.`);
+      return `https://wa.me/${cleaned}?text=${text}`;
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      let icon = 'fa-circle-info';
+      let bg = 'bg-slate-800 text-white dark:bg-white dark:text-slate-900';
+      if (type === 'success') {
+        icon = 'fa-circle-check';
+        bg = 'bg-emerald-600 text-white';
+      } else if (type === 'error') {
+        icon = 'fa-circle-xmark';
+        bg = 'bg-red-600 text-white';
+      }
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl font-bold text-xs transform transition-all duration-300 opacity-0 -translate-y-2 ${bg}`;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${escapeHTML(message)}</span>`;
+
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('opacity-0', '-translate-y-2');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    let confirmCallback = null;
+    function showConfirmModal(title, message, onConfirm, isDanger = true) {
+      const modal = document.getElementById('confirmModal');
+      document.getElementById('confirmTitle').innerText = title;
+      document.getElementById('confirmMessage').innerText = message;
+      
+      const okBtn = document.getElementById('confirmOkBtn');
+      if (isDanger) {
+        okBtn.className = 'flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs shadow-md shadow-red-500/20';
+        document.getElementById('confirmIconBox').className = 'w-14 h-14 mx-auto mb-4 rounded-2xl bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400 flex items-center justify-center text-xl';
+      } else {
+        okBtn.className = 'flex-1 py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-md shadow-brand-500/20';
+        document.getElementById('confirmIconBox').className = 'w-14 h-14 mx-auto mb-4 rounded-2xl bg-brand-100 text-brand-600 dark:bg-brand-950/50 dark:text-brand-400 flex items-center justify-center text-xl';
+      }
+
+      modal.classList.remove('hidden');
+      confirmCallback = onConfirm;
+    }
+
+    document.getElementById('confirmCancelBtn').onclick = () => {
+      document.getElementById('confirmModal').classList.add('hidden');
+      confirmCallback = null;
+    };
+
+    document.getElementById('confirmOkBtn').onclick = () => {
+      document.getElementById('confirmModal').classList.add('hidden');
+      if (confirmCallback) confirmCallback();
+      confirmCallback = null;
+    };
+
+    function openQuickRoleModal() {
+      document.getElementById('roleModal').classList.remove('hidden');
+    }
+
+    function closeRoleModal() {
+      document.getElementById('roleModal').classList.add('hidden');
+    }
+
+    function setUserRole(role) {
+      DataService.setUserRole(role);
+      closeRoleModal();
+      updateRoleHeader();
+      showToast(role === 'shop' ? 'تم اختيار وضع: صاحب محل' : 'تم اختيار وضع: ليفرور', 'success');
+      if (currentPage === 'home' || currentPage === 'account') {
+        renderPage(currentPage);
+      }
+    }
+
+    function updateRoleHeader() {
+      const role = DataService.getUserRole();
+      const badge = document.getElementById('headerRoleBadge');
+      if (badge) {
+        badge.innerText = role === 'shop' ? '🏪 صاحب محل' : '🛵 ليفرور';
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(DataService.KEY_THEME, isDark ? 'dark' : 'light');
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('themeIcon');
+      if (icon) {
+        icon.className = isDark ? 'fa-solid fa-sun text-amber-400 text-sm' : 'fa-solid fa-moon text-slate-600 text-sm';
+      }
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem(DataService.KEY_THEME);
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      updateThemeIcon();
+    }
+
+    /* ==========================================================================
+       3. ROUTING & SPA CONTROLLER
+       ========================================================================== */
+    let currentPage = 'home';
+    let filterDistrictOffer = '';
+    let filterVehicleOffer = '';
+    let filterPaymentOffer = '';
+    let searchOfferQuery = '';
+
+    let filterDistrictDriver = '';
+    let filterVehicleDriver = '';
+    let filterAvailableDriver = '';
+    let searchDriverQuery = '';
+
+    function navigateTo(page, params = {}) {
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Update Bottom Nav active state
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const btnPage = btn.getAttribute('data-page');
+        if (btnPage === page) {
+          if (btnPage === 'create') {
+            btn.classList.add('text-brand-600');
+          } else {
+            btn.classList.remove('text-slate-400', 'dark:text-slate-500');
+            btn.classList.add('text-brand-600', 'dark:text-brand-400');
+          }
+        } else {
+          if (btnPage !== 'create') {
+            btn.classList.remove('text-brand-600', 'dark:text-brand-400');
+            btn.classList.add('text-slate-400', 'dark:text-slate-500');
+          }
+        }
+      });
+
+      renderPage(page, params);
+    }
+
+    function renderPage(page, params = {}) {
+      const container = document.getElementById('appContainer');
+      switch (page) {
+        case 'home':
+          container.innerHTML = viewHome();
+          break;
+        case 'offers':
+          container.innerHTML = viewOffers();
+          break;
+        case 'drivers':
+          container.innerHTML = viewDrivers();
+          break;
+        case 'create':
+          container.innerHTML = viewCreate(params.mode || 'offer');
+          break;
+        case 'account':
+          container.innerHTML = viewAccount();
+          break;
+        default:
+          container.innerHTML = viewHome();
+      }
+    }
+
+    // 1. HOME VIEW
+    function viewHome() {
+      const offers = DataService.getOffers();
+      const drivers = DataService.getDrivers();
+      const activeOffersCount = offers.filter(o => o.status === 'open').length;
+      const availableDriversCount = drivers.filter(d => d.isAvailable).length;
+      const latestOffers = offers.slice(0, 3);
+      const role = DataService.getUserRole();
+
+      return `
+        <div class="space-y-6">
+          <!-- Hero Section -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-6 shadow-xl shadow-brand-900/20">
+            <div class="relative z-10 space-y-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                <i class="fa-solid fa-sparkles text-[10px]"></i> منصة مجانية 100% لفاس
+              </span>
+              <h2 class="text-2xl font-black leading-tight">
+                التوصيل السريع للمحلات<br>وعروض العمل لليفرورات
+              </h2>
+              <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
+                ربط مباشر عبر الهاتف وواتساب بدون وسيط أو عمولات خفية.
+              </p>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <button onclick="navigateTo('offers')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition-all active:scale-95">
+                  <i class="fa-solid fa-magnifying-glass ml-1.5"></i> تصفح العروض
+                </button>
+                <button onclick="navigateTo('create')" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all active:scale-95">
+                  <i class="fa-solid fa-plus ml-1.5"></i> نشر جديد
+                </button>
+              </div>
+            </div>
+            <!-- Decorative Icon -->
+            <div class="absolute -left-6 -bottom-6 text-brand-600/30 text-8xl pointer-events-none select-none">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+          </div>
+
+          <!-- Quick Action Cards (Role Cards) -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-compass text-brand-600"></i> شنو كتقلب عليه؟
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div onclick="navigateTo('drivers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-brand-500 transition-all">
+                <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-shop"></i>
+                </div>
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">أحتاج لليفرور</h4>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات والمطاعم للبحث عن سائق متوفر</p>
+                <div class="mt-3 text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1">
+                  <span>عرض الليفرورات</span>
+                  <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                </div>
+              </div>
+
+              <div onclick="navigateTo('offers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-amber-500 transition-all">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-motorcycle"></i>
+                </div>
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">كنقلب على خدمة</h4>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على عروض عمل وتوصيل في فاس</p>
+                <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                  <span>تصفح العروض</span>
+                  <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Platform Statistics -->
+          <div class="grid grid-cols-3 gap-2.5">
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
+              <span class="block text-xl font-black text-brand-600 dark:text-brand-400">${activeOffersCount}</span>
+              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">عروض العمل</span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
+              <span class="block text-xl font-black text-amber-500">${availableDriversCount}</span>
+              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">ليفرورات جاهزون</span>
+            </div>
+            <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
+              <span class="block text-xl font-black text-emerald-600 dark:text-emerald-400">11</span>
+              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">أحياء فاس</span>
+            </div>
+          </div>
+
+          <!-- Latest Offers Section -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-fire text-amber-500"></i> أحدث عروض العمل
+              </h3>
+              <button onclick="navigateTo('offers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                رؤية الكل (${offers.length})
+              </button>
+            </div>
+            <div class="space-y-3">
+              ${latestOffers.map(offer => renderOfferCard(offer)).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. OFFERS VIEW
+    function viewOffers() {
+      const allOffers = DataService.getOffers();
+      
+      const filtered = allOffers.filter(offer => {
+        const matchesDistrict = !filterDistrictOffer || offer.district === filterDistrictOffer;
+        const matchesVehicle = !filterVehicleOffer || offer.vehicle === filterVehicleOffer;
+        const matchesPayment = !filterPaymentOffer || offer.paymentType.includes(filterPaymentOffer);
+        const matchesSearch = !searchOfferQuery || 
+          offer.shopName.toLowerCase().includes(searchOfferQuery.toLowerCase()) ||
+          offer.description.toLowerCase().includes(searchOfferQuery.toLowerCase()) ||
+          offer.district.toLowerCase().includes(searchOfferQuery.toLowerCase());
+        return matchesDistrict && matchesVehicle && matchesPayment && matchesSearch;
+      });
+
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-black text-slate-900 dark:text-white">عروض العمل في فاس</h2>
+              <p class="text-xs text-slate-500">ابحث عن فرصة توصيل تناسبك وتواصل فوراً</p>
+            </div>
+            <button onclick="navigateTo('create', { mode: 'offer' })" class="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-plus text-xs"></i> نشر عرض
+            </button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
+            <input 
+              type="text" 
+              placeholder="ابحث باسم المحل، الحي، أو نوع الخدمة..." 
+              value="${escapeHTML(searchOfferQuery)}"
+              oninput="handleOfferSearch(this.value)"
+              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 dark:focus:border-brand-500 transition-colors shadow-sm"
+            >
+            ${searchOfferQuery ? `
+              <button onclick="clearOfferSearch()" class="absolute left-3 top-3 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-circle-xmark text-sm"></i>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Filters Section -->
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brand-600"></i> تصفية العروض</span>
+              ${(filterDistrictOffer || filterVehicleOffer || filterPaymentOffer) ? `
+                <button onclick="resetOfferFilters()" class="text-red-500 hover:underline text-[11px]">إعادة التعيين</button>
+              ` : ''}
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <!-- District Filter -->
+              <select onchange="handleOfferDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل الأحياء</option>
+                ${FES_DISTRICTS.map(d => `<option value="${d}" ${filterDistrictOffer === d ? 'selected' : ''}>${d}</option>`).join('')}
+              </select>
+
+              <!-- Vehicle Filter -->
+              <select onchange="handleOfferVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل المركبات</option>
+                ${VEHICLE_TYPES.map(v => `<option value="${v}" ${filterVehicleOffer === v ? 'selected' : ''}>${v}</option>`).join('')}
+              </select>
+
+              <!-- Payment Filter -->
+              <select onchange="handleOfferPaymentChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">نوع الدفع</option>
+                <option value="يومي" ${filterPaymentOffer === 'يومي' ? 'selected' : ''}>يومي</option>
+                <option value="بالتوصيلة" ${filterPaymentOffer === 'بالتوصيلة' ? 'selected' : ''}>بالتوصيلة</option>
+                <option value="شهري" ${filterPaymentOffer === 'شهري' ? 'selected' : ''}>شهري</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Offers List -->
+          <div class="space-y-3.5">
+            ${filtered.length > 0 
+              ? filtered.map(offer => renderOfferCard(offer)).join('')
+              : `
+                <div class="text-center py-12 px-4 rounded-3xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-800">
+                  <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-folder-open"></i>
+                  </div>
+                  <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى عرض مطابق لبحثك حالياً</h4>
+                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب تبدل الحي أو نوع المركبة، أو قم بنشر أول عرض بالمواصفات التي تحتاجها.</p>
+                  <button onclick="resetOfferFilters(); clearOfferSearch();" class="text-xs font-bold px-4 py-2 rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-300">
+                    عرض جميع العروض
+                  </button>
+                </div>
+              `
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Offer Card Component
+    function renderOfferCard(offer) {
+      const isClosed = offer.status === 'closed';
+      const waLink = makeWhatsAppLink(offer.whatsapp, `عرض العمل في "${offer.shopName}"`);
+
+      return `
+        <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 transition-all ${isClosed ? 'opacity-70 bg-slate-100/50 dark:bg-slate-900/40' : ''}">
+          <!-- Header -->
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-extrabold text-base text-slate-900 dark:text-white">${escapeHTML(offer.shopName)}</h4>
+                ${isClosed ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">مغلق</span>' : '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">نشط</span>'}
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${escapeHTML(offer.shopType || 'محل تجاري')}</p>
+            </div>
+            
+            <span class="inline-flex items-center gap-1 text-xs font-black px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 whitespace-nowrap">
+              <span>${offer.price}</span>
+              <span class="text-[10px]">درهم</span>
+            </span>
+          </div>
+
+          <!-- Badges Details -->
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+              <i class="fa-solid fa-location-dot text-brand-600"></i> ${escapeHTML(offer.district)}
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+              <i class="fa-solid fa-motorcycle text-amber-500"></i> ${escapeHTML(offer.vehicle)}
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+              <i class="fa-solid fa-money-bill-wave text-emerald-500"></i> ${escapeHTML(offer.paymentType)}
+            </span>
+            ${offer.workingHours ? `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+                <i class="fa-regular fa-clock text-slate-400"></i> ${escapeHTML(offer.workingHours)}
+              </span>
+            ` : ''}
+          </div>
+
+          <!-- Description & Notes -->
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50/50 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80">
+            ${escapeHTML(offer.description)}
+          </p>
+
+          ${offer.notes ? `
+            <div class="text-[11px] text-amber-700 dark:text-amber-300 flex items-start gap-1.5 font-medium">
+              <i class="fa-solid fa-circle-info mt-0.5"></i>
+              <span>${escapeHTML(offer.notes)}</span>
+            </div>
+          ` : ''}
+
+          <!-- Contact Buttons -->
+          <div class="pt-1 grid grid-cols-2 gap-2">
+            <a href="tel:${escapeHTML(offer.phone)}" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
+              <i class="fa-solid fa-phone text-emerald-600"></i>
+              <span>اتصال هاتفي</span>
+            </a>
+            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>مراسلة WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Handlers for offers filtering
+    function handleOfferSearch(val) {
+      searchOfferQuery = val;
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+    function clearOfferSearch() {
+      searchOfferQuery = '';
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+    function handleOfferDistrictChange(val) {
+      filterDistrictOffer = val;
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+    function handleOfferVehicleChange(val) {
+      filterVehicleOffer = val;
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+    function handleOfferPaymentChange(val) {
+      filterPaymentOffer = val;
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+    function resetOfferFilters() {
+      filterDistrictOffer = '';
+      filterVehicleOffer = '';
+      filterPaymentOffer = '';
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
+
+    // 3. DRIVERS VIEW
+    function viewDrivers() {
+      const allDrivers = DataService.getDrivers();
+
+      const filtered = allDrivers.filter(driver => {
+        const matchesDistrict = !filterDistrictDriver || driver.district === filterDistrictDriver;
+        const matchesVehicle = !filterVehicleDriver || driver.vehicle === filterVehicleDriver;
+        const matchesAvailable = !filterAvailableDriver || 
+          (filterAvailableDriver === 'available' ? driver.isAvailable : !driver.isAvailable);
+        const matchesSearch = !searchDriverQuery ||
+          driver.name.toLowerCase().includes(searchDriverQuery.toLowerCase()) ||
+          driver.district.toLowerCase().includes(searchDriverQuery.toLowerCase()) ||
+          driver.experience.toLowerCase().includes(searchDriverQuery.toLowerCase());
+        return matchesDistrict && matchesVehicle && matchesAvailable && matchesSearch;
+      });
+
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-black text-slate-900 dark:text-white">الليفرورات المتوفرون</h2>
+              <p class="text-xs text-slate-500">سائقو توصيل في مختلف أحياء فاس</p>
+            </div>
+            <button onclick="navigateTo('create', { mode: 'driver' })" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-id-card text-xs"></i> سجل كليفرور
+            </button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
+            <input 
+              type="text" 
+              placeholder="ابحث باسم السائق، الحي، أو الخبرة..." 
+              value="${escapeHTML(searchDriverQuery)}"
+              oninput="handleDriverSearch(this.value)"
+              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 dark:focus:border-brand-500 transition-colors shadow-sm"
+            >
+            ${searchDriverQuery ? `
+              <button onclick="clearDriverSearch()" class="absolute left-3 top-3 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-circle-xmark text-sm"></i>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Filters Section -->
+          <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-500"></i> تصفية الليفرورات</span>
+              ${(filterDistrictDriver || filterVehicleDriver || filterAvailableDriver) ? `
+                <button onclick="resetDriverFilters()" class="text-red-500 hover:underline text-[11px]">إعادة التعيين</button>
+              ` : ''}
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <select onchange="handleDriverDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل الأحياء</option>
+                ${FES_DISTRICTS.map(d => `<option value="${d}" ${filterDistrictDriver === d ? 'selected' : ''}>${d}</option>`).join('')}
+              </select>
+
+              <select onchange="handleDriverVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل المركبات</option>
+                ${VEHICLE_TYPES.map(v => `<option value="${v}" ${filterVehicleDriver === v ? 'selected' : ''}>${v}</option>`).join('')}
+              </select>
+
+              <select onchange="handleDriverAvailableChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل الحالات</option>
+                <option value="available" ${filterAvailableDriver === 'available' ? 'selected' : ''}>متاح الآن</option>
+                <option value="busy" ${filterAvailableDriver === 'busy' ? 'selected' : ''}>غير متاح</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Drivers List -->
+          <div class="space-y-3.5">
+            ${filtered.length > 0
+              ? filtered.map(driver => renderDriverCard(driver)).join('')
+              : `
+                <div class="text-center py-12 px-4 rounded-3xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-800">
+                  <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-motorcycle"></i>
+                  </div>
+                  <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى ليفرور متوفر حالياً</h4>
+                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب البحث في أحياء أخرى، أو سجل نفسك لتكون أول سائق في هذه القائمة.</p>
+                  <button onclick="resetDriverFilters(); clearDriverSearch();" class="text-xs font-bold px-4 py-2 rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-300">
+                    عرض جميع السائقين
+                  </button>
+                </div>
+              `
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Driver Card Component
+    function renderDriverCard(driver) {
+      const waLink = makeWhatsAppLink(driver.whatsapp, `خدمات التوصيل مع الليفرور "${driver.name}"`);
+
+      return `
+        <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 text-white flex items-center justify-center text-base font-black shadow-sm">
+                <i class="fa-solid fa-helmet-safety"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-base text-slate-900 dark:text-white">${escapeHTML(driver.name)}</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">📍 ${escapeHTML(driver.district)}</p>
+              </div>
+            </div>
+
+            ${driver.isAvailable ? `
+              <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> متاح
+              </span>
+            ` : `
+              <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                غير متاح
+              </span>
+            `}
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-xs">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+              <i class="fa-solid fa-motorcycle text-amber-500"></i> ${escapeHTML(driver.vehicle)}
+            </span>
+            ${driver.freeHours ? `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+                <i class="fa-regular fa-clock text-brand-600"></i> ${escapeHTML(driver.freeHours)}
+              </span>
+            ` : ''}
+          </div>
+
+          ${driver.experience ? `
+            <div class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/60">
+              <span class="font-bold text-slate-800 dark:text-slate-200">الخبرة:</span> ${escapeHTML(driver.experience)}
+            </div>
+          ` : ''}
+
+          ${driver.notes ? `
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 italic">
+              "${escapeHTML(driver.notes)}"
+            </p>
+          ` : ''}
+
+          <div class="pt-1 grid grid-cols-2 gap-2">
+            <a href="tel:${escapeHTML(driver.phone)}" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
+              <i class="fa-solid fa-phone text-emerald-600"></i>
+              <span>اتصال هاتفي</span>
+            </a>
+            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>واتساب WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function handleDriverSearch(val) {
+      searchDriverQuery = val;
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+    function clearDriverSearch() {
+      searchDriverQuery = '';
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+    function handleDriverDistrictChange(val) {
+      filterDistrictDriver = val;
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+    function handleDriverVehicleChange(val) {
+      filterVehicleDriver = val;
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+    function handleDriverAvailableChange(val) {
+      filterAvailableDriver = val;
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+    function resetDriverFilters() {
+      filterDistrictDriver = '';
+      filterVehicleDriver = '';
+      filterAvailableDriver = '';
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
+
+    // 4. CREATE / REGISTER VIEW (FORMS WITH VALIDATION)
+    function viewCreate(activeTab = 'offer') {
+      return `
+        <div class="space-y-4">
+          <!-- Toggle Tabs -->
+          <div class="flex p-1.5 bg-slate-200/80 dark:bg-slate-800 rounded-2xl">
+            <button onclick="switchCreateTab('offer')" class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${activeTab === 'offer' ? 'bg-white dark:bg-slate-900 text-brand-600 shadow-sm' : 'text-slate-600 dark:text-slate-400'}">
+              <i class="fa-solid fa-store"></i>
+              <span>نشر عرض جديد (محل)</span>
+            </button>
+            <button onclick="switchCreateTab('driver')" class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${activeTab === 'driver' ? 'bg-white dark:bg-slate-900 text-amber-500 shadow-sm' : 'text-slate-600 dark:text-slate-400'}">
+              <i class="fa-solid fa-motorcycle"></i>
+              <span>تسجيل كليفرور</span>
+            </button>
+          </div>
+
+          ${activeTab === 'offer' ? renderOfferForm() : renderDriverForm()}
+        </div>
+      `;
+    }
+
+    function switchCreateTab(tab) {
+      navigateTo('create', { mode: tab });
+    }
+
+    function renderOfferForm() {
+      return `
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div>
+            <h3 class="text-base font-black text-slate-900 dark:text-white">نشر عرض عمل جديد</h3>
+            <p class="text-xs text-slate-500">أدخل تفاصيل التوصيل ليراها الليفرورات ويتواصلوا معك</p>
+          </div>
+
+          <form id="offerForm" onsubmit="handleOfferSubmit(event)" novalidate class="space-y-3.5">
+            <!-- Shop Name -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">اسم المحل أو المطعم *</label>
+              <input type="text" id="offerShopName" placeholder="مثال: سناك السلام، مطعم الأطلس" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+              <p id="errOfferShopName" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Shop Type -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نوع النشاط</label>
+              <input type="text" id="offerShopType" placeholder="مثال: مأكولات سريعة، صيدلية، بقالة" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+            </div>
+
+            <!-- District Selection -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي بفاس *</label>
+              <select id="offerDistrict" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <option value="">اختر الحي</option>
+                ${FES_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+              </select>
+              <p id="errOfferDistrict" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Vehicle & Payment (Two Columns) -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نوع المركبة *</label>
+                <select id="offerVehicle" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                  <option value="">اختر المركبة</option>
+                  ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
+                </select>
+                <p id="errOfferVehicle" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">طريقة الدفع *</label>
+                <select id="offerPaymentType" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                  ${PAYMENT_TYPES.map(p => `<option value="${p}">${p}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <!-- Price & Working Hours -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">المبلغ (بالدرهم) *</label>
+                <input type="number" id="offerPrice" min="1" placeholder="مثلاً: 180" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <p id="errOfferPrice" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">أوقات العمل</label>
+                <input type="text" id="offerWorkingHours" placeholder="مثال: 12:00 - 22:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+              </div>
+            </div>
+
+            <!-- Phone & WhatsApp -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم الهاتف *</label>
+                <input type="tel" id="offerPhone" placeholder="06..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <p id="errOfferPhone" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">واتساب WhatsApp</label>
+                <input type="tel" id="offerWhatsapp" placeholder="06..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">تفاصيل العمل والتوصيل *</label>
+              <textarea id="offerDescription" rows="3" placeholder="اشرح طبيعة العمل، عدد الطلبات المتوقعة، شروط التوصيل..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"></textarea>
+              <p id="errOfferDescription" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Notes -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">ملاحظات أو امتيازات إضافية</label>
+              <input type="text" id="offerNotes" placeholder="مثال: البنزين مدفوع، وجبة غداء مجاناً..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-sm shadow-md shadow-brand-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>نشر العرض الآن</span>
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    function renderDriverForm() {
+      return `
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div>
+            <h3 class="text-base font-black text-slate-900 dark:text-white">سجل نفسك كليفرور</h3>
+            <p class="text-xs text-slate-500">اجعل أصحاب المحلات في فاس يتواصلون معك مباشرة للعمل</p>
+          </div>
+
+          <form id="driverForm" onsubmit="handleDriverSubmit(event)" novalidate class="space-y-3.5">
+            <!-- Full Name -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الاسم الكامل *</label>
+              <input type="text" id="driverName" placeholder="مثال: حمزة العلمي" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+              <p id="errDriverName" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- District Selection -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي الذي تقطن به أو تعمل فيه *</label>
+              <select id="driverDistrict" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <option value="">اختر الحي</option>
+                ${FES_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+              </select>
+              <p id="errDriverDistrict" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Vehicle Selection -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">المركبة المتوفرة لديك *</label>
+              <select id="driverVehicle" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <option value="">اختر نوع المركبة</option>
+                ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
+              </select>
+              <p id="errDriverVehicle" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Phone & WhatsApp -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الهاتف *</label>
+                <input type="tel" id="driverPhone" placeholder="06..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+                <p id="errDriverPhone" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">WhatsApp</label>
+                <input type="tel" id="driverWhatsapp" placeholder="06..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+              </div>
+            </div>
+
+            <!-- Free Hours -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">أوقات التفرغ</label>
+              <input type="text" id="driverFreeHours" placeholder="مثال: طيلة اليوم، من 18:00 إلى 00:00" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+            </div>
+
+            <!-- Experience -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الخبرة السابقة *</label>
+              <textarea id="driverExperience" rows="2" placeholder="مثال: سنتان في توصيل الوجبات مع سناك في فاس، معرفة جيدة بأزقة المدينة..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"></textarea>
+              <p id="errDriverExperience" class="text-[11px] text-red-500 font-semibold mt-1 hidden"></p>
+            </div>
+
+            <!-- Notes -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">ملاحظات إضافية</label>
+              <input type="text" id="driverNotes" placeholder="مثال: متوفر على صندوق حراري، جهاز GPS..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500">
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-sm shadow-md shadow-amber-500/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-check"></i>
+              <span>تسجيل كليفرور</span>
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    // Form Submissions with validation
+    function handleOfferSubmit(e) {
+      e.preventDefault();
+      
+      const shopName = document.getElementById('offerShopName').value.trim();
+      const shopType = document.getElementById('offerShopType').value.trim();
+      const district = document.getElementById('offerDistrict').value;
+      const vehicle = document.getElementById('offerVehicle').value;
+      const paymentType = document.getElementById('offerPaymentType').value;
+      const priceVal = document.getElementById('offerPrice').value.trim();
+      const price = parseFloat(priceVal);
+      const workingHours = document.getElementById('offerWorkingHours').value.trim();
+      const phone = document.getElementById('offerPhone').value.trim();
+      const whatsapp = document.getElementById('offerWhatsapp').value.trim() || phone;
+      const description = document.getElementById('offerDescription').value.trim();
+      const notes = document.getElementById('offerNotes').value.trim();
+
+      // Reset errors
+      let hasError = false;
+      const setErr = (id, msg) => {
+        const el = document.getElementById(id);
+        if (msg) {
+          el.innerText = msg;
+          el.classList.remove('hidden');
+          hasError = true;
+        } else {
+          el.classList.add('hidden');
+        }
+      };
+
+      setErr('errOfferShopName', !shopName ? 'المرجو إدخال اسم المحل' : '');
+      setErr('errOfferDistrict', !district ? 'المرجو اختيار الحي' : '');
+      setErr('errOfferVehicle', !vehicle ? 'المرجو اختيار نوع المركبة' : '');
+      setErr('errOfferPrice', (!priceVal || isNaN(price) || price <= 0) ? 'المبلغ يجب أن يكون أكبر من 0 درهم' : '');
+      setErr('errOfferPhone', (!phone || phone.length < 8) ? 'المرجو إدخال رقم هاتف صحيح' : '');
+      setErr('errOfferDescription', (!description || description.length < 10) ? 'المرجو إدخال تفاصيل العمل (10 أحرف على الأقل)' : '');
+
+      if (hasError) {
+        showToast('المرجو إكمال البيانات المطلوبة بشكل صحيح', 'error');
+        return;
+      }
+
+      DataService.addOffer({
+        shopName,
+        shopType,
+        district,
+        vehicle,
+        paymentType,
+        price,
+        workingHours,
+        phone,
+        whatsapp,
+        description,
+        notes
+      });
+
+      showToast('تم نشر العرض بنجاح', 'success');
+      navigateTo('offers');
+    }
+
+    function handleDriverSubmit(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('driverName').value.trim();
+      const district = document.getElementById('driverDistrict').value;
+      const vehicle = document.getElementById('driverVehicle').value;
+      const phone = document.getElementById('driverPhone').value.trim();
+      const whatsapp = document.getElementById('driverWhatsapp').value.trim() || phone;
+      const freeHours = document.getElementById('driverFreeHours').value.trim();
+      const experience = document.getElementById('driverExperience').value.trim();
+      const notes = document.getElementById('driverNotes').value.trim();
+
+      let hasError = false;
+      const setErr = (id, msg) => {
+        const el = document.getElementById(id);
+        if (msg) {
+          el.innerText = msg;
+          el.classList.remove('hidden');
+          hasError = true;
+        } else {
+          el.classList.add('hidden');
+        }
+      };
+
+      setErr('errDriverName', !name ? 'المرجو إدخال الاسم الكامل' : '');
+      setErr('errDriverDistrict', !district ? 'المرجو اختيار الحي' : '');
+      setErr('errDriverVehicle', !vehicle ? 'المرجو اختيار نوع المركبة' : '');
+      setErr('errDriverPhone', (!phone || phone.length < 8) ? 'المرجو إدخال رقم هاتف صحيح' : '');
+      setErr('errDriverExperience', (!experience || experience.length < 5) ? 'المرجو كتابة نبذة عن خبرتك السابقة' : '');
+
+      if (hasError) {
+        showToast('المرجو إكمال البيانات المطلوبة', 'error');
+        return;
+      }
+
+      DataService.addDriver({
+        name,
+        district,
+        vehicle,
+        phone,
+        whatsapp,
+        freeHours,
+        experience,
+        notes
+      });
+
+      showToast('تم تسجيلك كليفرور بنجاح!', 'success');
+      navigateTo('drivers');
+    }
+
+    // 5. ACCOUNT & SETTINGS VIEW (CRUD & MANAGEMENT)
+    function viewAccount() {
+      const role = DataService.getUserRole();
+      const offers = DataService.getOffers();
+      const drivers = DataService.getDrivers();
+      const isDark = document.documentElement.classList.contains('dark');
+
+      return `
+        <div class="space-y-5">
+          <!-- Profile Header Card -->
+          <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr ${role === 'shop' ? 'from-brand-700 to-brand-500' : 'from-amber-600 to-amber-400'} text-white flex items-center justify-center text-2xl shadow-md">
+                <i class="fa-solid ${role === 'shop' ? 'fa-store' : 'fa-motorcycle'}"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold text-base text-slate-900 dark:text-white">
+                  ${role === 'shop' ? 'حساب صاحب المحل' : 'حساب الليفرور'}
+                </h3>
+                <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                  <i class="fa-solid fa-location-dot text-brand-600"></i> فاس Fès
+                </p>
+              </div>
+            </div>
+
+            <button onclick="openQuickRoleModal()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              تغيير الوضع
+            </button>
+          </div>
+
+          <!-- Section: Manage Offers or Drivers -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-brand-600"></i> إدارة عروضي المنشورة
+              </h4>
+              <span class="text-xs font-bold text-slate-400">إجمالي (${offers.length})</span>
+            </div>
+
+            <div class="space-y-2.5">
+              ${offers.length > 0 ? offers.map(o => `
+                <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between gap-3">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2">
+                      <h5 class="font-extrabold text-xs text-slate-900 dark:text-white truncate">${escapeHTML(o.shopName)}</h5>
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded ${o.status === 'open' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'}">
+                        ${o.status === 'open' ? 'مفتوح' : 'مغلق'}
+                      </span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 truncate mt-0.5">📍 ${escapeHTML(o.district)} • 💰 ${o.price} درهم</p>
+                  </div>
+
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="toggleOfferStatus('${o.id}')" title="تغيير الحالة" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 text-xs">
+                      <i class="fa-solid ${o.status === 'open' ? 'fa-lock' : 'fa-lock-open'}"></i>
+                    </button>
+                    <button onclick="confirmDeleteOffer('${o.id}')" title="حذف العرض" class="p-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 hover:bg-red-100 text-xs">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('') : `
+                <p class="text-xs text-slate-400 text-center py-4">لا توجد عروض حالياً</p>
+              `}
+            </div>
+          </div>
+
+          <!-- App Settings Section -->
+          <div class="space-y-3">
+            <h4 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-gear text-slate-500"></i> إعدادات التطبيق
+            </h4>
+
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-4 divide-y divide-slate-100 dark:divide-slate-800 space-y-3 shadow-sm">
+              <!-- Dark Mode Item -->
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-moon"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">الوضع الداكن (Dark Mode)</h5>
+                    <p class="text-[11px] text-slate-500">مريح للعين أثناء الاستخدام الليلي</p>
+                  </div>
+                </div>
+                <button onclick="toggleDarkMode(); renderPage('account');" class="w-12 h-6 rounded-full transition-colors relative ${isDark ? 'bg-brand-600' : 'bg-slate-300'}">
+                  <span class="w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform ${isDark ? 'right-6' : 'right-1'}"></span>
+                </button>
+              </div>
+
+              <!-- City Item -->
+              <div class="flex items-center justify-between pt-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-city"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">المدينة الحالية</h5>
+                    <p class="text-[11px] text-slate-500">قابلة للتوسيع لمدن أخرى مستقبلاً</p>
+                  </div>
+                </div>
+                <span class="text-xs font-black text-brand-600 px-3 py-1 rounded-xl bg-brand-50 dark:bg-brand-950">فاس Fès</span>
+              </div>
+
+              <!-- Reset Mock Data Item -->
+              <div class="flex items-center justify-between pt-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-2xl bg-red-50 dark:bg-red-950/40 flex items-center justify-center text-red-600">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-red-600">إعادة تعيين البيانات المحلية</h5>
+                    <p class="text-[11px] text-slate-500">استرجاع بيانات Mock وحذف التعديلات</p>
+                  </div>
+                </div>
+                <button onclick="confirmResetAllData()" class="px-3 py-1.5 rounded-xl bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300 text-xs font-bold">
+                  إعادة تعيين
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Free App & Contact Notice -->
+          <div class="p-4 rounded-3xl bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-900/60 text-center space-y-2">
+            <h5 class="text-xs font-extrabold text-brand-900 dark:text-brand-200">تطبيق ليفرور فاس - منصة مجانية 100%</h5>
+            <p class="text-[11px] text-brand-700 dark:text-brand-300">
+              بدون اشتراكات وبدون اقتطاعات. صمم لمساعدة شباب وأصحاب محلات مدينة فاس.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // CRUD Handlers for Account
+    function toggleOfferStatus(id) {
+      const offers = DataService.getOffers();
+      const offer = offers.find(o => o.id === id);
+      if (offer) {
+        const nextStatus = offer.status === 'open' ? 'closed' : 'open';
+        DataService.updateOffer(id, { status: nextStatus });
+        showToast(nextStatus === 'open' ? 'تم فتح العرض مجدداً' : 'تم إغلاق العرض', 'success');
+        renderPage('account');
+      }
+    }
+
+    function confirmDeleteOffer(id) {
+      showConfirmModal(
+        'حذف العرض',
+        'واش متأكد بغيتي تحذف هاد العرض؟ ما غيبقاش يبان للمستخدمين.',
+        () => {
+          DataService.deleteOffer(id);
+          showToast('تم حذف العرض بنجاح', 'success');
+          renderPage('account');
+        },
+        true
+      );
+    }
+
+    function confirmResetAllData() {
+      showConfirmModal(
+        'إعادة تعيين البيانات',
+        'واش متأكد بغيتي تمسح البيانات وترجع البيانات التجريبية الأصلية؟',
+        () => {
+          DataService.resetAllData();
+          showToast('تمت إعادة ضبط البيانات التجريبية', 'success');
+          renderPage('account');
+        },
+        true
+      );
+    }
+
+    /* ==========================================================================
+       5. INITIALIZATION
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      DataService.init();
+      initTheme();
+      updateRoleHeader();
+      renderPage('home');
+    });
+  </script>
+</body>
+</html>
