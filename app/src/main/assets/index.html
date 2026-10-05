@@ -53,7 +53,7 @@
       <!-- Brand & Map & Scooter Section (Right Side in RTL) -->
       <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
         
-        <!-- 1. Authentic Morocco Map (Local Image Asset from reference image) -->
+        <!-- 1. Authentic Morocco Map (Local Image Asset) -->
         <div class="h-9 sm:h-10 shrink-0 flex items-center justify-center">
           <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]">
         </div>
@@ -1244,15 +1244,15 @@
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverDistrictChange(val) {
-      filterDriverDistrict = val;
+      filterDistrictDriver = val;
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverVehicleChange(val) {
-      filterDriverVehicle = val;
+      filterVehicleDriver = val;
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverAvailableChange(val) {
-      filterDriverAvailable = val;
+      filterAvailableDriver = val;
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function resetDriverFilters() {
