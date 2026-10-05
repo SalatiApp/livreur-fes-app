@@ -48,95 +48,111 @@
 
   <!-- Top App Bar -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1.5 sm:gap-2.5">
+    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5">
       
-      <!-- 1. Right: Morocco Map + Brand Identity -->
-      <div class="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onclick="navigateTo('home')">
-        <!-- Clear and Recognizable Kingdom of Morocco Territory Silhouette -->
-        <div class="w-8 h-10 sm:w-9 sm:h-11 shrink-0 flex items-center justify-center filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.4)]">
-          <svg viewBox="0 0 100 130" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="خريطة المملكة المغربية">
-            <!-- Full Territory of the Kingdom of Morocco -->
-            <path
-              d="M 66,5 C 72,6 80,9 94,15 C 92,24 95,34 91,42 C 84,50 74,58 62,68 L 50,68 L 50,96 L 12,122 C 9,124 8,121 10,116 C 14,103 21,87 29,74 C 36,62 46,45 51,35 C 57,23 62,14 66,5 Z"
-              fill="#c8102e"
-              stroke="#ffffff"
-              stroke-width="1.2"
-              stroke-linejoin="round"
-            />
-            <!-- Green Pentagram Star of Morocco (الخاتم السليماني) -->
-            <polygon
-              points="52,28 53.6,32 57.6,32 54.4,34.4 55.6,38.4 52,35.8 48.4,38.4 49.6,34.4 46.4,32 50.4,32"
-              fill="none"
-              stroke="#006233"
-              stroke-width="1.5"
-              stroke-linejoin="round"
-            />
+      <!-- Brand & Map & Scooter Section (Right Side in RTL) -->
+      <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
+        
+        <!-- 1. Authentic Morocco Map (Full Kingdom Territory Silhouette) -->
+        <div class="w-8 h-10 sm:w-9 sm:h-11 shrink-0 flex items-center justify-center filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.5)]">
+          <svg viewBox="0 0 100 130" class="w-full h-full object-contain" xmlns="http://www.w3.org/2000/svg" aria-label="خريطة المملكة المغربية">
+            <g>
+              <!-- Real Morocco Geographic Outline Path -->
+              <path
+                d="M 64,4 C 67,4 72,6 80,10 C 85,12 90,15 95,20 C 93,26 95,33 93,39 C 89,45 84,52 78,58 C 72,64 66,70 60,76 L 50,76 L 50,102 L 15,126 C 12,128 10,126 11,121 C 15,108 21,93 29,80 C 37,67 46,50 51,38 C 56,26 60,14 64,4 Z"
+                fill="#c8102e"
+                stroke="#ffffff"
+                stroke-width="0.9"
+                stroke-linejoin="round"
+              />
+              <!-- Geographic Regional Division Lines (as in reference map) -->
+              <path
+                d="M 64,4 C 68,12 72,20 75,28 M 75,28 C 82,35 88,42 93,39 M 75,28 C 68,36 62,44 56,52 M 56,52 C 48,60 40,70 33,80 M 56,52 C 66,58 74,64 78,58 M 33,80 C 25,95 18,110 11,121 M 33,80 C 42,88 50,96 50,102"
+                fill="none"
+                stroke="rgba(255,255,255,0.4)"
+                stroke-width="0.5"
+                stroke-linecap="round"
+              />
+              <!-- Green Pentagram Star of Morocco (الخاتم السليماني) -->
+              <polygon
+                points="68,22 69.5,25.5 73.2,25.5 70.2,27.6 71.3,31.1 68,28.8 64.7,31.1 65.8,27.6 62.8,25.5 66.5,25.5"
+                fill="#006233"
+                stroke="#ffffff"
+                stroke-width="0.4"
+                stroke-linejoin="round"
+              />
+            </g>
           </svg>
         </div>
-        <!-- Brand Typography with Professional Vertical Spacing -->
-        <div class="text-right flex flex-col justify-center gap-1 sm:gap-1.5 py-0.5">
+
+        <!-- 2. Brand Typography (Separated with clear gap from Map) -->
+        <div class="text-right flex flex-col justify-center gap-0.5 sm:gap-1 ms-2.5 sm:ms-3 py-0.5">
           <h1 class="font-black text-lg sm:text-xl text-white tracking-wide leading-tight">ليفرور</h1>
           <p class="text-[8px] sm:text-[9.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
-      </div>
 
-      <!-- 2. Center: Delivery Scooter Rider (Preserved Design & Size, Balanced Spacing) -->
-      <div class="flex items-center justify-center shrink-0 mx-0.5 sm:mx-1">
-        <svg viewBox="0 0 120 85" class="w-15 h-12 sm:w-18 sm:h-14 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <!-- Dynamic Speed Lines behind Rider -->
-          <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
-          <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
-          <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
-          <line x1="65" y1="47" x2="100" y2="47" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
-          <line x1="58" y1="70" x2="98" y2="70" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
-          
-          <!-- Delivery Thermal Box -->
-          <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
-          <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
-          <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
-          
-          <!-- Helmet & Rider Body -->
-          <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
-          <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-          <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
-          <path d="M46 28 L32 36" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
-          <path d="M46 47 L40 59 L30 59" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          
-          <!-- Scooter Wheels -->
-          <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-          <circle cx="22" cy="67" r="4" fill="#94a3b8"/>
-          <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-          <circle cx="67" cy="67" r="4" fill="#94a3b8"/>
-          
-          <!-- Scooter Chassis & Headlight -->
-          <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
-          <path d="M30 43 L34 32 L37 32 L35 43 Z" fill="#38bdf8"/>
-          <path d="M31 32 L27 31" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M27 38 L23 41" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
-          <path d="M42 46 Q56 45 63 49" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <!-- 3. Night / Day Mode Toggle Button (Distinct Sun & Crescent Moon Icon ☀️🌙) -->
-      <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8.5 h-8.5 sm:w-9.5 sm:h-9.5 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
-        <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-          <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
+        <!-- 3. Delivery Scooter Rider (Preserved Design & Dimensions, Balanced Close Gap to Text) -->
+        <div class="flex items-center justify-center shrink-0 ms-1.5 sm:ms-2">
+          <svg viewBox="0 0 120 85" class="w-15 h-12 sm:w-18 sm:h-14 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <!-- Dynamic Speed Lines behind Rider -->
+            <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
+            <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
+            <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+            <line x1="65" y1="47" x2="100" y2="47" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+            <line x1="58" y1="70" x2="98" y2="70" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+            
+            <!-- Delivery Thermal Box -->
+            <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
+            <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
+            <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
+            
+            <!-- Helmet & Rider Body -->
+            <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
+            <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
+            <path d="M46 28 L32 36" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M46 47 L40 59 L30 59" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            
+            <!-- Scooter Wheels -->
+            <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="22" cy="67" r="4" fill="#94a3b8"/>
+            <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="67" cy="67" r="4" fill="#94a3b8"/>
+            
+            <!-- Scooter Chassis & Headlight -->
+            <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
+            <path d="M30 43 L34 32 L37 32 L35 43 Z" fill="#38bdf8"/>
+            <path d="M31 32 L27 31" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M27 38 L23 41" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M42 46 Q56 45 63 49" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
           </svg>
-        </span>
-      </button>
-
-      <!-- 4. Left: Role Selection Button (Oval White Pill) -->
-      <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 sm:px-3.5 py-1.5 sm:py-2 shadow-md flex items-center gap-1.5 sm:gap-2 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
-        <svg viewBox="0 0 12 12" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#1d4ed8] shrink-0" fill="currentColor">
-          <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
-        </svg>
-        <div class="text-right flex flex-col justify-center">
-          <span class="text-[9px] sm:text-[10.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
-          <span id="headerRoleBadge" class="text-[7.5px] sm:text-[8.5px] font-bold text-[#2563eb] leading-tight mt-0.5 block whitespace-nowrap">(صاحب محل_ليفرور)</span>
         </div>
-      </button>
+
+      </div>
+
+      <!-- Left Controls Section -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- 4. Night / Day Mode Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8.5 h-8.5 sm:w-9.5 sm:h-9.5 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
+          <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- 5. Role Selection Button (Oval White Pill) -->
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 sm:px-3.5 py-1.5 sm:py-2 shadow-md flex items-center gap-1.5 sm:gap-2 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
+          <svg viewBox="0 0 12 12" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#1d4ed8] shrink-0" fill="currentColor">
+            <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
+          </svg>
+          <div class="text-right flex flex-col justify-center">
+            <span class="text-[9px] sm:text-[10.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[7.5px] sm:text-[8.5px] font-bold text-[#2563eb] leading-tight mt-0.5 block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+          </div>
+        </button>
+      </div>
 
     </div>
   </header>
@@ -220,7 +236,6 @@
   <script>
     /* ==========================================================================
        1. DATA CONSTANTS & STORAGE REPOSITORY
-       Architecture prepared for easy drop-in replacement with Firebase Firestore
        ========================================================================== */
     const CITIES = [
       { id: 'fes', nameAr: 'فاس', nameFr: 'Fès' },
@@ -260,7 +275,7 @@
       'أسبوعي'
     ];
 
-    // Mock initial data
+    // Initial mock dataset
     const INITIAL_OFFERS = [
       {
         id: 'off-1',
@@ -473,7 +488,7 @@
       }
     ];
 
-    /* Data Service Interface */
+    /* Data Service Repository */
     const DataService = {
       KEY_OFFERS: 'livrer_fes_offers_v1',
       KEY_DRIVERS: 'livrer_fes_drivers_v1',
@@ -713,7 +728,6 @@
       const container = document.getElementById('themeIconContainer');
       if (container) {
         if (isDark) {
-          // Night Mode Active -> Display Crescent Moon & Star
           container.innerHTML = `
             <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
@@ -721,7 +735,6 @@
             </svg>
           `;
         } else {
-          // Day Mode Active -> Display Sun
           container.innerHTML = `
             <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
@@ -760,7 +773,6 @@
       currentPage = page;
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // Update Bottom Nav active state
       document.querySelectorAll('.nav-btn').forEach(btn => {
         const btnPage = btn.getAttribute('data-page');
         if (btnPage === page) {
@@ -811,7 +823,6 @@
       const activeOffersCount = offers.filter(o => o.status === 'open').length;
       const availableDriversCount = drivers.filter(d => d.isAvailable).length;
       const latestOffers = offers.slice(0, 3);
-      const role = DataService.getUserRole();
 
       return `
         <div class="space-y-6">
@@ -836,13 +847,12 @@
                 </button>
               </div>
             </div>
-            <!-- Decorative Icon -->
             <div class="absolute -left-6 -bottom-6 text-brand-600/30 text-8xl pointer-events-none select-none">
               <i class="fa-solid fa-motorcycle"></i>
             </div>
           </div>
 
-          <!-- Quick Action Cards (Role Cards) -->
+          <!-- Quick Action Cards -->
           <div class="space-y-3">
             <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               <i class="fa-solid fa-compass text-brand-600"></i> شنو كتقلب عليه؟
@@ -962,19 +972,16 @@
             </div>
 
             <div class="grid grid-cols-3 gap-2">
-              <!-- District Filter -->
               <select onchange="handleOfferDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل الأحياء</option>
                 ${FES_DISTRICTS.map(d => `<option value="${d}" ${filterDistrictOffer === d ? 'selected' : ''}>${d}</option>`).join('')}
               </select>
 
-              <!-- Vehicle Filter -->
               <select onchange="handleOfferVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل المركبات</option>
                 ${VEHICLE_TYPES.map(v => `<option value="${v}" ${filterVehicleOffer === v ? 'selected' : ''}>${v}</option>`).join('')}
               </select>
 
-              <!-- Payment Filter -->
               <select onchange="handleOfferPaymentChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">نوع الدفع</option>
                 <option value="يومي" ${filterPaymentOffer === 'يومي' ? 'selected' : ''}>يومي</option>
@@ -1006,14 +1013,12 @@
       `;
     }
 
-    // Render Offer Card Component
     function renderOfferCard(offer) {
       const isClosed = offer.status === 'closed';
       const waLink = makeWhatsAppLink(offer.whatsapp, `عرض العمل في "${offer.shopName}"`);
 
       return `
         <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 transition-all ${isClosed ? 'opacity-70 bg-slate-100/50 dark:bg-slate-900/40' : ''}">
-          <!-- Header -->
           <div class="flex items-start justify-between gap-2">
             <div>
               <div class="flex items-center gap-2">
@@ -1029,7 +1034,6 @@
             </span>
           </div>
 
-          <!-- Badges Details -->
           <div class="flex flex-wrap gap-2 text-xs">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
               <i class="fa-solid fa-location-dot text-brand-600"></i> ${escapeHTML(offer.district)}
@@ -1047,7 +1051,6 @@
             ` : ''}
           </div>
 
-          <!-- Description & Notes -->
           <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50/50 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80">
             ${escapeHTML(offer.description)}
           </p>
@@ -1059,7 +1062,6 @@
             </div>
           ` : ''}
 
-          <!-- Contact Buttons -->
           <div class="pt-1 grid grid-cols-2 gap-2">
             <a href="tel:${escapeHTML(offer.phone)}" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
               <i class="fa-solid fa-phone text-emerald-600"></i>
@@ -1074,7 +1076,6 @@
       `;
     }
 
-    // Handlers for offers filtering
     function handleOfferSearch(val) {
       searchOfferQuery = val;
       document.getElementById('appContainer').innerHTML = viewOffers();
@@ -1197,7 +1198,6 @@
       `;
     }
 
-    // Render Driver Card Component
     function renderDriverCard(driver) {
       const waLink = makeWhatsAppLink(driver.whatsapp, `خدمات التوصيل مع الليفرور "${driver.name}"`);
 
@@ -1514,12 +1514,10 @@
     // 5. ACCOUNT / SETTINGS VIEW
     function viewAccount() {
       const offers = DataService.getOffers();
-      const drivers = DataService.getDrivers();
       const currentRole = DataService.getUserRole();
 
       return `
         <div class="space-y-5">
-          <!-- Profile Header Card -->
           <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4">
             <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 text-white flex items-center justify-center text-2xl font-black shadow-md">
               <i class="fa-solid fa-user-gear"></i>
@@ -1530,7 +1528,6 @@
             </div>
           </div>
 
-          <!-- Quick Role Switcher -->
           <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <h3 class="text-xs font-extrabold text-slate-900 dark:text-white">تبديل وضع التطبيق</h3>
             <div class="grid grid-cols-2 gap-2">
@@ -1543,7 +1540,6 @@
             </div>
           </div>
 
-          <!-- My Offers Management -->
           <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
@@ -1570,7 +1566,6 @@
             </div>
           </div>
 
-          <!-- Data Reset Actions -->
           <div class="p-4 rounded-3xl bg-red-50/50 dark:bg-red-950/20 border border-red-200/60 dark:border-red-900/40 space-y-2.5">
             <h4 class="text-xs font-bold text-red-700 dark:text-red-400">منطقة التحكم والضبط</h4>
             <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">يمكنك استعادة البيانات الافتراضية للتطبيق في حال أردت مسح البيانات المخزنة محلياً.</p>
