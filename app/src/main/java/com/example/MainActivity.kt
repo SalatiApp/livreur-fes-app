@@ -2,6 +2,7 @@ package com.example
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color as AndroidColor
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -63,8 +64,13 @@ fun HybridAppScreen() {
       modifier = Modifier.fillMaxSize(),
       factory = { context ->
         WebView(context).apply {
-          // Configure layer and settings for emulator and device stability
           setLayerType(View.LAYER_TYPE_HARDWARE, null)
+
+          // Give the WebView the same initial background as the app
+          setBackgroundColor(
+            if (isDark) AndroidColor.rgb(2, 6, 23)
+            else AndroidColor.rgb(248, 250, 252)
+          )
 
           settings.apply {
             javaScriptEnabled = true
@@ -91,6 +97,7 @@ fun HybridAppScreen() {
               request: WebResourceRequest?
             ): Boolean {
               val url = request?.url?.toString() ?: return false
+
               if (url.startsWith("tel:")) {
                 try {
                   val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
@@ -98,6 +105,7 @@ fun HybridAppScreen() {
                 } catch (_: Exception) {}
                 return true
               }
+
               if (url.startsWith("https://wa.me") || url.startsWith("whatsapp://")) {
                 try {
                   val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -110,6 +118,7 @@ fun HybridAppScreen() {
                 }
                 return true
               }
+
               return false
             }
           }
