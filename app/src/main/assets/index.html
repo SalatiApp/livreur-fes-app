@@ -54,21 +54,21 @@
       <div class="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onclick="navigateTo('home')">
         <!-- Clear and Recognizable Kingdom of Morocco Territory Silhouette -->
         <div class="w-8 h-10 sm:w-9 sm:h-11 shrink-0 flex items-center justify-center filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.4)]">
-          <svg viewBox="0 0 100 120" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="خريطة المغرب">
-            <!-- Detailed Morocco Silhouette in Moroccan Red -->
+          <svg viewBox="0 0 100 130" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="خريطة المملكة المغربية">
+            <!-- Full Territory of the Kingdom of Morocco -->
             <path
-              d="M 62,5 C 68,5 78,10 86,13 C 92,15 95,17 95,20 C 93,28 90,36 92,44 C 91,52 82,60 74,68 C 65,77 56,88 42,98 C 28,108 18,114 8,118 L 5,118 L 8,110 C 14,98 21,84 28,70 C 35,56 42,42 48,28 C 53,18 57,10 62,5 Z"
+              d="M 66,5 C 72,6 80,9 94,15 C 92,24 95,34 91,42 C 84,50 74,58 62,68 L 50,68 L 50,96 L 12,122 C 9,124 8,121 10,116 C 14,103 21,87 29,74 C 36,62 46,45 51,35 C 57,23 62,14 66,5 Z"
               fill="#c8102e"
               stroke="#ffffff"
               stroke-width="1.2"
               stroke-linejoin="round"
             />
-            <!-- Moroccan Green Pentagram Star Accent -->
+            <!-- Green Pentagram Star of Morocco (الخاتم السليماني) -->
             <polygon
-              points="50,28 52,34 58,34 53,38 55,44 50,40 45,44 47,38 42,34 48,34"
+              points="52,28 53.6,32 57.6,32 54.4,34.4 55.6,38.4 52,35.8 48.4,38.4 49.6,34.4 46.4,32 50.4,32"
               fill="none"
               stroke="#006233"
-              stroke-width="1.6"
+              stroke-width="1.5"
               stroke-linejoin="round"
             />
           </svg>
@@ -120,21 +120,9 @@
       <!-- 3. Night / Day Mode Toggle Button (Distinct Sun & Crescent Moon Icon ☀️🌙) -->
       <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8.5 h-8.5 sm:w-9.5 sm:h-9.5 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
         <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-          <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="9" fill="#0b1320" stroke="#334155" stroke-width="1.2"/>
-            <!-- Sun Side (Left) -->
-            <path d="M12 3 A9 9 0 0 0 12 21 Z" fill="#f59e0b"/>
-            <circle cx="8" cy="12" r="2.2" fill="#fef08a"/>
-            <line x1="4" y1="12" x2="2.5" y2="12" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="5.2" y1="8" x2="4" y2="6.8" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="8" y1="5.2" x2="8" y2="3.8" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="5.2" y1="16" x2="4" y2="17.2" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="8" y1="18.8" x2="8" y2="20.2" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Moon Side (Right) -->
-            <path d="M12 3 A9 9 0 0 1 12 21 Z" fill="#1e293b"/>
-            <path d="M13 6.5 A5.5 5.5 0 0 0 18.5 12 A6.5 6.5 0 0 1 13 6.5 Z" fill="#e2e8f0"/>
-            <circle cx="17.5" cy="8.5" r="0.8" fill="#ffffff"/>
-            <line x1="12" y1="3" x2="12" y2="21" stroke="#475569" stroke-width="0.8" stroke-dasharray="2 1"/>
+          <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
           </svg>
         </span>
       </button>
@@ -724,24 +712,23 @@
       const isDark = document.documentElement.classList.contains('dark');
       const container = document.getElementById('themeIconContainer');
       if (container) {
-        container.innerHTML = `
-          <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="9" fill="${isDark ? '#0b1320' : '#1e293b'}" stroke="${isDark ? '#38bdf8' : '#334155'}" stroke-width="1.2"/>
-            <!-- Sun Side (Left) -->
-            <path d="M12 3 A9 9 0 0 0 12 21 Z" fill="#f59e0b" opacity="${isDark ? '0.75' : '1'}"/>
-            <circle cx="8" cy="12" r="2.2" fill="#fef08a"/>
-            <line x1="4" y1="12" x2="2.5" y2="12" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="5.2" y1="8" x2="4" y2="6.8" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="8" y1="5.2" x2="8" y2="3.8" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="5.2" y1="16" x2="4" y2="17.2" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="8" y1="18.8" x2="8" y2="20.2" stroke="#fef08a" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Moon Side (Right) -->
-            <path d="M12 3 A9 9 0 0 1 12 21 Z" fill="${isDark ? '#0f172a' : '#0a0f1d'}"/>
-            <path d="M13 6.5 A5.5 5.5 0 0 0 18.5 12 A6.5 6.5 0 0 1 13 6.5 Z" fill="#e2e8f0" opacity="${isDark ? '1' : '0.75'}"/>
-            <circle cx="17.5" cy="8.5" r="0.8" fill="#ffffff"/>
-            <line x1="12" y1="3" x2="12" y2="21" stroke="#475569" stroke-width="0.8" stroke-dasharray="2 1"/>
-          </svg>
-        `;
+        if (isDark) {
+          // Night Mode Active -> Display Crescent Moon & Star
+          container.innerHTML = `
+            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
+              <path d="M19 4.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" fill="#ffffff"/>
+            </svg>
+          `;
+        } else {
+          // Day Mode Active -> Display Sun
+          container.innerHTML = `
+            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
+            </svg>
+          `;
+        }
       }
     }
 
