@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/ic_delivery_fes_1791079246186"
+        android:drawable="@drawable/livlink_ma"
         android:gravity="center" />
 </layer-list>
