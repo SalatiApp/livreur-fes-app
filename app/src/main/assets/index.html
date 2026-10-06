@@ -4,227 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ليفرور فاس | Livrer Fès</title>
-  
-  <style>
-    :root {
-      --brand-50: #eff6ff;
-      --brand-100: #dbeafe;
-      --brand-500: #3b82f6;
-      --brand-600: #2563eb;
-      --brand-700: #1d4ed8;
-      --brand-800: #1e40af;
-      --brand-900: #1e3a8a;
-      --accent-500: #f59e0b;
-      --accent-600: #d97706;
-      --accent-700: #b45309;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      background-color: #f8fafc;
-      color: #1e293b;
-      min-height: 100vh;
-      transition: background-color 0.2s, color 0.2s;
-    }
-
-    html.dark body {
-      background-color: #020617;
-      color: #f8fafc;
-    }
-
-    .pb-safe {
-      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-    }
-
-    /* Utility classes reproducing Tailwind styles offline */
-    .scroll-smooth { scroll-behavior: smooth; }
-    .bg-slate-50 { background-color: #f8fafc; }
-    .text-slate-800 { color: #1e293b; }
-    .dark .dark\:bg-slate-950 { background-color: #020617; }
-    .dark .dark\:text-slate-100 { color: #f8fafc; }
-    .min-h-screen { min-height: 100vh; }
-    .transition-colors { transition-property: color, background-color, border-color; }
-    .duration-200 { transition-duration: 200ms; }
-
-    .sticky { position: sticky; }
-    .top-0 { top: 0; }
-    .z-40 { z-index: 40; }
-    .z-50 { z-index: 50; }
-    .bg-\[\#0f1722\] { background-color: #0f1722; }
-    .text-white { color: #ffffff; }
-    .border-b { border-bottom-width: 1px; }
-    .border-slate-800 { border-color: #1e293b; }
-    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
-    .select-none { user-select: none; }
-
-    .max-w-md { max-width: 28rem; }
-    .mx-auto { margin-left: auto; margin-right: auto; }
-    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-    .px-4 { padding-left: 1rem; padding-right: 1rem; }
-    .pt-4 { padding-top: 1rem; }
-    .h-16 { height: 4rem; }
-    .flex { display: flex; }
-    .items-center { align-items: center; }
-    .justify-between { justify-content: space-between; }
-    .gap-1 { gap: 0.25rem; }
-    .cursor-pointer { cursor: pointer; }
-    .shrink-0 { flex-shrink: 0; }
-    .h-9 { height: 2.25rem; }
-    .justify-center { justify-content: center; }
-    .h-full { height: 100%; }
-    .w-auto { width: auto; }
-    .object-contain { object-fit: contain; }
-    .text-right { text-align: right; }
-    .flex-col { flex-direction: column; }
-    .gap-0\.5 { gap: 0.125rem; }
-    .ms-3 { margin-inline-start: 0.75rem; }
-    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
-    .font-black { font-weight: 900; }
-    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-    .tracking-wide { letter-spacing: 0.025em; }
-    .leading-tight { line-height: 1.25; }
-    .text-\[8px\] { font-size: 8px; }
-    .text-slate-300 { color: #cbd5e1; }
-    .font-medium { font-weight: 500; }
-    .leading-normal { line-height: 1.5; }
-    .whitespace-nowrap { white-space: nowrap; }
-    .ms-1 { margin-inline-start: 0.25rem; }
-    .w-15 { width: 3.75rem; }
-    .h-12 { height: 3rem; }
-    .flex-1 { flex: 1 1 0%; }
-
-    .w-8\.5 { width: 2.125rem; }
-    .h-8\.5 { height: 2.125rem; }
-    .rounded-2xl { border-radius: 1rem; }
-    .bg-\[\#141e2e\] { background-color: #141e2e; }
-    .border { border-width: 1px; }
-    .border-slate-700\/80 { border-color: rgba(51, 65, 85, 0.8); }
-    .transition-all { transition-property: all; transition-duration: 150ms; }
-
-    .bg-white { background-color: #ffffff; }
-    .text-slate-900 { color: #0f172a; }
-    .rounded-full { border-radius: 9999px; }
-    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
-    .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
-    .gap-1\.5 { gap: 0.375rem; }
-    .border-slate-200\/90 { border-color: rgba(226, 232, 240, 0.9); }
-    .w-3 { width: 0.75rem; }
-    .h-3 { height: 0.75rem; }
-    .text-\[\#1d4ed8\] { color: #1d4ed8; }
-    .text-\[9px\] { font-size: 9px; }
-    .font-black { font-weight: 900; }
-    .text-\[\#1e3a8a\] { color: #1e3a8a; }
-    .block { display: block; }
-    .text-\[7\.5px\] { font-size: 7.5px; }
-    .font-bold { font-weight: 700; }
-    .text-\[\#2563eb\] { color: #2563eb; }
-    .mt-0\.5 { margin-top: 0.125rem; }
-
-    .fixed { position: fixed; }
-    .bottom-0 { bottom: 0; }
-    .left-0 { left: 0; }
-    .right-0 { right: 0; }
-    .bg-white\/95 { background-color: rgba(255, 255, 255, 0.95); }
-    .dark .dark\:bg-slate-900\/95 { background-color: rgba(15, 23, 42, 0.95); }
-    .backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .border-t { border-top-width: 1px; }
-    .border-slate-200 { border-color: #e2e8f0; }
-    .dark .dark\:border-slate-800 { border-color: #1e293b; }
-    .justify-around { justify-content: space-around; }
-    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-    .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
-    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-    .text-slate-400 { color: #94a3b8; }
-    .dark .dark\:text-slate-500 { color: #64748b; }
-    .text-\[11px\] { font-size: 11px; }
-    .text-brand-600 { color: #2563eb; }
-    .dark .dark\:text-brand-400 { color: #60a5fa; }
-
-    .w-10 { width: 2.5rem; }
-    .h-10 { height: 2.5rem; }
-    .-mt-4 { margin-top: -1rem; }
-    .bg-gradient-to-tr { background-image: linear-gradient(to top right, var(--tw-gradient-stops)); }
-    .from-brand-700 { --tw-gradient-from: #1d4ed8; --tw-gradient-to: rgba(29, 78, 216, 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
-    .to-brand-500 { --tw-gradient-to: #3b82f6; }
-    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-
-    .space-y-6 > * + * { margin-top: 1.5rem; }
-    .space-y-5 > * + * { margin-top: 1.25rem; }
-    .space-y-4 > * + * { margin-top: 1rem; }
-    .space-y-3 > * + * { margin-top: 0.75rem; }
-    .space-y-3\.5 > * + * { margin-top: 0.875rem; }
-    .space-y-2 > * + * { margin-top: 0.5rem; }
-    .space-y-2\.5 > * + * { margin-top: 0.625rem; }
-    .relative { position: relative; }
-    .overflow-hidden { overflow: hidden; }
-    .rounded-3xl { border-radius: 1.5rem; }
-    .from-brand-900 { --tw-gradient-from: #1e3a8a; --tw-gradient-to: rgba(30, 58, 138, 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
-    .via-brand-800 { --tw-gradient-to: rgba(30, 64, 175, 0); --tw-gradient-stops: var(--tw-gradient-from), #1e40af, var(--tw-gradient-to); }
-    .to-brand-700 { --tw-gradient-to: #1d4ed8; }
-    .p-6 { padding: 1.5rem; }
-    .p-5 { padding: 1.25rem; }
-    .p-4 { padding: 1rem; }
-    .p-3\.5 { padding: 0.875rem; }
-    .p-3 { padding: 0.75rem; }
-
-    .grid { display: grid; }
-    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .gap-3 { gap: 0.75rem; }
-    .gap-2\.5 { gap: 0.625rem; }
-    .gap-2 { gap: 0.5rem; }
-
-    .hidden { display: none !important; }
-    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-    .bg-slate-900\/60 { background-color: rgba(15, 23, 42, 0.6); }
-
-    .w-full { width: 100%; }
-    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
-    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-    .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
-    .rounded-xl { border-radius: 0.75rem; }
-
-    /* SVG Icon Helpers */
-    .fa-icon {
-      display: inline-block;
-      width: 1em;
-      hight: 1em;
-      vertical-align: -0.125em;
-      fill: currentColor;
-    }
-    
-    button, input, select, textarea {
-      font-family: inherit;
-    }
-  </style>
-
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
-    // Tailwind Config offline mockup fallback
-    window.tailwind = {
-      config: {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6',
-                600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a'
-              },
-              accent: { 500: '#f59e0b', 600: '#d97706', 700: '#b45309' }
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a'
+            },
+            accent: {
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309'
             }
           }
         }
       }
-    };
+    }
   </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+    body {
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pb-safe {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
@@ -392,55 +210,6 @@
   </div>
 
   <script>
-    /* Offline FontAwesome Icons Rendering Map */
-    const FA_ICONS = {
-      'fa-house': '<svg class="fa-icon" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32v224c0 17.7-14.3 32-32 32h-112c-17.7 0-32-14.3-32-32v-128h-64v128c0 17.7-14.3 32-32 32H128c-17.7 0-32-14.3-32-32V287.6H64c-17 0-32-14.1-32-32.1 0-9 3-17 10-24L265.8 12c12-12 31.5-12 43.5 0l223.8 219.5c7 7 10 15 10 24z"/></svg>',
-      'fa-briefcase': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 48V56c0-30.9 25.1-56 56-56H328c30.9 0 56 25.1 56 56V96h80c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H48c-35.3 0-64-28.7-64-64V160c0-35.3 28.7-64 64-64h80z"/></svg>',
-      'fa-plus': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>',
-      'fa-helmet-safety': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 32C132.3 32 32 132.3 32 256v32h448V256c0-123.7-100.3-224-224-224zm-192 288v32c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64v-32H64z"/></svg>',
-      'fa-user': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-96 32c-70.7 0-128 57.3-128 128 0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64 0-70.7-57.3-128-128-128H128z"/></svg>',
-      'fa-triangle-exclamation': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7.1-27.7 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>',
-      'fa-store': '<svg class="fa-icon" viewBox="0 0 614 512"><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg>',
-      'fa-motorcycle': '<svg class="fa-icon" viewBox="0 0 640 512"><path d="M400 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-24 128H232.8l-37-74c-9.1-18.2-27.8-29.8-48.2-29.8H64c-17.7 0-32 14.3-32 32s14.3 32 32 32h70.2l24 48H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h416c17.7 0 32-14.3 32-32s-14.3-32-32-32z"/></svg>',
-      'fa-sparkles': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 0L200 160L40 216L200 272L256 432L312 272L472 216L312 160L256 0z"/></svg>',
-      'fa-magnifying-glass': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>',
-      'fa-compass': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-386.9l112 48c12 5.2 18.1 18.6 14.2 31.1l-48 112c-3.6 8.3-10.2 14.9-18.5 18.5l-112 48c-12.5 5.3-26.8-0.8-31.1-13.3l-48-112c-3.6-8.3 0.8-21.7 13.3-26l112-48c8.3-3.6 18.5-0.8 26 5.7z"/></svg>',
-      'fa-arrow-left': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>',
-      'fa-fire': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 54.7 77.2 86c29.2 38.6 56.5 81 80.1 127c23.6 46 41.2 93.3 50.8 139.1c9.7 45.8 11 90.9 2.1 131.9c-8.9 41-29.6 75.9-59.5 98.7c-30 22.8-68.5 33.7-109.8 33.7c-41.2 0-79.8-10.9-109.8-33.7c-29.9-22.8-50.6-57.7-59.5-98.7c-8.9-41-7.6-86.1 2.1-131.9c9.6-45.8 27.2-93.1 50.8-139.1c23.6-46 50.9-88.4 80.1-127c23.7-31.3 49.6-60.1 77.2-86z"/></svg>',
-      'fa-sliders': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L512 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-278.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32z"/></svg>',
-      'fa-circle-xmark': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>',
-      'fa-folder-open': '<svg class="fa-icon" viewBox="0 0 576 512"><path d="M88.7 223.8L0 375.8V96C0 60.7 28.7 32 64 32H208c20.1 0 39 9.4 51.2 25.6L299.2 112H512c35.3 0 64 28.7 64 64v32H152c-24.7 0-47.3 12.7-63.3 31.8z"/></svg>',
-      'fa-location-dot': '<svg class="fa-icon" viewBox="0 0 384 512"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 256a64 64 0 1 1 0-128 64 64 0 1 1 0 128z"/></svg>',
-      'fa-money-bill-wave': '<svg class="fa-icon" viewBox="0 0 640 512"><path d="M1 178.1C1.6 171.8 7 167 13.3 167h613.4c6.3 0 11.7 4.8 12.3 11.1C639.8 184.4 640 190.7 640 197c0 117.8-95.2 213.3-212.7 213.3H212.7C95.2 410.3 0 314.8 0 197c0-6.3 .2-12.6 1-18.9z"/></svg>',
-      'fa-clock': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM232 120c0-13.3 10.7-24 24-24s24 10.7 24 24V248c0 6.4-2.5 12.5-7 17l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l77-77V120z"/></svg>',
-      'fa-circle-info': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V240H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v120h24c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144a32 32 0 1 1 0-64 32 32 0 1 1 0 64z"/></svg>',
-      'fa-phone': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 162c13.7-11.1 18.4-30 11.6-46.3l-40-96z"/></svg>',
-      'fa-whatsapp': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.6-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6z"/></svg>',
-      'fa-id-card': '<svg class="fa-icon" viewBox="0 0 576 512"><path d="M0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96z"/></svg>',
-      'fa-circle-check': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm113-303L225 353c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>',
-      'fa-user-gear': '<svg class="fa-icon" viewBox="0 0 640 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-96 32c-70.7 0-128 57.3-128 128 0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64 0-70.7-57.3-128-128-128H128z"/></svg>',
-      'fa-trash': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128z"/></svg>',
-      'fa-rotate-left': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M48.5 224H40c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6C142.6 51.6 203.8 24 272 24c132.5 0 240 107.5 240 240S404.5 504 272 504c-62.6 0-119.7-24-162.7-63.3c-9.7-8.9-10.2-24.1-1.3-33.8s24.1-10.2 33.8-1.3C176.2 438.4 221.7 456 272 456c106 0 192-86 192-192s-86-192-192-192c-54.8 0-103.8 23-138.8 60.1l43.5 43.5c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8z"/></svg>',
-      'fa-paper-plane': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7l167.6-182.9c5.8-6.3 5.6-16-.4-22s-15.7-6.2-22-.4L101.5 332.3 17.3 297.5c-11.5-4.8-18.1-16.7-16.3-29s11.1-21.7 23.3-23.7l448-72c10.5-1.7 21 2.2 25.8 10.1z"/></svg>',
-      'fa-check': '<svg class="fa-icon" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>',
-      'fa-list-check': '<svg class="fa-icon" viewBox="0 0 512 512"><path d="M152 64H16c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h136c8.8 0 16-7.2 16-16V80c0-8.8-7.2-16-16-16zm0 160H16c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h136c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16zm0 160H16c-8.8 0-16 7.2-16 16v48c0 8.8 7.2 16 16 16h136c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16zM512 96c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h256c8.8 0 16 7.2 16 16v16zm0 160c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V240c0-8.8 7.2-16 16-16h256c8.8 0 16 7.2 16 16v16zm0 160c0 8.8-7.2 16-16 16H240c-8.8 0-16-7.2-16-16V400c0-8.8 7.2-16 16-16h256c8.8 0 16 7.2 16 16v16z"/></svg>'
-    };
-
-    function replaceFaIcons() {
-      document.querySelectorAll('i[class*="fa-"]').forEach(el => {
-        const classes = Array.from(el.classList);
-        for (const cls of classes) {
-          if (FA_ICONS[cls]) {
-            const span = document.createElement('span');
-            span.className = el.className;
-            span.innerHTML = FA_ICONS[cls];
-            el.replaceWith(span);
-            break;
-          }
-        }
-      });
-    }
-
     /* ==========================================================================
        1. DATA CONSTANTS & STORAGE REPOSITORY
        ========================================================================== */
@@ -858,7 +627,6 @@
       toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${escapeHTML(message)}</span>`;
 
       container.appendChild(toast);
-      replaceFaIcons();
       
       requestAnimationFrame(() => {
         toast.classList.remove('opacity-0', '-translate-y-2');
@@ -1022,7 +790,6 @@
         default:
           container.innerHTML = viewHome();
       }
-      replaceFaIcons();
     }
 
     // 1. HOME VIEW
@@ -1069,7 +836,7 @@
             <div class="grid grid-cols-2 gap-3">
               <div onclick="navigateTo('drivers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-brand-500 transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-store"></i>
+                  <i class="fa-solid fa-shop"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">أحتاج لليفرور</h4>
                 <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات والمطاعم للبحث عن سائق متوفر</p>
@@ -1287,29 +1054,29 @@
 
     function handleOfferSearch(val) {
       searchOfferQuery = val;
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function clearOfferSearch() {
       searchOfferQuery = '';
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function handleOfferDistrictChange(val) {
       filterDistrictOffer = val;
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function handleOfferVehicleChange(val) {
       filterVehicleOffer = val;
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function handleOfferPaymentChange(val) {
       filterPaymentOffer = val;
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function resetOfferFilters() {
       filterDistrictOffer = '';
       filterVehicleOffer = '';
       filterPaymentOffer = '';
-      renderPage('offers');
+      document.getElementById('appContainer').innerHTML = viewOffers();
     }
 
     // 3. DRIVERS VIEW
@@ -1473,29 +1240,29 @@
 
     function handleDriverSearch(val) {
       searchDriverQuery = val;
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function clearDriverSearch() {
       searchDriverQuery = '';
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverDistrictChange(val) {
       filterDistrictDriver = val;
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverVehicleChange(val) {
       filterVehicleDriver = val;
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function handleDriverAvailableChange(val) {
       filterAvailableDriver = val;
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function resetDriverFilters() {
       filterDistrictDriver = '';
       filterVehicleDriver = '';
       filterAvailableDriver = '';
-      renderPage('drivers');
+      document.getElementById('appContainer').innerHTML = viewDrivers();
     }
 
     // 4. CREATE / REGISTER VIEW (FORMS WITH VALIDATION)
@@ -1526,7 +1293,6 @@
       } else {
         container.innerHTML = renderDriverForm();
       }
-      replaceFaIcons();
     }
 
     function renderOfferForm() {
@@ -1742,7 +1508,7 @@
             <h3 class="text-xs font-extrabold text-slate-900 dark:text-white">تبديل وضع التطبيق</h3>
             <div class="grid grid-cols-2 gap-2">
               <button onclick="setUserRole('shop')" class="py-2.5 px-3 rounded-xl border-2 text-xs font-bold flex items-center justify-center gap-2 transition-all ${currentRole === 'shop' ? 'border-brand-600 bg-brand-50 text-brand-600 dark:bg-brand-950/50' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'}">
-                <i class="fa-solid fa-store"></i> أنا صاحب محل
+                <i class="fa-solid fa-shop"></i> أنا صاحب محل
               </button>
               <button onclick="setUserRole('driver')" class="py-2.5 px-3 rounded-xl border-2 text-xs font-bold flex items-center justify-center gap-2 transition-all ${currentRole === 'driver' ? 'border-amber-500 bg-amber-50 text-amber-600 dark:bg-amber-950/50' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'}">
                 <i class="fa-solid fa-motorcycle"></i> أنا ليفرور
@@ -1829,7 +1595,6 @@
       initTheme();
       updateRoleHeader();
       renderPage('home');
-      replaceFaIcons();
     });
   </script>
 </body>
