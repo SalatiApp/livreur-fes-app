@@ -77,7 +77,7 @@ fun HybridAppScreen() {
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
-            cacheMode = WebSettings.LOAD_DEFAULT
+            cacheMode = WebSettings.LOAD_NO_CACHE
             useWideViewPort = true
             loadWithOverviewMode = true
             displayZoomControls = false
