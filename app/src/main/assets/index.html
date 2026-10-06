@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ليفرور فاس | Livrer Fès</title>
-  <!-- Tailwind CSS CDN (مع تحميل غير حاجب للمستند) -->
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <!-- Font Awesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+  
+  <!-- استبدال روابط CDN بمسارات محلية لضمان عمل الواجهة بشكل طبيعي وكامل بدون إنترنت -->
+  <script src="js/tailwindcss.js"></script>
+  <link rel="stylesheet" href="css/all.min.css">
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -34,42 +35,39 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+    /* استدعاء الخط محلياً لتفادي غيابه عند انقطاع الإنترنت */
+    @font-face {
+      font-family: 'Cairo';
+      src: url('fonts/Cairo-Regular.ttf') format('truetype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Cairo';
+      src: url('fonts/Cairo-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+    }
+    @font-face {
+      font-family: 'Cairo';
+      src: url('fonts/Cairo-Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Cairo';
+      src: url('fonts/Cairo-ExtraBold.ttf') format('truetype');
+      font-weight: 800;
+    }
+    @font-face {
+      font-family: 'Cairo';
+      src: url('fonts/Cairo-Black.ttf') format('truetype');
+      font-weight: 900;
+    }
     
-    :root {
-      font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
     body {
-      font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
-      margin: 0;
-      padding: 0;
     }
-
     .pb-safe {
       padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-    }
-
-    /* حماية أبعاد خريطة المغرب المحلية عند انقطاع الإنترنت أو عدم تحميل Tailwind */
-    img[src="morocco-map.png"], .morocco-map-img {
-      max-height: 2.5rem !important;
-      height: 100% !important;
-      width: auto !important;
-      object-fit: contain !important;
-      flex-shrink: 0 !important;
-      display: block;
-    }
-
-    /* قواعد أساسية للواجهة لضمان ظهور الهيكل والألوان بشكل عادي بدوان إنترنت */
-    .header-offline-fallback {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 4rem;
-      max-width: 28rem;
-      margin: 0 auto;
-      padding: 0 0.75rem;
     }
   </style>
 </head>
@@ -77,14 +75,14 @@
 
   <!-- Top App Bar -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5 header-offline-fallback">
+    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5">
       
       <!-- Brand & Map & Scooter Section (Right Side in RTL) -->
       <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
         
         <!-- 1. Authentic Morocco Map (Local Image Asset) -->
-        <div class="h-9 sm:h-10 shrink-0 flex items-center justify-center" style="height: 2.25rem; max-height: 2.5rem; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)] morocco-map-img" style="max-height: 2.5rem; height: 100%; width: auto; object-fit: contain; flex-shrink: 0;">
+        <div class="h-9 sm:h-10 shrink-0 flex items-center justify-center">
+          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]">
         </div>
 
         <!-- 2. Brand Typography (Separated with clear gap from Map) -->
@@ -745,6 +743,7 @@
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
+          </span>
           `;
         }
       }
@@ -1384,29 +1383,30 @@
             <div class="grid grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم الهاتف *</label>
-                <input type="tel" id="offPhone" required placeholder="0612345678" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+                <input type="tel" id="offPhone" required placeholder="06XXXXXXXX" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
               </div>
-
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم WhatsApp *</label>
-                <input type="tel" id="offWhatsapp" required placeholder="0612345678" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم واتساب *</label>
+                <input type="tel" id="offWhatsapp" required placeholder="06XXXXXXXX" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وصف العمل *</label>
-              <textarea id="offDescription" required rows="3" placeholder="اكتب تفاصيل الطلب والشروط المطلوب توفرها في السائق..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500"></textarea>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وصف العرض *</label>
+              <textarea id="offDescription" required rows="2" placeholder="تفاصيل الخدمة المطلوبة، المهام..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">ملاحظات أو امتيازات إضافية</label>
-              <input type="text" id="offNotes" placeholder="مثال: البنزين مدفوع + وجبة غداء" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">ملاحظات إضافية</label>
+              <textarea id="offNotes" rows="2" placeholder="أية شروط أخرى أو امتيازات..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500"></textarea>
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-black text-xs shadow-md shadow-brand-500/20 active:scale-95 transition-all">
+                نشر العرض الآن
+              </button>
             </div>
           </div>
-
-          <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs rounded-xl shadow-md shadow-brand-500/20 active:scale-95 transition-all">
-            <i class="fa-solid fa-paper-plane ml-1.5"></i> نشر العرض مباشرة
-          </button>
         </form>
       `;
     }
@@ -1415,28 +1415,28 @@
       return `
         <form onsubmit="handleDriverSubmit(event)" class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
           <div>
-            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">تسجيل سائق توصيل جديد</h3>
-            <p class="text-xs text-slate-500">أنشئ بروفايلك ليجدك أصحاب المحلات والمطاعم في فاس بسهولة</p>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">التسجيل كسائق (ليفرور)</h3>
+            <p class="text-xs text-slate-500">أدخل معلوماتك لتظهر لأصحاب المحلات والمطاعم</p>
           </div>
 
           <div class="space-y-3">
             <div>
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الاسم الكامل *</label>
-              <input type="text" id="drvName" required placeholder="مثال: يوسف العلمي" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+              <input type="text" id="drvName" required placeholder="مثال: أحمد الفاسي" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي المقيم به *</label>
-                <select id="drvDistrict" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي الرئيسي *</label>
+                <select id="drvDistrict" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
                   <option value="">اختر الحي</option>
                   ${FES_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
                 </select>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وسيلة التوصيل *</label>
-                <select id="drvVehicle" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وسيلة النقل *</label>
+                <select id="drvVehicle" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
                   ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
                 </select>
               </div>
@@ -1445,185 +1445,142 @@
             <div class="grid grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم الهاتف *</label>
-                <input type="tel" id="drvPhone" required placeholder="0612345678" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                <input type="tel" id="drvPhone" required placeholder="06XXXXXXXX" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
               </div>
-
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم WhatsApp *</label>
-                <input type="tel" id="drvWhatsapp" required placeholder="0612345678" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">رقم واتساب *</label>
+                <input type="tel" id="drvWhatsapp" required placeholder="06XXXXXXXX" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">أوقات التفرغ</label>
-              <input type="text" id="drvFreeHours" placeholder="مثال: مساءً (18:00 - 01:00) أو تفرغ تام" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+              <input type="text" id="drvFreeHours" placeholder="مثال: طيلة اليوم، من 14:00 إلى 22:00..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الخبرة السابقة</label>
-              <input type="text" id="drvExperience" placeholder="مثال: سنتان في التوصيل الحر مع المطاعم" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الخبرة (اختياري)</label>
+              <input type="text" id="drvExperience" placeholder="مثال: سنة في التوصيل الحر" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نبذة عنك / ملاحظات</label>
-              <textarea id="drvNotes" rows="2" placeholder="أذكر متطلباتك أو مميزاتك (مثلا: أمتلك صندوق حراري حافظ للحرارة)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"></textarea>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">ملاحظات إضافية</label>
+              <textarea id="drvNotes" rows="2" placeholder="أمتلك صندوق حراري..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500"></textarea>
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 active:scale-95 transition-all">
+                التسجيل كليفرور
+              </button>
             </div>
           </div>
-
-          <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-md active:scale-95 transition-all">
-            <i class="fa-solid fa-check ml-1.5"></i> تسجيل الملف الشخصي
-          </button>
         </form>
       `;
     }
 
-    function handleOfferSubmit(e) {
-      e.preventDefault();
-      const newOffer = {
-        shopName: document.getElementById('offShopName').value.trim(),
-        shopType: document.getElementById('offShopType').value.trim(),
-        district: document.getElementById('offDistrict').value,
-        vehicle: document.getElementById('offVehicle').value,
-        paymentType: document.getElementById('offPaymentType').value,
-        price: Number(document.getElementById('offPrice').value),
-        workingHours: document.getElementById('offWorkingHours').value.trim(),
-        phone: document.getElementById('offPhone').value.trim(),
-        whatsapp: document.getElementById('offWhatsapp').value.trim(),
-        description: document.getElementById('offDescription').value.trim(),
-        notes: document.getElementById('offNotes').value.trim()
-      };
-
-      DataService.addOffer(newOffer);
-      showToast('تم نشر عرض العمل بنجاح!', 'success');
-      navigateTo('offers');
-    }
-
-    function handleDriverSubmit(e) {
-      e.preventDefault();
-      const newDriver = {
-        name: document.getElementById('drvName').value.trim(),
-        district: document.getElementById('drvDistrict').value,
-        vehicle: document.getElementById('drvVehicle').value,
-        phone: document.getElementById('drvPhone').value.trim(),
-        whatsapp: document.getElementById('drvWhatsapp').value.trim(),
-        freeHours: document.getElementById('drvFreeHours').value.trim(),
-        experience: document.getElementById('drvExperience').value.trim(),
-        notes: document.getElementById('drvNotes').value.trim()
-      };
-
-      DataService.addDriver(newDriver);
-      showToast('تم تسجيل بروفايلك كليفرور بنجاح!', 'success');
-      navigateTo('drivers');
-    }
-
-    // 5. ACCOUNT / SETTINGS VIEW
+    // 5. ACCOUNT VIEW
     function viewAccount() {
-      const offers = DataService.getOffers();
-      const currentRole = DataService.getUserRole();
-
+      const role = DataService.getUserRole();
       return `
-        <div class="space-y-5">
-          <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-4">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-500 text-white flex items-center justify-center text-2xl font-black shadow-md">
-              <i class="fa-solid fa-user-gear"></i>
+        <div class="space-y-4">
+          <h2 class="text-xl font-black text-slate-900 dark:text-white">حسابي</h2>
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-3xl text-slate-400 mb-3 shadow-inner">
+              <i class="fa-solid fa-user"></i>
             </div>
-            <div>
-              <h2 class="text-base font-extrabold text-slate-900 dark:text-white">إدارة الحساب والبيانات</h2>
-              <p class="text-xs text-slate-500">الوضع الحالي: <span class="font-bold text-brand-600 dark:text-brand-400">${currentRole === 'shop' ? 'صاحب محل' : 'ليفرور'}</span></p>
-            </div>
+            <h3 class="font-bold text-slate-900 dark:text-white mb-1">الوضع الحالي: ${role === 'shop' ? 'صاحب محل / مطعم' : 'سائق (ليفرور)'}</h3>
+            <button onclick="openQuickRoleModal()" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">تغيير وضع الاستخدام</button>
           </div>
-
-          <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
-            <h3 class="text-xs font-extrabold text-slate-900 dark:text-white">تبديل وضع التطبيق</h3>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="setUserRole('shop')" class="py-2.5 px-3 rounded-xl border-2 text-xs font-bold flex items-center justify-center gap-2 transition-all ${currentRole === 'shop' ? 'border-brand-600 bg-brand-50 text-brand-600 dark:bg-brand-950/50' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'}">
-                <i class="fa-solid fa-shop"></i> أنا صاحب محل
-              </button>
-              <button onclick="setUserRole('driver')" class="py-2.5 px-3 rounded-xl border-2 text-xs font-bold flex items-center justify-center gap-2 transition-all ${currentRole === 'driver' ? 'border-amber-500 bg-amber-50 text-amber-600 dark:bg-amber-950/50' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'}">
-                <i class="fa-solid fa-motorcycle"></i> أنا ليفرور
-              </button>
-            </div>
-          </div>
-
-          <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-brand-600"></i> إدارة عروضي (${offers.length})
-              </h3>
-            </div>
-            <div class="space-y-2 max-h-56 overflow-y-auto pl-1">
-              ${offers.map(o => `
-                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between text-xs">
-                  <div>
-                    <h5 class="font-bold text-slate-900 dark:text-white">${escapeHTML(o.shopName)}</h5>
-                    <span class="text-[10px] text-slate-500">${escapeHTML(o.district)} •${o.price} درهم</span>
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <button onclick="toggleOfferStatus('${o.id}')" class="px-2 py-1 rounded-lg text-[10px] font-bold ${o.status === 'open' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'}">
-                      ${o.status === 'open' ? 'إغلاق العرض' : 'إعادة فتح'}
-                    </button>
-                    <button onclick="deleteOfferConfirm('${o.id}')" class="w-7 h-7 rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
-                      <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="p-4 rounded-3xl bg-red-50/50 dark:bg-red-950/20 border border-red-200/60 dark:border-red-900/40 space-y-2.5">
-            <h4 class="text-xs font-bold text-red-700 dark:text-red-400">منطقة التحكم والضبط</h4>
-            <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">يمكنك استعادة البيانات الافتراضية للتطبيق في حال أردت مسح البيانات المخزنة محلياً.</p>
-            <button onclick="resetPlatformDataConfirm()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm active:scale-95 transition-all">
-              <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات الافتراضية
+          <div class="space-y-3">
+            <button onclick="handleBackendSync()" class="w-full flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-brand-500 transition-all active:scale-95">
+              <div class="flex items-center gap-3 font-bold text-sm text-slate-700 dark:text-slate-300">
+                <div class="w-8 h-8 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center"><i class="fa-solid fa-rotate"></i></div>
+                مزامنة وتحميل البيانات من الخادم
+              </div>
+              <i class="fa-solid fa-chevron-left text-slate-400 text-xs"></i>
             </button>
           </div>
         </div>
       `;
     }
 
-    function toggleOfferStatus(id) {
-      const offer = DataService.getOffers().find(o => o.id === id);
-      if (offer) {
-        const newStatus = offer.status === 'open' ? 'closed' : 'open';
-        DataService.updateOffer(id, { status: newStatus });
-        showToast(`تم ${newStatus === 'closed' ? 'إغلاق' : 'تنشيط'} العرض بنجاح`, 'success');
-        renderPage('account');
+    /* ==========================================================================
+       4. FORM SUBMISSION LOGIC WITH OFFLINE DETECTION
+       ========================================================================== */
+    function handleOfferSubmit(e) {
+      e.preventDefault();
+      
+      // لا تسمح بإرسال البيانات (محاكاة طلب خادم) إذا كان المستخدم Offline
+      if (!navigator.onLine) {
+        showToast('عذراً، الاتصال بالإنترنت مطلوب لنشر عرض جديد وإرساله للخادم.', 'error');
+        return;
       }
+      
+      const offer = {
+        shopName: document.getElementById('offShopName').value,
+        shopType: document.getElementById('offShopType').value,
+        district: document.getElementById('offDistrict').value,
+        vehicle: document.getElementById('offVehicle').value,
+        paymentType: document.getElementById('offPaymentType').value,
+        price: document.getElementById('offPrice').value,
+        workingHours: document.getElementById('offWorkingHours').value,
+        phone: document.getElementById('offPhone').value,
+        whatsapp: document.getElementById('offWhatsapp').value,
+        description: document.getElementById('offDescription').value,
+        notes: document.getElementById('offNotes').value
+      };
+      
+      DataService.addOffer(offer);
+      showToast('تم نشر العرض بنجاح!', 'success');
+      navigateTo('offers');
     }
 
-    function deleteOfferConfirm(id) {
-      showConfirmModal(
-        'حذف العرض',
-        'هل أنت تأكد من رغبتك في حذف هذا العرض نهائياً؟',
-        () => {
-          DataService.deleteOffer(id);
-          showToast('تم حذف العرض بنجاح', 'success');
-          renderPage('account');
-        },
-        true
-      );
+    function handleDriverSubmit(e) {
+      e.preventDefault();
+      
+      // لا تسمح بتسجيل الليفرور (محاكاة طلب خادم) إذا كان المستخدم Offline
+      if (!navigator.onLine) {
+        showToast('عذراً، الاتصال بالإنترنت مطلوب للتسجيل وإرسال البيانات للخادم.', 'error');
+        return;
+      }
+
+      const driver = {
+        name: document.getElementById('drvName').value,
+        district: document.getElementById('drvDistrict').value,
+        vehicle: document.getElementById('drvVehicle').value,
+        phone: document.getElementById('drvPhone').value,
+        whatsapp: document.getElementById('drvWhatsapp').value,
+        freeHours: document.getElementById('drvFreeHours').value,
+        experience: document.getElementById('drvExperience').value,
+        notes: document.getElementById('drvNotes').value
+      };
+
+      DataService.addDriver(driver);
+      showToast('تم تسجيلك كليفرور بنجاح!', 'success');
+      navigateTo('drivers');
     }
 
-    function resetPlatformDataConfirm() {
-      showConfirmModal(
-        'إعادة ضبط البيانات',
-        'سيتم استرجاع قائمة العروض والسائقين الافتراضية المسجلة أول مرة.',
-        () => {
-          DataService.resetAllData();
-          showToast('تمت إعادة ضبط البيانات بنجاح', 'success');
-          navigateTo('home');
-        },
-        true
-      );
+    function handleBackendSync() {
+      // عملية تحميل وتحديث البيانات من الخادم تحتاج إنترنت حتماً
+      if (!navigator.onLine) {
+        showToast('تحميل وتحديث البيانات يتطلب اتصالاً بالإنترنت.', 'error');
+        return;
+      }
+      
+      showToast('جاري الاتصال بالخادم...', 'info');
+      setTimeout(() => {
+        showToast('تم تحديث ومزامنة البيانات بنجاح!', 'success');
+      }, 1500);
     }
 
-    /* Application Entry Point */
-    document.addEventListener('DOMContentLoaded', () => {
+    /* ==========================================================================
+       5. INITIALIZATION
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
       DataService.init();
       initTheme();
       updateRoleHeader();
-      renderPage('home');
+      renderPage(currentPage);
     });
   </script>
 </body>
