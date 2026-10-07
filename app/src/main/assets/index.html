@@ -56,7 +56,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
-  <!-- Top App Bar (Enlarged Morocco Map & Refined Balance) -->
+  <!-- Top App Bar -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
     <div class="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-1">
       
@@ -102,7 +102,7 @@
         </svg>
       </div>
 
-      <!-- Right Side (RTL End): Map & App Titles (Enlarged Map) -->
+      <!-- Right Side (RTL End): Map & App Titles -->
       <div class="flex items-center cursor-pointer shrink-0 gap-1.5" onclick="navigateTo('home')">
         <!-- App Branding Titles -->
         <div class="text-right flex flex-col justify-center gap-0.5">
@@ -110,7 +110,7 @@
           <p class="text-[7.5px] text-slate-300 font-bold leading-tight whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
 
-        <!-- Enlarged Morocco Map Graphic (Increased to h-10) -->
+        <!-- Morocco Map Graphic -->
         <div class="h-10 w-8 shrink-0 flex items-center justify-center">
           <img src="morocco-map.png" alt="المغرب" class="h-full w-full object-contain filter drop-shadow-[0_2px_5px_rgba(200,16,46,0.5)]" onerror="this.style.display='none'">
         </div>
@@ -787,26 +787,25 @@
                 تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات خفية.
               </p>
               
-              <!-- Action Buttons Row (Fully Visible Dropdown Text & Clear Chevron Arrow) -->
-              <div class="pt-2.5 flex items-center justify-between gap-2">
+              <!-- Action Buttons Row (Removed duplicate + icon & adjusted city dropdown width) -->
+              <div class="pt-2.5 flex items-center justify-between gap-1.5">
                 
-                <!-- City Dropdown Button (Fully Visible "جميع مدن المغرب 🇲🇦" with Chevron Arrow) -->
+                <!-- City Dropdown Button (Fully Visible "جميع مدن المغرب" & Visible Chevron) -->
                 <div class="flex-[1.4] min-w-0 relative">
-                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-3 pl-8 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-9 flex items-center whitespace-nowrap overflow-hidden">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-2 pl-6 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-9 flex items-center whitespace-nowrap overflow-hidden">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
                   </select>
                   <!-- Clear Visible Chevron Arrow on Left -->
-                  <div class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-amber-400 text-xs font-black">
+                  <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-[10px] font-black">
                     <i class="fa-solid fa-chevron-down"></i>
                   </div>
                 </div>
 
-                <!-- New Offer Button -->
-                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
-                  <i class="fa-solid fa-plus text-[9px]"></i>
-                  <span>+ نشر جديد</span>
+                <!-- New Offer Button (Removed small + icon) -->
+                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center h-9 whitespace-nowrap">
+                  <span>نشر جديد</span>
                 </button>
 
                 <!-- Browse Offers Button -->
