@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ليفرور فاس | Livrer Fès</title>
-  <!-- Tailwind CSS Local -->
-  <link rel="stylesheet" href="css/tailwind.min.css">
-  <!-- Font Awesome Local -->
-  <link rel="stylesheet" href="css/fontawesome.min.css">
-  <!-- Cairo Font Local -->
-  <link rel="stylesheet" href="fonts/cairo.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -36,6 +34,7 @@
     }
   </script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
     body {
       font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
@@ -170,6 +169,18 @@
   <!-- Custom Toast Notification -->
   <div id="toastContainer" class="fixed top-16 left-4 right-4 z-50 pointer-events-none flex flex-col items-center gap-2 max-w-sm mx-auto"></div>
 
+  <!-- Offline Action Modal -->
+  <div id="offlineModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up">
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 flex items-center justify-center text-xl">
+        <i class="fa-solid fa-wifi"></i>
+      </div>
+      <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-2">اتصال الإنترنت مطلوب</h3>
+      <p class="text-xs text-slate-600 dark:text-slate-400 mb-6">هذه الخدمة تحتاج إلى اتصال فعال بالإنترنت للتنفيذ، يرجى الاتصال بالشبكة وإعادة المحاولة.</p>
+      <button onclick="closeOfflineModal()" class="w-full py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-md shadow-brand-500/20">حسناً، فهمت</button>
+    </div>
+  </div>
+
   <!-- Confirmation Modal -->
   <div id="confirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up">
@@ -211,6 +222,53 @@
   </div>
 
   <script>
+    /* Service Worker Registration for Offline Support */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swBlob = new Blob([`
+          const CACHE_NAME = 'livrer-fes-cache-v1';
+          const ASSETS_TO_CACHE = [
+            './',
+            './index.html',
+            './morocco-map.png'
+          ];
+          self.addEventListener('install', (e) => {
+            e.waitUntil(
+              caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+            );
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', (e) => {
+            e.waitUntil(
+              caches.keys().then((keys) =>
+                Promise.all(keys.map((k) => k !== CACHE_NAME && caches.delete(k)))
+              )
+            );
+            self.clients.claim();
+          });
+          self.addEventListener('fetch', (e) => {
+            e.respondWith(
+              caches.match(e.request).then((res) => res || fetch(e.request).catch(() => caches.match('./index.html')))
+            );
+          });
+        `], { type: 'application/javascript' });
+        
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+      });
+    }
+
+    function checkOnlineStatus() {
+      return navigator.onLine;
+    }
+
+    function showOfflineModal() {
+      document.getElementById('offlineModal').classList.remove('hidden');
+    }
+
+    function closeOfflineModal() {
+      document.getElementById('offlineModal').classList.add('hidden');
+    }
+
     /* ==========================================================================
        1. DATA CONSTANTS & STORAGE REPOSITORY
        ========================================================================== */
@@ -608,6 +666,18 @@
       const cleaned = cleanPhoneNumber(phone);
       const text = encodeURIComponent(`السلام عليكم، تواصلت معك عبر تطبيق ليفرور فاس بخصوص ${contextTitle || 'خدمة التوصيل'}.`);
       return `https://wa.me/${cleaned}?text=${text}`;
+    }
+
+    function handleExternalAction(e, link) {
+      if (!checkOnlineStatus()) {
+        if (e) e.preventDefault();
+        showOfflineModal();
+        return false;
+      }
+      if (link) {
+        window.open(link, '_blank');
+      }
+      return true;
     }
 
     function showToast(message, type = 'info') {
@@ -1044,7 +1114,7 @@
               <i class="fa-solid fa-phone text-emerald-600"></i>
               <span>اتصال هاتفي</span>
             </a>
-            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+            <a href="${waLink}" onclick="return handleExternalAction(event, '${waLink}')" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>مراسلة WhatsApp</span>
             </a>
@@ -1230,7 +1300,7 @@
               <i class="fa-solid fa-phone text-emerald-600"></i>
               <span>اتصال هاتفي</span>
             </a>
-            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+            <a href="${waLink}" onclick="return handleExternalAction(event, '${waLink}')" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>واتساب WhatsApp</span>
             </a>
