@@ -56,27 +56,27 @@
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
-  <!-- Top App Bar -->
+  <!-- Top App Bar (Exact Match to Image 1) -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5">
+    <div class="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-2">
       
-      <!-- Left Controls Section (Role & Theme - Original Left Position) -->
-      <div class="flex items-center gap-1.5 shrink-0">
-        <!-- Role Selection Button -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2 sm:px-2.5 py-1.5 shadow-md flex items-center gap-1 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
-          <svg viewBox="0 0 12 12" class="w-2.5 h-2.5 text-[#1d4ed8] shrink-0" fill="currentColor">
-            <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
-          </svg>
+      <!-- Left Side (RTL Start): Role Selector & Theme Toggle (Identical to Image 1) -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Role Switcher Button -->
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 py-1.5 shadow-md flex items-center gap-1.5 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer">
           <div class="text-right flex flex-col justify-center">
-            <span class="text-[8px] sm:text-[9.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[6.5px] sm:text-[7.5px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+            <span class="text-[9px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[7.5px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
           </div>
+          <svg viewBox="0 0 12 12" class="w-2.5 h-2.5 text-[#1d4ed8] shrink-0" fill="currentColor">
+            <path d="M2 4.5 L6 8.5 L10 4.5 Z"/>
+          </svg>
         </button>
 
-        <!-- Night / Day Mode Toggle Button -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
+        <!-- Dark/Light Theme Button -->
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
           <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -84,46 +84,36 @@
         </button>
       </div>
 
-      <!-- Right Brand & Map & Scooter Section -->
-      <div class="flex items-center cursor-pointer shrink-0 ms-auto" onclick="navigateTo('home')">
+      <!-- Right Side (RTL End): Logo, Scooter & Map (Identical to Image 1) -->
+      <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
         
-        <!-- Delivery Scooter Rider -->
-        <div class="flex items-center justify-center shrink-0 me-1 sm:me-1.5">
-          <svg viewBox="0 0 120 85" class="w-12 h-9 sm:w-14 sm:h-11 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Scooter Rider Icon -->
+        <div class="flex items-center justify-center shrink-0 me-1">
+          <svg viewBox="0 0 120 85" class="w-10 h-8 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
             <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
             <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
-            <line x1="65" y1="47" x2="100" y2="47" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
-            <line x1="58" y1="70" x2="98" y2="70" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
             <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
             <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
             <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
             <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
             <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
             <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
-            <path d="M46 28 L32 36" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
-            <path d="M46 47 L40 59 L30 59" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <circle cx="22" cy="67" r="4" fill="#94a3b8"/>
             <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <circle cx="67" cy="67" r="4" fill="#94a3b8"/>
             <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
-            <path d="M30 43 L34 32 L37 32 L35 43 Z" fill="#38bdf8"/>
-            <path d="M31 32 L27 31" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M27 38 L23 41" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
-            <path d="M42 46 Q56 45 63 49" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round"/>
           </svg>
         </div>
 
-        <!-- Brand Typography -->
-        <div class="text-right flex flex-col justify-center gap-0.5 me-2 py-0.5">
-          <h1 class="font-black text-base sm:text-lg text-white tracking-wide leading-tight">LIVLINK MA</h1>
-          <p class="text-[7.5px] sm:text-[8.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة التوصيل الوطنية بالمغرب</p>
+        <!-- App Branding Titles -->
+        <div class="text-right flex flex-col justify-center gap-0 me-1.5 py-0.5">
+          <h1 class="font-black text-base text-white tracking-wide leading-none">LIVLINK MA</h1>
+          <p class="text-[7.5px] text-slate-300 font-medium leading-tight whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
 
-        <!-- Morocco Map Asset -->
-        <div class="h-8 sm:h-9 shrink-0 flex items-center justify-center">
-          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
+        <!-- Morocco Map Graphic -->
+        <div class="h-7 shrink-0 flex items-center justify-center">
+          <img src="morocco-map.png" alt="المغرب" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
         </div>
 
       </div>
@@ -131,12 +121,12 @@
     </div>
   </header>
 
-  <!-- Main View Container -->
-  <main id="appContainer" class="max-w-md mx-auto px-4 pt-4 pb-safe">
-    <!-- Dynamic views injected here -->
+  <!-- Main App View -->
+  <main id="appContainer" class="max-w-md mx-auto px-3.5 pt-4 pb-safe">
+    <!-- Views dynamically rendered here -->
   </main>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- Bottom Navigation -->
   <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
     <div class="max-w-md mx-auto flex items-center justify-around py-2 px-1">
       <button onclick="navigateTo('home')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="home">
@@ -164,10 +154,10 @@
     </div>
   </nav>
 
-  <!-- Custom Toast Notification -->
+  <!-- Toast Container -->
   <div id="toastContainer" class="fixed top-16 left-4 right-4 z-50 pointer-events-none flex flex-col items-center gap-2 max-w-sm mx-auto"></div>
 
-  <!-- Confirmation Modal -->
+  <!-- Confirm Modal -->
   <div id="confirmModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up">
       <div id="confirmIconBox" class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-400 flex items-center justify-center text-xl">
@@ -240,107 +230,77 @@
       tangier: {
         id: 'tangier',
         nameAr: 'طنجة',
-        districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مغ doغة', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب', 'العوامة', 'تشار الخراف']
+        districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب', 'العوامة']
       },
       agadir: {
         id: 'agadir',
         nameAr: 'أكادير',
-        districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'صنهاجة', 'تيلضي', 'المحادي', 'الحي المحمدي']
+        districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'تيلضي', 'الحي المحمدي']
       },
       meknes: {
         id: 'meknes',
         nameAr: 'مكناس',
-        districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين', 'عين معزة', 'حي مولاي إسماعيل']
+        districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين']
       },
       salé: {
         id: 'salé',
         nameAr: 'سلا',
-        districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى', 'سعيد حجي', 'حي السلام']
+        districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى', 'سعيد حجي']
       },
       oujda: {
         id: 'oujda',
         nameAr: 'وجدة',
-        districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش', 'حي الوحدة', 'حي الاندلس']
+        districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش', 'حي الوحدة']
       },
       tetouan: {
         id: 'tetouan',
         nameAr: 'تطوان',
-        districts: ['المدينة القديمة', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة', 'حي الملاح', 'حي السكنى والتعمير']
+        districts: ['المدينة القديمة', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة', 'حي الملاح']
       },
       kenitra: {
         id: 'kenitra',
         nameAr: 'القنيطرة',
-        districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي', 'حي الوفاء', 'حي الإسماعيلية']
+        districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي', 'حي الوفاء']
       },
       safi: {
         id: 'safi',
         nameAr: 'آسفي',
-        districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية', 'حي أنس', 'حي الكوثر']
+        districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية', 'حي أنس']
       },
       laayoune: {
         id: 'laayoune',
         nameAr: 'العيون',
-        districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل', 'حي مولاي رشيد', 'الحي الحسني']
+        districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل', 'الحي الحسني']
       },
       nador: {
         id: 'nador',
         nameAr: 'الناظور',
-        districts: ['وسط المدينة', 'حي العريض', 'حي المطار', 'حي أولاد بوطيب', 'تاويمة', 'حي الخركور']
+        districts: ['وسط المدينة', 'حي العريض', 'حي المطار', 'حي أولاد بوطيب', 'تاويمة']
       },
       beni_mellal: {
         id: 'beni_mellal',
         nameAr: 'بني ملال',
-        districts: ['وسط المدينة', 'حي الأمل', 'حي الهدى', 'حي العامرية', 'حي رياض السلام', 'عين أسردون']
+        districts: ['وسط المدينة', 'حي الأمل', 'حي الهدى', 'حي العامرية', 'عين أسردون']
       },
       khouribga: {
         id: 'khouribga',
         nameAr: 'خريبكة',
-        districts: ['وسط المدينة', 'حي الفردوس', 'حي البيوت', 'حي الياسمين', 'حي الفرح', 'حي الهناء']
+        districts: ['وسط المدينة', 'حي الفردوس', 'حي البيوت', 'حي الياسمين', 'حي الفرح']
       },
       mohammedia: {
         id: 'mohammedia',
         nameAr: 'المحمدية',
-        districts: ['وسط المدينة', 'العالية', 'الراشيدية', 'حي السعادة', 'حي النصر', 'حي الشاطئ']
+        districts: ['وسط المدينة', 'العالية', 'الراشيدية', 'حي السعادة', 'حي النصر']
       },
       el_jadida: {
         id: 'el_jadida',
         nameAr: 'الجديدة',
-        districts: ['وسط المدينة', 'حي القليعة', 'الحي البرتغالي', 'حي السعادة', 'حي مطار', 'حي السلام']
+        districts: ['وسط المدينة', 'حي القليعة', 'الحي البرتغالي', 'حي السعادة', 'حي السلام']
       },
       taza: {
         id: 'taza',
         nameAr: 'تازة',
-        districts: ['تازة العليا', 'تازة السفلى', 'حي بيت غلام', 'حي المسيرة', 'حي قدور الورطاسي']
-      },
-      khenifra: {
-        id: 'khenifra',
-        nameAr: 'خنيفرة',
-        districts: ['وسط المدينة', 'حي أمللو', 'حي التضامن', 'حي الفتح', 'حي النصر']
-      },
-      dcheira: {
-        id: 'dcheira',
-        nameAr: 'الدشيرة الجهادية',
-        districts: ['وسط المدينة', 'حي بنسركاو', 'حي السعادة', 'حي الجهادية']
-      },
-      taroudant: {
-        id: 'taroudant',
-        nameAr: 'تارودانت',
-        districts: ['داخل السور', 'حي المحايطة', 'حي زرق doن', 'حي لسطاح', 'حي أسطاح']
-      },
-      ouarzazate: {
-        id: 'ouarzazate',
-        nameAr: 'ورزازات',
-        districts: ['وسط المدينة', 'حي الوحدة', 'قصبة أيت بن حدو', 'حي النصر', 'حي تاسيلا']
-      },
-      essaouira: {
-        id: 'essaouira',
-        nameAr: 'الصويرة',
-        districts: ['المدينة القديمة', 'حي الملاح', 'حي السقالة', 'حي الغزوة', 'حي التجزئة']
-      },
-      al_hoceima: {
-        id: 'al_hoceima',
-        nameAr: 'الحسيمة',
-        districts: ['وسط المدينة', 'حي كالابونيتا', 'حي سيدي عابد', 'حي الميرادور', 'حي بوجيبار']
+        districts: ['تازة العليا', 'تازة السفلى', 'حي بيت غلام', 'حي المسيرة']
       }
     };
 
@@ -410,23 +370,6 @@
         notes: 'عمل هادئ ومناسب لدراجة هوائية عادية أو كهربائية.',
         status: 'open',
         createdAt: '2026-10-02'
-      },
-      {
-        id: 'off-4',
-        shopName: 'مخبزة وحلويات جليز',
-        shopType: 'مخبزة وحلويات',
-        city: 'marrakech',
-        district: 'جليز',
-        vehicle: 'سيارة',
-        paymentType: 'شهري',
-        price: 4800,
-        workingHours: '07:00 - 15:00',
-        phone: '0664567890',
-        whatsapp: '0664567890',
-        description: 'توزيع الحلويات والمخبوزات على المقاهي والفنادق بمراكش.',
-        notes: 'سيارة صغيرة أو كونغو، خبرة سابقة مطلوبة.',
-        status: 'open',
-        createdAt: '2026-10-03'
       }
     ];
 
@@ -457,20 +400,6 @@
         experience: '3 سنوات في التوصيل الحر مع المحلات بالدار البيضاء',
         isAvailable: true,
         notes: 'أبحث عن عمل قار مع مطعم أو محل تجاري، منضبط وجاد.',
-        createdAt: '2026-10-02'
-      },
-      {
-        id: 'drv-3',
-        name: 'حمزة الرباطي',
-        city: 'rabat',
-        district: 'حسان',
-        vehicle: 'دراجة هوائية',
-        phone: '0673334455',
-        whatsapp: '0673334455',
-        freeHours: 'صباحاً (09:00 - 15:00)',
-        experience: 'سنة في توصيل الطرود الخفيفة',
-        isAvailable: true,
-        notes: 'توصيل سريع داخل أزقة حسان وأقدال بالدراجة الهوائية.',
         createdAt: '2026-10-02'
       }
     ];
@@ -734,14 +663,14 @@
       if (container) {
         if (isDark) {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
               <path d="M19 4.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" fill="#ffffff"/>
             </svg>
           `;
         } else {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -843,42 +772,46 @@
 
       return `
         <div class="space-y-6">
-          <!-- Hero Section -->
+          <!-- Hero Banner Section -->
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-5 sm:p-6 shadow-xl shadow-brand-900/20">
             <div class="relative z-10 space-y-3">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
                 <i class="fa-solid fa-sparkles text-[10px]"></i> منصة وطنية مجانية 100% للمغرب 🇲🇦
               </span>
               <h2 class="text-xl sm:text-2xl font-black leading-tight">
                 ربط المحلات والمطاعم<br>بالليفرورات في جميع المدن المغربية
               </h2>
               <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
-                تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات.
+                تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات خفية.
               </p>
               
-              <!-- Action Buttons Row (3 items spaced equally) -->
-              <div class="pt-2 flex items-center justify-between gap-1.5 sm:gap-2">
-                <button onclick="navigateTo('offers')" class="flex-1 py-2.5 px-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] sm:text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap">
-                  <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
-                  <span>تصفح العروض</span>
-                </button>
-
-                <button onclick="navigateTo('create')" class="flex-1 py-2.5 px-2 bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap">
-                  <i class="fa-solid fa-plus text-[10px]"></i>
-                  <span>+ نشر جديد</span>
-                </button>
-
-                <!-- Moroccan Cities Selector Button -->
-                <div class="flex-1 relative">
-                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 px-2 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10.5px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none truncate">
+              <!-- Perfectly Balanced Action Buttons Row (3 items, fully visible text) -->
+              <div class="pt-2.5 flex items-center justify-between gap-1.5">
+                
+                <!-- City Dropdown Button (Fully visible text "جميع مدن المغرب") -->
+                <div class="flex-1 min-w-0 relative">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2 px-1 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-[11px] rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none leading-none h-9 flex items-center justify-center">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
                   </select>
-                  <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-[9px]">
+                  <div class="pointer-events-none absolute left-1.5 top-1/2 -translate-y-1/2 text-amber-400 text-[8px]">
                     <i class="fa-solid fa-chevron-down"></i>
                   </div>
                 </div>
+
+                <!-- New Offer Button -->
+                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
+                  <i class="fa-solid fa-plus text-[9px]"></i>
+                  <span>+ نشر جديد</span>
+                </button>
+
+                <!-- Browse Offers Button -->
+                <button onclick="navigateTo('offers')" class="flex-1 min-w-0 py-2 px-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
+                  <i class="fa-solid fa-magnifying-glass text-[9px]"></i>
+                  <span>تصفح العروض</span>
+                </button>
+
               </div>
 
             </div>
@@ -887,7 +820,7 @@
             </div>
           </div>
 
-          <!-- Quick Action Cards -->
+          <!-- Quick Actions Grid -->
           <div class="space-y-3">
             <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               <i class="fa-solid fa-compass text-brand-600"></i> شنو كتقلب عليه؟
@@ -898,7 +831,7 @@
                   <i class="fa-solid fa-shop"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">أحتاج لليفرور</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات للبحث عن سائق توصيل</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات والمطاعم للبحث عن سائق متوفر</p>
                 <div class="mt-3 text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1">
                   <span>عرض الليفرورات</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -910,7 +843,7 @@
                   <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">كنقلب على خدمة</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل بالمغرب</p>
                 <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <span>تصفح العروض</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -919,7 +852,7 @@
             </div>
           </div>
 
-          <!-- Platform Statistics -->
+          <!-- Quick Statistics -->
           <div class="grid grid-cols-3 gap-2.5">
             <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
               <span class="block text-xl font-black text-brand-600 dark:text-brand-400">${activeOffersCount}</span>
@@ -935,7 +868,7 @@
             </div>
           </div>
 
-          <!-- Latest Offers Section -->
+          <!-- Latest Offers List -->
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
@@ -1042,7 +975,7 @@
             </div>
           </div>
 
-          <!-- Offers List -->
+          <!-- Offers Cards -->
           <div class="space-y-3.5">
             ${filtered.length > 0 
               ? filtered.map(offer => renderOfferCard(offer)).join('')
@@ -1367,11 +1300,11 @@
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
 
-    // 4. CREATE / REGISTER VIEW (DYNAMIC CITY & DISTRICT FORMS)
+    // 4. CREATE / REGISTER VIEW
     function viewCreate(activeTab = 'offer') {
       return `
         <div class="space-y-4">
-          <!-- Toggle Tabs -->
+          <!-- Switcher Buttons -->
           <div class="flex p-1.5 bg-slate-200/80 dark:bg-slate-800 rounded-2xl">
             <button onclick="switchCreateTab('offer')" class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${activeTab === 'offer' ? 'bg-white dark:bg-slate-900 text-brand-600 dark:text-white shadow-sm' : 'text-slate-600 dark:text-slate-400'}">
               <i class="fa-solid fa-shop"></i> نشر عرض عمل للمحلات
@@ -1563,7 +1496,7 @@
 
             <div>
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نبذة عنك / ملاحظات</label>
-              <textarea id="drvNotes" rows="2" placeholder="أذكر متطلباتك أو مميزاتك (مثلا: أمتلك صندوق حراري حافظ للحرارة)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"></textarea>
+              <textarea id="drvNotes" rows="2" placeholder="أذكر متطلباتك أو مميزاتك..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"></textarea>
             </div>
           </div>
 
@@ -1629,7 +1562,7 @@
       navigateTo('drivers');
     }
 
-    // 5. ACCOUNT / SETTINGS VIEW
+    // 5. ACCOUNT VIEW
     function viewAccount() {
       const offers = DataService.getOffers();
       const currentRole = DataService.getUserRole();
@@ -1741,7 +1674,7 @@
       );
     }
 
-    /* Application Entry Point */
+    /* Entry Point */
     document.addEventListener('DOMContentLoaded', () => {
       DataService.init();
       initTheme();
