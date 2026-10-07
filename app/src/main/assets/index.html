@@ -56,27 +56,27 @@
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
 
-  <!-- Top App Bar (Exact Match to Image 1) -->
+  <!-- Top App Bar (Adjusted Layout & Sizing) -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-2">
+    <div class="max-w-md mx-auto px-3 h-16 flex items-center justify-between gap-1.5">
       
-      <!-- Left Side (RTL Start): Role Selector & Theme Toggle (Identical to Image 1) -->
+      <!-- Left Side (RTL Start): Role Selector & Theme Toggle (Extreme Left) -->
       <div class="flex items-center gap-2 shrink-0">
         <!-- Role Switcher Button -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 py-1.5 shadow-md flex items-center gap-1.5 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer">
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-3 py-1.5 shadow-md flex items-center gap-1.5 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer">
           <div class="text-right flex flex-col justify-center">
-            <span class="text-[9px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[7.5px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+            <span class="text-[10px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[8.5px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
           </div>
-          <svg viewBox="0 0 12 12" class="w-2.5 h-2.5 text-[#1d4ed8] shrink-0" fill="currentColor">
+          <svg viewBox="0 0 12 12" class="w-3 h-3 text-[#1d4ed8] shrink-0" fill="currentColor">
             <path d="M2 4.5 L6 8.5 L10 4.5 Z"/>
           </svg>
         </button>
 
         <!-- Dark/Light Theme Button -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-9 h-9 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
           <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -84,38 +84,36 @@
         </button>
       </div>
 
-      <!-- Right Side (RTL End): Logo, Scooter & Map (Identical to Image 1) -->
-      <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
-        
-        <!-- Scooter Rider Icon -->
-        <div class="flex items-center justify-center shrink-0 me-1">
-          <svg viewBox="0 0 120 85" class="w-10 h-8 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
-            <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
-            <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
-            <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
-            <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
-            <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
-            <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
-            <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-            <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
-            <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
-          </svg>
-        </div>
+      <!-- Center: Enlarged Scooter Rider Icon -->
+      <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')">
+        <svg viewBox="0 0 120 85" class="w-12 h-10 shrink-0 filter drop-shadow" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
+          <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+          <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.75"/>
+          <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
+          <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
+          <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
+          <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
+          <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+          <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
+          <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+          <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+          <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
+        </svg>
+      </div>
 
+      <!-- Right Side (RTL End): Map & App Titles (Extreme Right) -->
+      <div class="flex items-center cursor-pointer shrink-0 gap-2" onclick="navigateTo('home')">
         <!-- App Branding Titles -->
-        <div class="text-right flex flex-col justify-center gap-0 me-1.5 py-0.5">
-          <h1 class="font-black text-base text-white tracking-wide leading-none">LIVLINK MA</h1>
-          <p class="text-[7.5px] text-slate-300 font-medium leading-tight whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
+        <div class="text-right flex flex-col justify-center gap-0.5">
+          <h1 class="font-black text-lg text-white tracking-wide leading-none">LIVLINK MA</h1>
+          <p class="text-[8px] text-slate-300 font-bold leading-tight whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
         </div>
 
         <!-- Morocco Map Graphic -->
-        <div class="h-7 shrink-0 flex items-center justify-center">
-          <img src="morocco-map.png" alt="المغرب" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
+        <div class="h-8 shrink-0 flex items-center justify-center">
+          <img src="morocco-map.png" alt="المغرب" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_4px_rgba(200,16,46,0.4)]" onerror="this.style.display='none'">
         </div>
-
       </div>
 
     </div>
@@ -663,14 +661,14 @@
       if (container) {
         if (isDark) {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
               <path d="M19 4.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" fill="#ffffff"/>
             </svg>
           `;
         } else {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -778,24 +776,29 @@
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
                 <i class="fa-solid fa-sparkles text-[10px]"></i> منصة وطنية مجانية 100% للمغرب 🇲🇦
               </span>
-              <h2 class="text-xl sm:text-2xl font-black leading-tight">
-                ربط المحلات والمطاعم<br>بالليفرورات في جميع المدن المغربية
+              
+              <!-- Updated Hero Title (Single line for "في جميع المدن المغربية") -->
+              <h2 class="text-lg sm:text-xl font-black leading-snug">
+                ربط المحلات والمطاعم بالليفرورات<br>
+                <span class="text-amber-400">في جميع المدن المغربية</span>
               </h2>
+
               <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
                 تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات خفية.
               </p>
               
-              <!-- Perfectly Balanced Action Buttons Row (3 items, fully visible text) -->
+              <!-- Action Buttons Row (Clear Chevron & Prominent Dropdown Button) -->
               <div class="pt-2.5 flex items-center justify-between gap-1.5">
                 
-                <!-- City Dropdown Button (Fully visible text "جميع مدن المغرب") -->
+                <!-- City Dropdown Button (Clear Text & Prominent Chevron Arrow) -->
                 <div class="flex-1 min-w-0 relative">
-                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2 px-1 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-[11px] rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none leading-none h-9 flex items-center justify-center">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pl-7 pr-2 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[11px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none leading-none h-9 flex items-center justify-center">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
                   </select>
-                  <div class="pointer-events-none absolute left-1.5 top-1/2 -translate-y-1/2 text-amber-400 text-[8px]">
+                  <!-- Clear Prominent Chevron Arrow on Left -->
+                  <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-xs font-black">
                     <i class="fa-solid fa-chevron-down"></i>
                   </div>
                 </div>
@@ -1169,7 +1172,7 @@
 
               <select onchange="handleDriverVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل المركبات</option>
-                ${VEHICLE_TYPES.map(v => `<option value="${v}" ${filterVehicleDriver === v ? 'selected' : ''}>${v}</option>`).join('')}
+                ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
               </select>
 
               <select onchange="handleDriverAvailableChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
