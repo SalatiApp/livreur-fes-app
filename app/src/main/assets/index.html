@@ -60,23 +60,36 @@
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
     <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5">
       
-      <!-- Brand & Map & Scooter Section -->
-      <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
+      <!-- Left Controls Section (Role & Theme - Original Left Position) -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <!-- Role Selection Button -->
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2 sm:px-2.5 py-1.5 shadow-md flex items-center gap-1 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
+          <svg viewBox="0 0 12 12" class="w-2.5 h-2.5 text-[#1d4ed8] shrink-0" fill="currentColor">
+            <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
+          </svg>
+          <div class="text-right flex flex-col justify-center">
+            <span class="text-[8px] sm:text-[9.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[6.5px] sm:text-[7.5px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+          </div>
+        </button>
+
+        <!-- Night / Day Mode Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
+          <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- Right Brand & Map & Scooter Section -->
+      <div class="flex items-center cursor-pointer shrink-0 ms-auto" onclick="navigateTo('home')">
         
-        <!-- 1. Authentic Morocco Map Asset -->
-        <div class="h-9 sm:h-10 shrink-0 flex items-center justify-center">
-          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
-        </div>
-
-        <!-- 2. Brand Typography -->
-        <div class="text-right flex flex-col justify-center gap-0.5 sm:gap-1 ms-2 sm:ms-2.5 py-0.5">
-          <h1 class="font-black text-lg sm:text-xl text-white tracking-wide leading-tight">LIVLINK MA</h1>
-          <p class="text-[8px] sm:text-[9.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة التوصيل الوطنية بالمغرب</p>
-        </div>
-
-        <!-- 3. Delivery Scooter Rider -->
-        <div class="flex items-center justify-center shrink-0 ms-1 sm:ms-1.5">
-          <svg viewBox="0 0 120 85" class="w-14 h-11 sm:w-16 sm:h-13 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- Delivery Scooter Rider -->
+        <div class="flex items-center justify-center shrink-0 me-1 sm:me-1.5">
+          <svg viewBox="0 0 120 85" class="w-12 h-9 sm:w-14 sm:h-11 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
             <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
             <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
@@ -102,38 +115,17 @@
           </svg>
         </div>
 
-      </div>
+        <!-- Brand Typography -->
+        <div class="text-right flex flex-col justify-center gap-0.5 me-2 py-0.5">
+          <h1 class="font-black text-base sm:text-lg text-white tracking-wide leading-tight">LIVLINK MA</h1>
+          <p class="text-[7.5px] sm:text-[8.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة التوصيل الوطنية بالمغرب</p>
+        </div>
 
-      <!-- Center Controls: City Selector & Dark Mode -->
-      <div class="flex-1 flex items-center justify-end gap-1 px-1">
-        <!-- Global City Quick Selector -->
-        <select id="globalCitySelector" onchange="handleGlobalCityChange(this.value)" class="bg-[#141e2e] text-amber-400 font-extrabold text-[10px] sm:text-[11px] py-1.5 px-2 rounded-xl border border-slate-700 focus:outline-none cursor-pointer">
-          <!-- Populated dynamically via JS -->
-        </select>
+        <!-- Morocco Map Asset -->
+        <div class="h-8 sm:h-9 shrink-0 flex items-center justify-center">
+          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
+        </div>
 
-        <!-- Night / Day Mode Toggle Button -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
-          <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
-            </svg>
-          </span>
-        </button>
-      </div>
-
-      <!-- Left Controls Section -->
-      <div class="flex items-center shrink-0 ms-1">
-        <!-- Role Selection Button -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2 sm:px-3 py-1.5 shadow-md flex items-center gap-1 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
-          <svg viewBox="0 0 12 12" class="w-3 h-3 text-[#1d4ed8] shrink-0" fill="currentColor">
-            <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
-          </svg>
-          <div class="text-right flex flex-col justify-center">
-            <span class="text-[8.5px] sm:text-[10px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[7px] sm:text-[8px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(محل_ليفرور)</span>
-          </div>
-        </button>
       </div>
 
     </div>
@@ -217,7 +209,7 @@
 
   <script>
     /* ==========================================================================
-       1. MOROCCO CITIES & DISTRICTS NATIONAL DATASTRUCTURE
+       1. MOROCCO CITIES & DISTRICTS COMPREHENSIVE NATIONAL DATASTRUCTURE
        ========================================================================== */
     const MOROCCO_CITIES = {
       all: {
@@ -228,67 +220,127 @@
       casablanca: {
         id: 'casablanca',
         nameAr: 'الدار البيضاء',
-        districts: ['أنفا', 'المعاريف', 'سيدي بليوط', 'عين الشق', 'الحي الحسني', 'سيدي البرنوصي', 'عين السبع', 'مولاي رشيد', 'سيدي عثمان', 'بن مسيك', 'سباتة', 'بوركون', 'كاليفورنيا', 'الولفة']
+        districts: ['أنفا', 'المعاريف', 'سيدي بليوط', 'عين الشق', 'الحي الحسني', 'سيدي البرنوصي', 'عين السبع', 'مولاي رشيد', 'سيدي عثمان', 'بن مسيك', 'سباتة', 'بوركون', 'كاليفورنيا', 'الولفة', 'حي المحمدي', 'عين الحرودة', 'بوسكورة', 'دار بوعزة']
       },
       rabat: {
         id: 'rabat',
         nameAr: 'الرباط',
-        districts: ['أقدال', 'حسان', 'يعقوب المنصور', 'السويسي', 'الرياض', 'اليوسفية', 'حي النهضة', 'ديور الجامع', 'العكاري']
+        districts: ['أقدال', 'حسان', 'يعقوب المنصور', 'السويسي', 'الرياض', 'اليوسفية', 'حي النهضة', 'ديور الجامع', 'العكاري', 'المنزه', 'حي الفتح']
       },
       fes: {
         id: 'fes',
         nameAr: 'فاس',
-        districts: ['أكدال', 'المرينيين', 'زواغة', 'سائس', 'فاس المدينة', 'النرجس', 'طريق صفرو', 'بنسودة', 'طارق', 'عين هارون', 'سهب الورد', 'حي طارق']
+        districts: ['أكدال', 'المرينيين', 'زواغة', 'سائس', 'فاس المدينة', 'النرجس', 'طريق صفرو', 'بنسودة', 'طارق', 'عين هارون', 'سهب الورد', 'حي طارق', 'مونفلوري', 'عين الشقف']
       },
       marrakech: {
         id: 'marrakech',
         nameAr: 'مراكش',
-        districts: ['جليز', 'المدينة القديمة', 'النخيل', 'المحاميد', 'سيدي يوسف بن علي', 'المسيرة', 'تاركة', 'داوديات', 'أزلي', 'سعادة']
+        districts: ['جليز', 'المدينة القديمة', 'النخيل', 'المحاميد', 'سيدي يوسف بن علي', 'المسيرة', 'تاركة', 'داوديات', 'أزلي', 'سعادة', 'المعاريف', 'أغادير بوعشوش']
       },
       tangier: {
         id: 'tangier',
         nameAr: 'طنجة',
-        districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مغ doغة', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب']
+        districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مغ doغة', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب', 'العوامة', 'تشار الخراف']
       },
       agadir: {
         id: 'agadir',
         nameAr: 'أكادير',
-        districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'صنهاجة', 'تيلضي']
+        districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'صنهاجة', 'تيلضي', 'المحادي', 'الحي المحمدي']
       },
       meknes: {
         id: 'meknes',
         nameAr: 'مكناس',
-        districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين']
+        districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين', 'عين معزة', 'حي مولاي إسماعيل']
       },
       salé: {
         id: 'salé',
         nameAr: 'سلا',
-        districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى']
+        districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى', 'سعيد حجي', 'حي السلام']
       },
       oujda: {
         id: 'oujda',
         nameAr: 'وجدة',
-        districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش']
+        districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش', 'حي الوحدة', 'حي الاندلس']
       },
       tetouan: {
         id: 'tetouan',
         nameAr: 'تطوان',
-        districts: ['المدينة القديمة', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة']
+        districts: ['المدينة القديمة', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة', 'حي الملاح', 'حي السكنى والتعمير']
       },
       kenitra: {
         id: 'kenitra',
         nameAr: 'القنيطرة',
-        districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي']
+        districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي', 'حي الوفاء', 'حي الإسماعيلية']
       },
       safi: {
         id: 'safi',
         nameAr: 'آسفي',
-        districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية']
+        districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية', 'حي أنس', 'حي الكوثر']
       },
       laayoune: {
         id: 'laayoune',
         nameAr: 'العيون',
-        districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل']
+        districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل', 'حي مولاي رشيد', 'الحي الحسني']
+      },
+      nador: {
+        id: 'nador',
+        nameAr: 'الناظور',
+        districts: ['وسط المدينة', 'حي العريض', 'حي المطار', 'حي أولاد بوطيب', 'تاويمة', 'حي الخركور']
+      },
+      beni_mellal: {
+        id: 'beni_mellal',
+        nameAr: 'بني ملال',
+        districts: ['وسط المدينة', 'حي الأمل', 'حي الهدى', 'حي العامرية', 'حي رياض السلام', 'عين أسردون']
+      },
+      khouribga: {
+        id: 'khouribga',
+        nameAr: 'خريبكة',
+        districts: ['وسط المدينة', 'حي الفردوس', 'حي البيوت', 'حي الياسمين', 'حي الفرح', 'حي الهناء']
+      },
+      mohammedia: {
+        id: 'mohammedia',
+        nameAr: 'المحمدية',
+        districts: ['وسط المدينة', 'العالية', 'الراشيدية', 'حي السعادة', 'حي النصر', 'حي الشاطئ']
+      },
+      el_jadida: {
+        id: 'el_jadida',
+        nameAr: 'الجديدة',
+        districts: ['وسط المدينة', 'حي القليعة', 'الحي البرتغالي', 'حي السعادة', 'حي مطار', 'حي السلام']
+      },
+      taza: {
+        id: 'taza',
+        nameAr: 'تازة',
+        districts: ['تازة العليا', 'تازة السفلى', 'حي بيت غلام', 'حي المسيرة', 'حي قدور الورطاسي']
+      },
+      khenifra: {
+        id: 'khenifra',
+        nameAr: 'خنيفرة',
+        districts: ['وسط المدينة', 'حي أمللو', 'حي التضامن', 'حي الفتح', 'حي النصر']
+      },
+      dcheira: {
+        id: 'dcheira',
+        nameAr: 'الدشيرة الجهادية',
+        districts: ['وسط المدينة', 'حي بنسركاو', 'حي السعادة', 'حي الجهادية']
+      },
+      taroudant: {
+        id: 'taroudant',
+        nameAr: 'تارودانت',
+        districts: ['داخل السور', 'حي المحايطة', 'حي زرق doن', 'حي لسطاح', 'حي أسطاح']
+      },
+      ouarzazate: {
+        id: 'ouarzazate',
+        nameAr: 'ورزازات',
+        districts: ['وسط المدينة', 'حي الوحدة', 'قصبة أيت بن حدو', 'حي النصر', 'حي تاسيلا']
+      },
+      essaouira: {
+        id: 'essaouira',
+        nameAr: 'الصويرة',
+        districts: ['المدينة القديمة', 'حي الملاح', 'حي السقالة', 'حي الغزوة', 'حي التجزئة']
+      },
+      al_hoceima: {
+        id: 'al_hoceima',
+        nameAr: 'الحسيمة',
+        districts: ['وسط المدينة', 'حي كالابونيتا', 'حي سيدي عابد', 'حي الميرادور', 'حي بوجيبار']
       }
     };
 
@@ -306,7 +358,7 @@
       'أسبوعي'
     ];
 
-    // Initial mock dataset (National Coverage)
+    // Initial mock dataset
     const INITIAL_OFFERS = [
       {
         id: 'off-1',
@@ -660,17 +712,8 @@
     function updateRoleHeader() {
       const badge = document.getElementById('headerRoleBadge');
       if (badge) {
-        badge.innerText = '(محل_ليفرور)';
+        badge.innerText = '(صاحب محل_ليفرور)';
       }
-    }
-
-    function populateGlobalCitySelector() {
-      const sel = document.getElementById('globalCitySelector');
-      if (!sel) return;
-      const currentCity = DataService.getSelectedCity();
-      sel.innerHTML = Object.keys(MOROCCO_CITIES).map(key => `
-        <option value="${key}" ${key === currentCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
-      `).join('');
     }
 
     function handleGlobalCityChange(cityId) {
@@ -691,14 +734,14 @@
       if (container) {
         if (isDark) {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
               <path d="M19 4.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" fill="#ffffff"/>
             </svg>
           `;
         } else {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -801,25 +844,43 @@
       return `
         <div class="space-y-6">
           <!-- Hero Section -->
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-6 shadow-xl shadow-brand-900/20">
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-5 sm:p-6 shadow-xl shadow-brand-900/20">
             <div class="relative z-10 space-y-3">
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
                 <i class="fa-solid fa-sparkles text-[10px]"></i> منصة وطنية مجانية 100% للمغرب 🇲🇦
               </span>
-              <h2 class="text-2xl font-black leading-tight">
-                ربط المحلات والمطاعم<br>بالليفرورات في جميع المدن
+              <h2 class="text-xl sm:text-2xl font-black leading-tight">
+                ربط المحلات والمطاعم<br>بالليفرورات في جميع المدن المغربية
               </h2>
               <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
                 تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات.
               </p>
-              <div class="pt-2 flex flex-wrap gap-2">
-                <button onclick="navigateTo('offers')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition-all active:scale-95">
-                  <i class="fa-solid fa-magnifying-glass ml-1.5"></i> تصفح العروض
+              
+              <!-- Action Buttons Row (3 items spaced equally) -->
+              <div class="pt-2 flex items-center justify-between gap-1.5 sm:gap-2">
+                <button onclick="navigateTo('offers')" class="flex-1 py-2.5 px-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] sm:text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap">
+                  <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
+                  <span>تصفح العروض</span>
                 </button>
-                <button onclick="navigateTo('create')" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl border border-white/20 transition-all active:scale-95">
-                  <i class="fa-solid fa-plus ml-1.5"></i> نشر جديد
+
+                <button onclick="navigateTo('create')" class="flex-1 py-2.5 px-2 bg-white/10 hover:bg-white/20 text-white font-bold text-[11px] sm:text-xs rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1 whitespace-nowrap">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>+ نشر جديد</span>
                 </button>
+
+                <!-- Moroccan Cities Selector Button -->
+                <div class="flex-1 relative">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 px-2 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10.5px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none truncate">
+                    ${Object.keys(MOROCCO_CITIES).map(key => `
+                      <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
+                    `).join('')}
+                  </select>
+                  <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-[9px]">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
               </div>
+
             </div>
             <div class="absolute -left-6 -bottom-6 text-brand-600/30 text-8xl pointer-events-none select-none">
               <i class="fa-solid fa-motorcycle"></i>
@@ -1685,7 +1746,6 @@
       DataService.init();
       initTheme();
       updateRoleHeader();
-      populateGlobalCitySelector();
       renderPage('home');
     });
   </script>
