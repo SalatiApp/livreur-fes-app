@@ -14,10 +14,12 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>LIVLINK MA | المنصة الوطنية لتوصيل الطلبات والمحلات</title>
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -43,11 +45,28 @@
       }
     }
   </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+    
+    /* الأساسيات لمنع تخربق الواجهة بدون إنترنت */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      background-color: #020617;
+      color: #f8fafc;
+    }
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+    select, input, textarea, button {
+      font-family: inherit;
     }
     .pb-safe {
       padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
@@ -167,6 +186,22 @@
         <button id="confirmCancelBtn" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs">إلغاء</button>
         <button id="confirmOkBtn" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs shadow-md shadow-red-500/20">تأكيد</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Offline Warning Modal (نافذة لا يوجد إنترنت) -->
+  <div id="offlineModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl">
+        <i class="fa-solid fa-wifi-slash"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-1">لا يوجد اتصال بالإنترنت</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">يرجى الاتصال بالشبكة للمتابعة وإكمال هذا الإجراء.</p>
+      </div>
+      <button onclick="closeOfflineModal()" class="w-full py-2.5 rounded-xl bg-brand-600 text-white font-bold text-xs shadow-md shadow-brand-500/20 active:scale-95 transition-all">
+        حسناً، فهمت
+      </button>
     </div>
   </div>
 
@@ -526,8 +561,25 @@
     };
 
     /* ==========================================================================
-       2. UTILITIES (SECURITY, FORMATTING, TOASTS, MODALS)
+       2. UTILITIES & OFFLINE CHECKER
        ========================================================================== */
+    function checkOnline(callback) {
+      if (!navigator.onLine) {
+        showOfflineModal();
+        return false;
+      }
+      if (callback) callback();
+      return true;
+    }
+
+    function showOfflineModal() {
+      document.getElementById('offlineModal').classList.remove('hidden');
+    }
+
+    function closeOfflineModal() {
+      document.getElementById('offlineModal').classList.add('hidden');
+    }
+
     function escapeHTML(str) {
       if (str === null || str === undefined) return '';
       return String(str)
@@ -553,6 +605,13 @@
       const cleaned = cleanPhoneNumber(phone);
       const text = encodeURIComponent(`السلام عليكم، تواصلت معك عبر منصة LIVLINK MA بخصوص ${contextTitle || 'خدمة التوصيل'}.`);
       return `https://wa.me/${cleaned}?text=${text}`;
+    }
+
+    function handleContactAction(event, url) {
+      event.preventDefault();
+      checkOnline(() => {
+        window.open(url, '_blank');
+      });
     }
 
     function getCityNameArabic(cityId) {
@@ -1051,11 +1110,11 @@
           ` : ''}
 
           <div class="pt-1 grid grid-cols-2 gap-2">
-            <a href="tel:${escapeHTML(offer.phone)}" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
+            <a href="tel:${escapeHTML(offer.phone)}" onclick="handleContactAction(event, 'tel:${escapeHTML(offer.phone)}')" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
               <i class="fa-solid fa-phone text-emerald-600"></i>
               <span>اتصال هاتفي</span>
             </a>
-            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+            <a href="${waLink}" onclick="handleContactAction(event, '${waLink}')" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>مراسلة WhatsApp</span>
             </a>
@@ -1257,11 +1316,11 @@
           ` : ''}
 
           <div class="pt-1 grid grid-cols-2 gap-2">
-            <a href="tel:${escapeHTML(driver.phone)}" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
+            <a href="tel:${escapeHTML(driver.phone)}" onclick="handleContactAction(event, 'tel:${escapeHTML(driver.phone)}')" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
               <i class="fa-solid fa-phone text-emerald-600"></i>
               <span>اتصال هاتفي</span>
             </a>
-            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+            <a href="${waLink}" onclick="handleContactAction(event, '${waLink}')" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>واتساب WhatsApp</span>
             </a>
@@ -1526,43 +1585,49 @@
 
     function handleOfferSubmit(e) {
       e.preventDefault();
-      const newOffer = {
-        shopName: document.getElementById('offShopName').value.trim(),
-        shopType: document.getElementById('offShopType').value.trim(),
-        city: document.getElementById('offCity').value,
-        district: document.getElementById('offDistrict').value,
-        vehicle: document.getElementById('offVehicle').value,
-        paymentType: document.getElementById('offPaymentType').value,
-        price: Number(document.getElementById('offPrice').value),
-        workingHours: document.getElementById('offWorkingHours').value.trim(),
-        phone: document.getElementById('offPhone').value.trim(),
-        whatsapp: document.getElementById('offWhatsapp').value.trim(),
-        description: document.getElementById('offDescription').value.trim(),
-        notes: document.getElementById('offNotes').value.trim()
-      };
+      
+      checkOnline(() => {
+        const newOffer = {
+          shopName: document.getElementById('offShopName').value.trim(),
+          shopType: document.getElementById('offShopType').value.trim(),
+          city: document.getElementById('offCity').value,
+          district: document.getElementById('offDistrict').value,
+          vehicle: document.getElementById('offVehicle').value,
+          paymentType: document.getElementById('offPaymentType').value,
+          price: Number(document.getElementById('offPrice').value),
+          workingHours: document.getElementById('offWorkingHours').value.trim(),
+          phone: document.getElementById('offPhone').value.trim(),
+          whatsapp: document.getElementById('offWhatsapp').value.trim(),
+          description: document.getElementById('offDescription').value.trim(),
+          notes: document.getElementById('offNotes').value.trim()
+        };
 
-      DataService.addOffer(newOffer);
-      showToast('تم نشر عرض العمل بنجاح!', 'success');
-      navigateTo('offers');
+        DataService.addOffer(newOffer);
+        showToast('تم نشر عرض العمل بنجاح!', 'success');
+        navigateTo('offers');
+      });
     }
 
     function handleDriverSubmit(e) {
       e.preventDefault();
-      const newDriver = {
-        name: document.getElementById('drvName').value.trim(),
-        city: document.getElementById('drvCity').value,
-        district: document.getElementById('drvDistrict').value,
-        vehicle: document.getElementById('drvVehicle').value,
-        phone: document.getElementById('drvPhone').value.trim(),
-        whatsapp: document.getElementById('drvWhatsapp').value.trim(),
-        freeHours: document.getElementById('drvFreeHours').value.trim(),
-        experience: document.getElementById('drvExperience').value.trim(),
-        notes: document.getElementById('drvNotes').value.trim()
-      };
+      
+      checkOnline(() => {
+        const newDriver = {
+          name: document.getElementById('drvName').value.trim(),
+          city: document.getElementById('drvCity').value,
+          district: document.getElementById('drvDistrict').value,
+          vehicle: document.getElementById('drvVehicle').value,
+          phone: document.getElementById('drvPhone').value.trim(),
+          whatsapp: document.getElementById('drvWhatsapp').value.trim(),
+          freeHours: document.getElementById('drvFreeHours').value.trim(),
+          experience: document.getElementById('drvExperience').value.trim(),
+          notes: document.getElementById('drvNotes').value.trim()
+        };
 
-      DataService.addDriver(newDriver);
-      showToast('تم تسجيل ملفك كليفرور بنجاح!', 'success');
-      navigateTo('drivers');
+        DataService.addDriver(newDriver);
+        showToast('تم تسجيل ملفك كليفرور بنجاح!', 'success');
+        navigateTo('drivers');
+      });
     }
 
     // 5. ACCOUNT VIEW
