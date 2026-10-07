@@ -84,8 +84,8 @@
         <!-- Role Switcher Button -->
         <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 py-1.5 shadow-md flex items-center gap-1 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer">
           <div class="text-right flex flex-col justify-center">
-            <span class="text-[9.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[8px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+            <span class="text-[9.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[8px] font-extrabold text-[#2563eb] leading-tight block whitespace-nowrap">(صاحب محل)</span>
           </div>
           <svg viewBox="0 0 12 12" class="w-2.5 h-2.5 text-[#1d4ed8] shrink-0" fill="currentColor">
             <path d="M2 4.5 L6 8.5 L10 4.5 Z"/>
@@ -154,7 +154,7 @@
         <i class="fa-solid fa-briefcase text-lg"></i>
         <span class="text-[11px] font-bold">العروض</span>
       </button>
-      <button onclick="navigateTo('create')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-brand-600" data-page="create">
+      <button onclick="handleQuickAdd()" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-brand-600" data-page="create">
         <div class="w-10 h-10 -mt-4 rounded-full bg-gradient-to-tr from-brand-700 to-brand-500 text-white flex items-center justify-center shadow-lg shadow-brand-500/30">
           <i class="fa-solid fa-plus text-base"></i>
         </div>
@@ -689,17 +689,21 @@
       DataService.setUserRole(role);
       closeRoleModal();
       updateRoleHeader();
-      showToast(role === 'shop' ? 'وضع: صاحب محل' : 'وضع: ليفرور', 'success');
-      if (currentPage === 'home' || currentPage === 'account') {
-        renderPage(currentPage);
-      }
+      showToast(role === 'shop' ? 'تم تحويل التطبيق لوضع: صاحب محل' : 'تم تحويل التطبيق لوضع: ليفرور', 'success');
+      renderPage(currentPage);
     }
 
     function updateRoleHeader() {
       const badge = document.getElementById('headerRoleBadge');
       if (badge) {
-        badge.innerText = '(صاحب محل_ليفرور)';
+        const role = DataService.getUserRole();
+        badge.innerText = role === 'shop' ? '(صاحب محل)' : '(ليفرور)';
       }
+    }
+
+    function handleQuickAdd() {
+      const role = DataService.getUserRole();
+      navigateTo('create', { mode: role === 'shop' ? 'offer' : 'driver' });
     }
 
     function handleGlobalCityChange(cityId) {
@@ -799,7 +803,7 @@
           container.innerHTML = viewDrivers();
           break;
         case 'create':
-          container.innerHTML = viewCreate(params.mode || 'offer');
+          container.innerHTML = viewCreate(params.mode || (DataService.getUserRole() === 'shop' ? 'offer' : 'driver'));
           break;
         case 'account':
           container.innerHTML = viewAccount();
@@ -809,11 +813,13 @@
       }
     }
 
-    // 1. HOME VIEW
+    // 1. HOME VIEW (تتخصص ديناميكياً حسب الوضع)
     function viewHome() {
+      const userRole = DataService.getUserRole();
       const currentGlobalCity = DataService.getSelectedCity();
       const offers = DataService.getOffers();
       const drivers = DataService.getDrivers();
+      const isShop = userRole === 'shop';
 
       const filteredOffers = currentGlobalCity === 'all' 
         ? offers 
@@ -825,25 +831,25 @@
 
       const activeOffersCount = filteredOffers.filter(o => o.status === 'open').length;
       const availableDriversCount = filteredDrivers.filter(d => d.isAvailable).length;
-      const latestOffers = filteredOffers.slice(0, 3);
 
       return `
         <div class="space-y-6">
-          <!-- Hero Banner Section -->
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-5 sm:p-6 shadow-xl shadow-brand-900/20">
+          <!-- Hero Banner Section Dynamic per Role -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br ${isShop ? 'from-brand-900 via-brand-800 to-brand-700' : 'from-amber-900 via-amber-800 to-amber-700'} text-white p-5 sm:p-6 shadow-xl shadow-brand-900/20">
             <div class="relative z-10 space-y-3">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                <i class="fa-solid fa-sparkles text-[10px]"></i> منصة وطنية مجانية 100 ٪ المغرب 🇲🇦
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-white/10 text-amber-300 border border-white/20">
+                <i class="fa-solid ${isShop ? 'fa-store' : 'fa-motorcycle'} text-[10px]"></i> 
+                ${isShop ? 'أنت في وضع: صاحب محل / مطعم' : 'أنت في وضع: ليفرور (سائق توصيل)'}
               </span>
               
-              <!-- Hero Title -->
+              <!-- Dynamic Hero Title -->
               <h2 class="text-lg sm:text-xl font-black leading-snug">
-                ربط المحلات والمطاعم بالليفرورات<br>
-                <span class="text-amber-400">في جميع المدن المغربية</span>
+                ${isShop ? 'بحث عن ليفرورات متوفرين للتوصيل' : 'ابحث عن عروض عمل وفرص توصيل'}<br>
+                <span class="text-amber-400">في جميع المدن المغربية 🇲🇦</span>
               </h2>
 
               <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
-                تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات خفية.
+                ${isShop ? 'تواصل مباشرة مع سائقي التوصيل القريبين من محلك بدون عمولات.' : 'اعثر على طلبات توصيل يومية مع المحلات والمطاعم بمدينتك.'}
               </p>
               
               <!-- Action Buttons Row -->
@@ -856,29 +862,22 @@
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
                   </select>
-                  <!-- Clear Visible Chevron Arrow on Left -->
                   <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-[10px] font-black">
                     <i class="fa-solid fa-chevron-down"></i>
                   </div>
                 </div>
 
-                <!-- New Offer Button (With + Icon and small spacing) -->
-                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1.5 h-9 whitespace-nowrap">
-                  <i class="fa-solid fa-plus text-[10px]"></i>
-                  <span>نشر جديد</span>
-                </button>
-
-                <!-- Browse Offers Button -->
-                <button onclick="navigateTo('offers')" class="flex-1 min-w-0 py-2 px-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
-                  <i class="fa-solid fa-magnifying-glass text-[9px]"></i>
-                  <span>تصفح العروض</span>
+                <!-- Dynamic Action Button -->
+                <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="flex-1 min-w-0 py-2 px-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
+                  <i class="fa-solid fa-plus text-[9px]"></i>
+                  <span>${isShop ? 'نشر عرض جديد' : 'تسجّل كليفرور'}</span>
                 </button>
 
               </div>
 
             </div>
-            <div class="absolute -left-6 -bottom-6 text-brand-600/30 text-8xl pointer-events-none select-none">
-              <i class="fa-solid fa-motorcycle"></i>
+            <div class="absolute -left-6 -bottom-6 text-white/10 text-8xl pointer-events-none select-none">
+              <i class="fa-solid ${isShop ? 'fa-store' : 'fa-motorcycle'}"></i>
             </div>
           </div>
 
@@ -890,10 +889,10 @@
             <div class="grid grid-cols-2 gap-3">
               <div onclick="navigateTo('drivers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-brand-500 transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-shop"></i>
+                  <i class="fa-solid fa-helmet-safety"></i>
                 </div>
-                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">أحتاج لليفرور</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات والمطاعم للبحث عن سائق متوفر</p>
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">قائمة الليفرورات</h4>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات للبحث عن سائق متوفر</p>
                 <div class="mt-3 text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1">
                   <span>عرض الليفرورات</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -902,10 +901,10 @@
 
               <div onclick="navigateTo('offers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-amber-500 transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-motorcycle"></i>
+                  <i class="fa-solid fa-briefcase"></i>
                 </div>
-                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">كنقلب على خدمة</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل بالمغرب</p>
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">عروض المطاعم</h4>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل</p>
                 <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <span>تصفح العروض</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -930,22 +929,49 @@
             </div>
           </div>
 
-          <!-- Latest Offers List -->
+          <!-- Dynamic Prioritized Lists per User Role -->
+          ${isShop ? renderShopHomeView(currentGlobalCity, filteredDrivers) : renderDriverHomeView(currentGlobalCity, filteredOffers)}
+        </div>
+      `;
+    }
+
+    function renderShopHomeView(city, drivers) {
+      return `
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-helmet-safety text-brand-500"></i> الليفرورات المتوفرون حالياً ${city !== 'all' ? `في ${getCityNameArabic(city)}` : ''}
+            </h3>
+            <button onclick="navigateTo('drivers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+              رؤية الكل (${drivers.length})
+            </button>
+          </div>
           <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fa-solid fa-fire text-amber-500"></i> أحدث العروض ${currentGlobalCity !== 'all' ? `في ${getCityNameArabic(currentGlobalCity)}` : ''}
-              </h3>
-              <button onclick="navigateTo('offers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
-                رؤية الكل (${filteredOffers.length})
-              </button>
-            </div>
-            <div class="space-y-3">
-              ${latestOffers.length > 0 
-                ? latestOffers.map(offer => renderOfferCard(offer)).join('')
-                : '<p class="text-xs text-slate-500 text-center py-4">لا توجد عروض حالياً في هذه المدينة.</p>'
-              }
-            </div>
+            ${drivers.length > 0 
+              ? drivers.slice(0, 3).map(driver => renderDriverCard(driver)).join('')
+              : '<p class="text-xs text-slate-500 text-center py-4">لا يوجد ليفرورات متوفرون حالياً في هذه المدينة.</p>'
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDriverHomeView(city, offers) {
+      return `
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-fire text-amber-500"></i> أحدث العروض المطلوبة ${city !== 'all' ? `في ${getCityNameArabic(city)}` : ''}
+            </h3>
+            <button onclick="navigateTo('offers')" class="text-xs font-bold text-amber-500 hover:underline">
+              رؤية الكل (${offers.length})
+            </button>
+          </div>
+          <div class="space-y-3">
+            ${offers.length > 0 
+              ? offers.slice(0, 3).map(offer => renderOfferCard(offer)).join('')
+              : '<p class="text-xs text-slate-500 text-center py-4">لا توجد عروض مطاعم حالياً في هذه المدينة.</p>'
+            }
           </div>
         </div>
       `;
