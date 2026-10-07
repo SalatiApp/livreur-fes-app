@@ -13,7 +13,7 @@
     })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ليفرور فاس | Livrer Fès</title>
+  <title>LIVLINK MA | المنصة الوطنية لتوصيل الطلبات والمحلات</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome CDN -->
@@ -60,49 +60,40 @@
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
     <div class="max-w-md mx-auto px-2 sm:px-3 h-16 sm:h-18 flex items-center justify-between gap-1 sm:gap-1.5">
       
-      <!-- Brand & Map & Scooter Section (Right Side in RTL) -->
+      <!-- Brand & Map & Scooter Section -->
       <div class="flex items-center cursor-pointer shrink-0" onclick="navigateTo('home')">
         
-        <!-- 1. Authentic Morocco Map (Local Image Asset) -->
+        <!-- 1. Authentic Morocco Map Asset -->
         <div class="h-9 sm:h-10 shrink-0 flex items-center justify-center">
-          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]">
+          <img src="morocco-map.png" alt="خريطة المملكة المغربية" class="h-full w-auto object-contain shrink-0 filter drop-shadow-[0_1px_3px_rgba(200,16,46,0.3)]" onerror="this.style.display='none'">
         </div>
 
-        <!-- 2. Brand Typography (Separated with clear gap from Map) -->
-        <div class="text-right flex flex-col justify-center gap-0.5 sm:gap-1 ms-3 sm:ms-3.5 py-0.5">
+        <!-- 2. Brand Typography -->
+        <div class="text-right flex flex-col justify-center gap-0.5 sm:gap-1 ms-2 sm:ms-2.5 py-0.5">
           <h1 class="font-black text-lg sm:text-xl text-white tracking-wide leading-tight">LIVLINK MA</h1>
-          <p class="text-[8px] sm:text-[9.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة ربط المحلات بالليفرورات</p>
+          <p class="text-[8px] sm:text-[9.5px] text-slate-300 font-medium leading-normal whitespace-nowrap">منصة التوصيل الوطنية بالمغرب</p>
         </div>
 
-        <!-- 3. Delivery Scooter Rider (Preserved Design & Dimensions, Balanced Close Gap to Text) -->
+        <!-- 3. Delivery Scooter Rider -->
         <div class="flex items-center justify-center shrink-0 ms-1 sm:ms-1.5">
-          <svg viewBox="0 0 120 85" class="w-15 h-12 sm:w-18 sm:h-14 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <!-- Dynamic Speed Lines behind Rider -->
+          <svg viewBox="0 0 120 85" class="w-14 h-11 sm:w-16 sm:h-13 shrink-0" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
             <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
             <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
             <line x1="65" y1="47" x2="100" y2="47" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
             <line x1="58" y1="70" x2="98" y2="70" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
-            
-            <!-- Delivery Thermal Box -->
             <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
             <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
             <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
-            
-            <!-- Helmet & Rider Body -->
             <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
             <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
             <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
             <path d="M46 28 L32 36" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round"/>
             <path d="M46 47 L40 59 L30 59" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            
-            <!-- Scooter Wheels -->
             <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
             <circle cx="22" cy="67" r="4" fill="#94a3b8"/>
             <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
             <circle cx="67" cy="67" r="4" fill="#94a3b8"/>
-            
-            <!-- Scooter Chassis & Headlight -->
             <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
             <path d="M30 43 L34 32 L37 32 L35 43 Z" fill="#38bdf8"/>
             <path d="M31 32 L27 31" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
@@ -113,12 +104,17 @@
 
       </div>
 
-      <!-- Center Section: Night / Day Mode Toggle Button (Centered perfectly in the middle) -->
-      <div class="flex-1 flex items-center justify-center px-1">
-        <!-- 4. Night / Day Mode Toggle Button -->
-        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8.5 h-8.5 sm:w-9.5 sm:h-9.5 rounded-2xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
+      <!-- Center Controls: City Selector & Dark Mode -->
+      <div class="flex-1 flex items-center justify-end gap-1 px-1">
+        <!-- Global City Quick Selector -->
+        <select id="globalCitySelector" onchange="handleGlobalCityChange(this.value)" class="bg-[#141e2e] text-amber-400 font-extrabold text-[10px] sm:text-[11px] py-1.5 px-2 rounded-xl border border-slate-700 focus:outline-none cursor-pointer">
+          <!-- Populated dynamically via JS -->
+        </select>
+
+        <!-- Night / Day Mode Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
           <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -127,15 +123,15 @@
       </div>
 
       <!-- Left Controls Section -->
-      <div class="flex items-center shrink-0">
-        <!-- 5. Role Selection Button (Oval White Pill) -->
-        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 sm:px-3.5 py-1.5 sm:py-2 shadow-md flex items-center gap-1.5 sm:gap-2 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
-          <svg viewBox="0 0 12 12" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#1d4ed8] shrink-0" fill="currentColor">
+      <div class="flex items-center shrink-0 ms-1">
+        <!-- Role Selection Button -->
+        <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2 sm:px-3 py-1.5 shadow-md flex items-center gap-1 border border-slate-200/90 shrink-0 active:scale-95 transition-all cursor-pointer">
+          <svg viewBox="0 0 12 12" class="w-3 h-3 text-[#1d4ed8] shrink-0" fill="currentColor">
             <path d="M2 4.5 L6 9.5 L10 4.5 Z"/>
           </svg>
           <div class="text-right flex flex-col justify-center">
-            <span class="text-[9px] sm:text-[10.5px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">اختر نوع الاستخدام</span>
-            <span id="headerRoleBadge" class="text-[7.5px] sm:text-[8.5px] font-bold text-[#2563eb] leading-tight mt-0.5 block whitespace-nowrap">(صاحب محل_ليفرور)</span>
+            <span class="text-[8.5px] sm:text-[10px] font-black text-[#1e3a8a] leading-tight block whitespace-nowrap">نوع الاستخدام</span>
+            <span id="headerRoleBadge" class="text-[7px] sm:text-[8px] font-bold text-[#2563eb] leading-tight block whitespace-nowrap">(محل_ليفرور)</span>
           </div>
         </button>
       </div>
@@ -221,31 +217,80 @@
 
   <script>
     /* ==========================================================================
-       1. DATA CONSTANTS & STORAGE REPOSITORY
+       1. MOROCCO CITIES & DISTRICTS NATIONAL DATASTRUCTURE
        ========================================================================== */
-    const CITIES = [
-      { id: 'fes', nameAr: 'فاس', nameFr: 'Fès' },
-      { id: 'casablanca', nameAr: 'الدار البيضاء', nameFr: 'Casablanca' },
-      { id: 'rabat', nameAr: 'الرباط', nameFr: 'Rabat' },
-      { id: 'marrakech', nameAr: 'مراكش', nameFr: 'Marrakech' },
-      { id: 'meknes', nameAr: 'مكناس', nameFr: 'Meknès' },
-      { id: 'tangier', nameAr: 'طنجة', nameFr: 'Tanger' },
-      { id: 'agadir', nameAr: 'أكادير', nameFr: 'Agadir' }
-    ];
-
-    const FES_DISTRICTS = [
-      'أكدال',
-      'المرينيين',
-      'زواغة',
-      'سائس',
-      'فاس المدينة',
-      'النرجس',
-      'طريق صفرو',
-      'بنسودة',
-      'طارق',
-      'عين هارون',
-      'سهب الورد'
-    ];
+    const MOROCCO_CITIES = {
+      all: {
+        id: 'all',
+        nameAr: 'جميع مدن المغرب 🇲🇦',
+        districts: []
+      },
+      casablanca: {
+        id: 'casablanca',
+        nameAr: 'الدار البيضاء',
+        districts: ['أنفا', 'المعاريف', 'سيدي بليوط', 'عين الشق', 'الحي الحسني', 'سيدي البرنوصي', 'عين السبع', 'مولاي رشيد', 'سيدي عثمان', 'بن مسيك', 'سباتة', 'بوركون', 'كاليفورنيا', 'الولفة']
+      },
+      rabat: {
+        id: 'rabat',
+        nameAr: 'الرباط',
+        districts: ['أقدال', 'حسان', 'يعقوب المنصور', 'السويسي', 'الرياض', 'اليوسفية', 'حي النهضة', 'ديور الجامع', 'العكاري']
+      },
+      fes: {
+        id: 'fes',
+        nameAr: 'فاس',
+        districts: ['أكدال', 'المرينيين', 'زواغة', 'سائس', 'فاس المدينة', 'النرجس', 'طريق صفرو', 'بنسودة', 'طارق', 'عين هارون', 'سهب الورد', 'حي طارق']
+      },
+      marrakech: {
+        id: 'marrakech',
+        nameAr: 'مراكش',
+        districts: ['جليز', 'المدينة القديمة', 'النخيل', 'المحاميد', 'سيدي يوسف بن علي', 'المسيرة', 'تاركة', 'داوديات', 'أزلي', 'سعادة']
+      },
+      tangier: {
+        id: 'tangier',
+        nameAr: 'طنجة',
+        districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مغ doغة', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب']
+      },
+      agadir: {
+        id: 'agadir',
+        nameAr: 'أكادير',
+        districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'صنهاجة', 'تيلضي']
+      },
+      meknes: {
+        id: 'meknes',
+        nameAr: 'مكناس',
+        districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين']
+      },
+      salé: {
+        id: 'salé',
+        nameAr: 'سلا',
+        districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى']
+      },
+      oujda: {
+        id: 'oujda',
+        nameAr: 'وجدة',
+        districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش']
+      },
+      tetouan: {
+        id: 'tetouan',
+        nameAr: 'تطوان',
+        districts: ['المدينة القديمة', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة']
+      },
+      kenitra: {
+        id: 'kenitra',
+        nameAr: 'القنيطرة',
+        districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي']
+      },
+      safi: {
+        id: 'safi',
+        nameAr: 'آسفي',
+        districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية']
+      },
+      laayoune: {
+        id: 'laayoune',
+        nameAr: 'العيون',
+        districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل']
+      }
+    };
 
     const VEHICLE_TYPES = [
       'دراجة نارية',
@@ -261,12 +306,13 @@
       'أسبوعي'
     ];
 
-    // Initial mock dataset
+    // Initial mock dataset (National Coverage)
     const INITIAL_OFFERS = [
       {
         id: 'off-1',
         shopName: 'مطعم فاس الأصيل',
         shopType: 'مأكولات ووجبات مغربية',
+        city: 'fes',
         district: 'فاس المدينة',
         vehicle: 'دراجة نارية',
         paymentType: 'يومي (باليوم)',
@@ -281,115 +327,54 @@
       },
       {
         id: 'off-2',
-        shopName: 'سناك البركة',
+        shopName: 'سناك المعاريف السريع',
         shopType: 'سناك ومأكولات خفيفة',
-        district: 'أكدال',
+        city: 'casablanca',
+        district: 'المعاريف',
         vehicle: 'دراجة نارية',
         paymentType: 'بالتوصيلة (لكل كورس)',
-        price: 15,
-        workingHours: '16:00 - 00:00',
+        price: 20,
+        workingHours: '12:00 - 00:00',
         phone: '0662345678',
         whatsapp: '0662345678',
-        description: 'مطلوب سائق دراجة نارية لنقل طلبات السناك والسندويتشات في حي أكدال والجامعة.',
+        description: 'مطلوب سائق دراجة نارية لنقل طلبات السناك والسندويتشات في المعاريف وجليز.',
         notes: 'توصيلات سريعة ومتتالية، مداخيل ممتازة في نهاية الأسبوع.',
         status: 'open',
         createdAt: '2026-10-02'
       },
       {
         id: 'off-3',
-        shopName: 'صيدلية النرجس',
+        shopName: 'صيدلية أكدال',
         shopType: 'صيدلية وشبه طبية',
-        district: 'النرجس',
+        city: 'rabat',
+        district: 'أقدال',
         vehicle: 'دراجة هوائية',
         paymentType: 'يومي (باليوم)',
-        price: 120,
+        price: 140,
         workingHours: '09:00 - 17:00',
         phone: '0663456789',
         whatsapp: '0663456789',
-        description: 'توصيل أدوية ومستلزمات طبية للمنازل القريبة داخل حي النرجس والمحايدة له.',
+        description: 'توصيل أدوية ومستلزمات طبية للمنازل القريبة داخل حي أقدال والرياض.',
         notes: 'عمل هادئ ومناسب لدراجة هوائية عادية أو كهربائية.',
         status: 'open',
         createdAt: '2026-10-02'
       },
       {
         id: 'off-4',
-        shopName: 'مخبزة وحلويات الرياض',
+        shopName: 'مخبزة وحلويات جليز',
         shopType: 'مخبزة وحلويات',
-        district: 'سائس',
+        city: 'marrakech',
+        district: 'جليز',
         vehicle: 'سيارة',
         paymentType: 'شهري',
-        price: 4500,
+        price: 4800,
         workingHours: '07:00 - 15:00',
         phone: '0664567890',
         whatsapp: '0664567890',
-        description: 'توزيع الحلويات والمخبوزات على المقاهي ومحلات البقالة في مقاطعة سائس.',
-        notes: 'سيارة صغيرة أو كونغو، خبرة سابقة في التوزيع مطلوبة.',
+        description: 'توزيع الحلويات والمخبوزات على المقاهي والفنادق بمراكش.',
+        notes: 'سيارة صغيرة أو كونغو، خبرة سابقة مطلوبة.',
         status: 'open',
         createdAt: '2026-10-03'
-      },
-      {
-        id: 'off-5',
-        shopName: 'سوق الخضار والفواكه الطازجة',
-        shopType: 'تجارة المواد الغذائية',
-        district: 'بنسودة',
-        vehicle: 'هوندا',
-        paymentType: 'بالتوصيلة (لكل كورس)',
-        price: 40,
-        workingHours: '08:00 - 14:00',
-        phone: '0665678901',
-        whatsapp: '0665678901',
-        description: 'نقل صناديق الخضر والفواكه والطلبيات الكبيرة للمطاعم في بنسودة والحي الصناعي.',
-        notes: 'حمولة متوسطة، الدفع فوري بعد كل توصيلة.',
-        status: 'open',
-        createdAt: '2026-10-03'
-      },
-      {
-        id: 'off-6',
-        shopName: 'بيتزا إيطاليانو',
-        shopType: 'مطعم وبيتزاريا',
-        district: 'طريق صفرو',
-        vehicle: 'دراجة نارية',
-        paymentType: 'يومي (باليوم)',
-        price: 160,
-        workingHours: '18:00 - 01:00',
-        phone: '0666789012',
-        whatsapp: '0666789012',
-        description: 'ليفرور مسائي لتوصيل البيتزا، توفير صندوق حراري حافظ للحرارة.',
-        notes: 'أجواء عمل ودية وبوربوار ممتاز من الزبناء.',
-        status: 'open',
-        createdAt: '2026-10-03'
-      },
-      {
-        id: 'off-7',
-        shopName: 'متجر الهواتف والإلكترونيات',
-        shopType: 'إلكترونيات وإكسسوارات',
-        district: 'زواغة',
-        vehicle: 'دراجة نارية',
-        paymentType: 'بالتوصيلة (لكل كورس)',
-        price: 20,
-        workingHours: '10:00 - 20:00',
-        phone: '0667890123',
-        whatsapp: '0667890123',
-        description: 'توصيل الهواتف والأجهزة المصلحة إلى الزبائن في زواغة وعين هارون.',
-        notes: 'أمانة عالية مطلوبة، تسليم واستلام مالي دقيق.',
-        status: 'open',
-        createdAt: '2026-10-03'
-      },
-      {
-        id: 'off-8',
-        shopName: 'كافيه دي باريس',
-        shopType: 'مقهى ومرطبات',
-        district: 'المرينيين',
-        vehicle: 'دراجة نارية',
-        paymentType: 'يومي (باليوم)',
-        price: 150,
-        workingHours: '08:00 - 16:00',
-        phone: '0668901234',
-        whatsapp: '0668901234',
-        description: 'توصيل القهوة والفطور الصباحي للمكاتب والإدارات في المرينيين.',
-        notes: 'السرعة واللباقة مع الزبناء شرط أساسي.',
-        status: 'closed',
-        createdAt: '2026-09-28'
       }
     ];
 
@@ -397,6 +382,7 @@
       {
         id: 'drv-1',
         name: 'ياسين الفاسي',
+        city: 'fes',
         district: 'أكدال',
         vehicle: 'دراجة نارية',
         phone: '0671112233',
@@ -404,73 +390,36 @@
         freeHours: 'مساءً (17:00 - 00:00)',
         experience: 'سنتان في توصيل المطاعم (Glovo سابقاً)',
         isAvailable: true,
-        notes: 'عندي صندوق حراري ودراجة نارية جديدة واقتصادية، أعرف أحياء فاس كاملة.',
+        notes: 'عندي صندوق حراري ودراجة نارية جديدة واقتصادية.',
         createdAt: '2026-10-01'
       },
       {
         id: 'drv-2',
-        name: 'عمر الإدريسي',
-        district: 'سائس',
+        name: 'عثمان البيضاوي',
+        city: 'casablanca',
+        district: 'عين الشق',
         vehicle: 'دراجة نارية',
         phone: '0672223344',
         whatsapp: '0672223344',
         freeHours: 'طيلة اليوم (تفرغ كامل)',
-        experience: '3 سنوات في التوصيل الحر مع المحلات',
+        experience: '3 سنوات في التوصيل الحر مع المحلات بالدار البيضاء',
         isAvailable: true,
         notes: 'أبحث عن عمل قار مع مطعم أو محل تجاري، منضبط وجاد.',
         createdAt: '2026-10-02'
       },
       {
         id: 'drv-3',
-        name: 'حمزة المريني',
-        district: 'فاس المدينة',
+        name: 'حمزة الرباطي',
+        city: 'rabat',
+        district: 'حسان',
         vehicle: 'دراجة هوائية',
         phone: '0673334455',
         whatsapp: '0673334455',
         freeHours: 'صباحاً (09:00 - 15:00)',
         experience: 'سنة في توصيل الطرود الخفيفة',
         isAvailable: true,
-        notes: 'توصيل سريع داخل أزقة المدينة القديمة وأكدال بالدراجة الهوائية.',
+        notes: 'توصيل سريع داخل أزقة حسان وأقدال بالدراجة الهوائية.',
         createdAt: '2026-10-02'
-      },
-      {
-        id: 'drv-4',
-        name: 'كريم الصقلي',
-        district: 'طريق صفرو',
-        vehicle: 'سيارة',
-        phone: '0674445566',
-        whatsapp: '0674445566',
-        freeHours: 'أوقات متفرقة / نهاية الأسبوع',
-        experience: 'سائق مهني منذ 5 سنوات',
-        isAvailable: false,
-        notes: 'سيارة داسيا نظيفة جاهزة لنقل السلع والمشتريات المتوسطة والكبيرة.',
-        createdAt: '2026-10-02'
-      },
-      {
-        id: 'drv-5',
-        name: 'رشيد بنسودة',
-        district: 'زواغة',
-        vehicle: 'هوندا',
-        phone: '0675556677',
-        whatsapp: '0675556677',
-        freeHours: 'الصباح والظهيرة',
-        experience: '4 سنوات في نقل البضائع والمشتريات',
-        isAvailable: true,
-        notes: 'متوفر لنقل شحنات المحلات وتوزيع البضائع في فاس وضواحيها.',
-        createdAt: '2026-10-03'
-      },
-      {
-        id: 'drv-6',
-        name: 'أمين التازي',
-        district: 'النرجس',
-        vehicle: 'دراجة نارية',
-        phone: '0676667788',
-        whatsapp: '0676667788',
-        freeHours: '14:00 - 22:00',
-        experience: 'سنة ونصف في توصيل المأكولات السريعة',
-        isAvailable: true,
-        notes: 'سرعة ودقة في المواعيد، هاتف ذكي ونظام GPS مفعل.',
-        createdAt: '2026-10-03'
       }
     ];
 
@@ -493,7 +442,7 @@
           localStorage.setItem(this.KEY_ROLE, 'shop');
         }
         if (!localStorage.getItem(this.KEY_CITY)) {
-          localStorage.setItem(this.KEY_CITY, 'fes');
+          localStorage.setItem(this.KEY_CITY, 'all');
         }
       },
 
@@ -583,6 +532,14 @@
         localStorage.setItem(this.KEY_ROLE, role);
       },
 
+      getSelectedCity() {
+        return localStorage.getItem(this.KEY_CITY) || 'all';
+      },
+
+      setSelectedCity(cityId) {
+        localStorage.setItem(this.KEY_CITY, cityId);
+      },
+
       resetAllData() {
         localStorage.setItem(this.KEY_OFFERS, JSON.stringify(INITIAL_OFFERS));
         localStorage.setItem(this.KEY_DRIVERS, JSON.stringify(INITIAL_DRIVERS));
@@ -615,8 +572,12 @@
 
     function makeWhatsAppLink(phone, contextTitle) {
       const cleaned = cleanPhoneNumber(phone);
-      const text = encodeURIComponent(`السلام عليكم، تواصلت معك عبر تطبيق ليفرور فاس بخصوص ${contextTitle || 'خدمة التوصيل'}.`);
+      const text = encodeURIComponent(`السلام عليكم، تواصلت معك عبر منصة LIVLINK MA بخصوص ${contextTitle || 'خدمة التوصيل'}.`);
       return `https://wa.me/${cleaned}?text=${text}`;
+    }
+
+    function getCityNameArabic(cityId) {
+      return MOROCCO_CITIES[cityId] ? MOROCCO_CITIES[cityId].nameAr : 'المغرب';
     }
 
     function showToast(message, type = 'info') {
@@ -690,7 +651,7 @@
       DataService.setUserRole(role);
       closeRoleModal();
       updateRoleHeader();
-      showToast(role === 'shop' ? 'تم اختيار وضع: صاحب محل' : 'تم اختيار وضع: ليفرور', 'success');
+      showToast(role === 'shop' ? 'وضع: صاحب محل' : 'وضع: ليفرور', 'success');
       if (currentPage === 'home' || currentPage === 'account') {
         renderPage(currentPage);
       }
@@ -699,8 +660,23 @@
     function updateRoleHeader() {
       const badge = document.getElementById('headerRoleBadge');
       if (badge) {
-        badge.innerText = '(صاحب محل_ليفرور)';
+        badge.innerText = '(محل_ليفرور)';
       }
+    }
+
+    function populateGlobalCitySelector() {
+      const sel = document.getElementById('globalCitySelector');
+      if (!sel) return;
+      const currentCity = DataService.getSelectedCity();
+      sel.innerHTML = Object.keys(MOROCCO_CITIES).map(key => `
+        <option value="${key}" ${key === currentCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
+      `).join('');
+    }
+
+    function handleGlobalCityChange(cityId) {
+      DataService.setSelectedCity(cityId);
+      showToast(`تم تغيير المدينة إلى: ${getCityNameArabic(cityId)}`, 'info');
+      renderPage(currentPage);
     }
 
     function toggleDarkMode() {
@@ -715,14 +691,14 @@
       if (container) {
         if (isDark) {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 transition-transform duration-300 hover:rotate-12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fde047" stroke="#f59e0b" stroke-width="0.5"/>
               <path d="M19 4.5l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" fill="#ffffff"/>
             </svg>
           `;
         } else {
           container.innerHTML = `
-            <svg viewBox="0 0 24 24" class="w-5 h-5 sm:w-5.5 sm:h-5.5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12" cy="12" r="4" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="#f59e0b" stroke-width="2"/>
             </svg>
@@ -745,11 +721,13 @@
        3. ROUTING & SPA CONTROLLER
        ========================================================================== */
     let currentPage = 'home';
+    let filterCityOffer = '';
     let filterDistrictOffer = '';
     let filterVehicleOffer = '';
     let filterPaymentOffer = '';
     let searchOfferQuery = '';
 
+    let filterCityDriver = '';
     let filterDistrictDriver = '';
     let filterVehicleDriver = '';
     let filterAvailableDriver = '';
@@ -804,11 +782,21 @@
 
     // 1. HOME VIEW
     function viewHome() {
+      const currentGlobalCity = DataService.getSelectedCity();
       const offers = DataService.getOffers();
       const drivers = DataService.getDrivers();
-      const activeOffersCount = offers.filter(o => o.status === 'open').length;
-      const availableDriversCount = drivers.filter(d => d.isAvailable).length;
-      const latestOffers = offers.slice(0, 3);
+
+      const filteredOffers = currentGlobalCity === 'all' 
+        ? offers 
+        : offers.filter(o => o.city === currentGlobalCity);
+
+      const filteredDrivers = currentGlobalCity === 'all'
+        ? drivers
+        : drivers.filter(d => d.city === currentGlobalCity);
+
+      const activeOffersCount = filteredOffers.filter(o => o.status === 'open').length;
+      const availableDriversCount = filteredDrivers.filter(d => d.isAvailable).length;
+      const latestOffers = filteredOffers.slice(0, 3);
 
       return `
         <div class="space-y-6">
@@ -816,13 +804,13 @@
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-900 via-brand-800 to-brand-700 text-white p-6 shadow-xl shadow-brand-900/20">
             <div class="relative z-10 space-y-3">
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30">
-                <i class="fa-solid fa-sparkles text-[10px]"></i> منصة مجانية 100% لفاس
+                <i class="fa-solid fa-sparkles text-[10px]"></i> منصة وطنية مجانية 100% للمغرب 🇲🇦
               </span>
               <h2 class="text-2xl font-black leading-tight">
-                التوصيل السريع للمحلات<br>وعروض العمل لليفرورات
+                ربط المحلات والمطاعم<br>بالليفرورات في جميع المدن
               </h2>
               <p class="text-xs text-brand-100/90 leading-relaxed max-w-xs">
-                ربط مباشر عبر الهاتف وواتساب بدون وسيط أو عمولات خفية.
+                تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات.
               </p>
               <div class="pt-2 flex flex-wrap gap-2">
                 <button onclick="navigateTo('offers')" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-md transition-all active:scale-95">
@@ -849,7 +837,7 @@
                   <i class="fa-solid fa-shop"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">أحتاج لليفرور</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات والمطاعم للبحث عن سائق متوفر</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات للبحث عن سائق توصيل</p>
                 <div class="mt-3 text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1">
                   <span>عرض الليفرورات</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -861,7 +849,7 @@
                   <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">كنقلب على خدمة</h4>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على عروض عمل وتوصيل في فاس</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل</p>
                 <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <span>تصفح العروض</span>
                   <i class="fa-solid fa-arrow-left text-[10px]"></i>
@@ -881,8 +869,8 @@
               <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">ليفرورات جاهزون</span>
             </div>
             <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
-              <span class="block text-xl font-black text-emerald-600 dark:text-emerald-400">11</span>
-              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">أحياء فاس</span>
+              <span class="block text-xl font-black text-emerald-600 dark:text-emerald-400">${Object.keys(MOROCCO_CITIES).length - 1}</span>
+              <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">مدينة مغربية</span>
             </div>
           </div>
 
@@ -890,14 +878,17 @@
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fa-solid fa-fire text-amber-500"></i> أحدث عروض العمل
+                <i class="fa-solid fa-fire text-amber-500"></i> أحدث العروض ${currentGlobalCity !== 'all' ? `في ${getCityNameArabic(currentGlobalCity)}` : ''}
               </h3>
               <button onclick="navigateTo('offers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
-                رؤية الكل (${offers.length})
+                رؤية الكل (${filteredOffers.length})
               </button>
             </div>
             <div class="space-y-3">
-              ${latestOffers.map(offer => renderOfferCard(offer)).join('')}
+              ${latestOffers.length > 0 
+                ? latestOffers.map(offer => renderOfferCard(offer)).join('')
+                : '<p class="text-xs text-slate-500 text-center py-4">لا توجد عروض حالياً في هذه المدينة.</p>'
+              }
             </div>
           </div>
         </div>
@@ -906,25 +897,31 @@
 
     // 2. OFFERS VIEW
     function viewOffers() {
+      const currentGlobalCity = DataService.getSelectedCity();
       const allOffers = DataService.getOffers();
       
       const filtered = allOffers.filter(offer => {
+        const matchesGlobalCity = currentGlobalCity === 'all' || offer.city === currentGlobalCity;
+        const matchesSelectedCity = !filterCityOffer || offer.city === filterCityOffer;
         const matchesDistrict = !filterDistrictOffer || offer.district === filterDistrictOffer;
         const matchesVehicle = !filterVehicleOffer || offer.vehicle === filterVehicleOffer;
         const matchesPayment = !filterPaymentOffer || offer.paymentType.includes(filterPaymentOffer);
         const matchesSearch = !searchOfferQuery || 
           offer.shopName.toLowerCase().includes(searchOfferQuery.toLowerCase()) ||
           offer.description.toLowerCase().includes(searchOfferQuery.toLowerCase()) ||
-          offer.district.toLowerCase().includes(searchOfferQuery.toLowerCase());
-        return matchesDistrict && matchesVehicle && matchesPayment && matchesSearch;
+          (offer.district && offer.district.toLowerCase().includes(searchOfferQuery.toLowerCase()));
+        return matchesGlobalCity && matchesSelectedCity && matchesDistrict && matchesVehicle && matchesPayment && matchesSearch;
       });
+
+      const selectedCityObj = MOROCCO_CITIES[filterCityOffer] || (currentGlobalCity !== 'all' ? MOROCCO_CITIES[currentGlobalCity] : null);
+      const availableDistricts = selectedCityObj ? selectedCityObj.districts : [];
 
       return `
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-xl font-black text-slate-900 dark:text-white">عروض العمل في فاس</h2>
-              <p class="text-xs text-slate-500">ابحث عن فرصة توصيل تناسبك وتواصل فوراً</p>
+              <h2 class="text-xl font-black text-slate-900 dark:text-white">عروض العمل بالتوصيل</h2>
+              <p class="text-xs text-slate-500">تصفح الفرص في مدينتك وتواصل فوراً</p>
             </div>
             <button onclick="navigateTo('create', { mode: 'offer' })" class="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
               <i class="fa-solid fa-plus text-xs"></i> نشر عرض
@@ -936,10 +933,10 @@
             <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
             <input 
               type="text" 
-              placeholder="ابحث باسم المحل، الحي، أو نوع الخدمة..." 
+              placeholder="ابحث باسم المحل، الحي، أو الخدمة..." 
               value="${escapeHTML(searchOfferQuery)}"
               oninput="handleOfferSearch(this.value)"
-              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 dark:focus:border-brand-500 transition-colors shadow-sm"
+              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 shadow-sm"
             >
             ${searchOfferQuery ? `
               <button onclick="clearOfferSearch()" class="absolute left-3 top-3 text-slate-400 hover:text-slate-600">
@@ -951,16 +948,23 @@
           <!-- Filters Section -->
           <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
-              <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brand-600"></i> تصفية العروض</span>
-              ${(filterDistrictOffer || filterVehicleOffer || filterPaymentOffer) ? `
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brand-600"></i> تصفية حسب المدينة والحي</span>
+              ${(filterCityOffer || filterDistrictOffer || filterVehicleOffer || filterPaymentOffer) ? `
                 <button onclick="resetOfferFilters()" class="text-red-500 hover:underline text-[11px]">إعادة التعيين</button>
               ` : ''}
             </div>
 
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <select onchange="handleOfferCityChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل المدن</option>
+                ${Object.keys(MOROCCO_CITIES).filter(k => k !== 'all').map(k => `
+                  <option value="${k}" ${filterCityOffer === k ? 'selected' : ''}>${MOROCCO_CITIES[k].nameAr}</option>
+                `).join('')}
+              </select>
+
               <select onchange="handleOfferDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل الأحياء</option>
-                ${FES_DISTRICTS.map(d => `<option value="${d}" ${filterDistrictOffer === d ? 'selected' : ''}>${d}</option>`).join('')}
+                ${availableDistricts.map(d => `<option value="${d}" ${filterDistrictOffer === d ? 'selected' : ''}>${d}</option>`).join('')}
               </select>
 
               <select onchange="handleOfferVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
@@ -987,7 +991,7 @@
                     <i class="fa-solid fa-folder-open"></i>
                   </div>
                   <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى عرض مطابق لبحثك حالياً</h4>
-                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب تبدل الحي أو نوع المركبة، أو قم بنشر أول عرض بالمواصفات التي تحتاجها.</p>
+                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب تغيير المدينة أو الحي، أو قم بنشر عرض جديدة.</p>
                   <button onclick="resetOfferFilters(); clearOfferSearch();" class="text-xs font-bold px-4 py-2 rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-300">
                     عرض جميع العروض
                   </button>
@@ -1002,6 +1006,7 @@
     function renderOfferCard(offer) {
       const isClosed = offer.status === 'closed';
       const waLink = makeWhatsAppLink(offer.whatsapp, `عرض العمل في "${offer.shopName}"`);
+      const cityName = getCityNameArabic(offer.city);
 
       return `
         <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3 transition-all ${isClosed ? 'opacity-70 bg-slate-100/50 dark:bg-slate-900/40' : ''}">
@@ -1021,20 +1026,20 @@
           </div>
 
           <div class="flex flex-wrap gap-2 text-xs">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
-              <i class="fa-solid fa-location-dot text-brand-600"></i> ${escapeHTML(offer.district)}
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-bold">
+              <i class="fa-solid fa-city"></i> ${escapeHTML(cityName)}
             </span>
+            ${offer.district ? `
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
+                <i class="fa-solid fa-location-dot text-brand-600"></i> ${escapeHTML(offer.district)}
+              </span>
+            ` : ''}
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
               <i class="fa-solid fa-motorcycle text-amber-500"></i> ${escapeHTML(offer.vehicle)}
             </span>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
               <i class="fa-solid fa-money-bill-wave text-emerald-500"></i> ${escapeHTML(offer.paymentType)}
             </span>
-            ${offer.workingHours ? `
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold">
-                <i class="fa-regular fa-clock text-slate-400"></i> ${escapeHTML(offer.workingHours)}
-              </span>
-            ` : ''}
           </div>
 
           <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50/50 dark:bg-slate-800/40 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80">
@@ -1070,6 +1075,11 @@
       searchOfferQuery = '';
       document.getElementById('appContainer').innerHTML = viewOffers();
     }
+    function handleOfferCityChange(val) {
+      filterCityOffer = val;
+      filterDistrictOffer = '';
+      document.getElementById('appContainer').innerHTML = viewOffers();
+    }
     function handleOfferDistrictChange(val) {
       filterDistrictOffer = val;
       document.getElementById('appContainer').innerHTML = viewOffers();
@@ -1083,6 +1093,7 @@
       document.getElementById('appContainer').innerHTML = viewOffers();
     }
     function resetOfferFilters() {
+      filterCityOffer = '';
       filterDistrictOffer = '';
       filterVehicleOffer = '';
       filterPaymentOffer = '';
@@ -1091,26 +1102,32 @@
 
     // 3. DRIVERS VIEW
     function viewDrivers() {
+      const currentGlobalCity = DataService.getSelectedCity();
       const allDrivers = DataService.getDrivers();
 
       const filtered = allDrivers.filter(driver => {
+        const matchesGlobalCity = currentGlobalCity === 'all' || driver.city === currentGlobalCity;
+        const matchesCity = !filterCityDriver || driver.city === filterCityDriver;
         const matchesDistrict = !filterDistrictDriver || driver.district === filterDistrictDriver;
         const matchesVehicle = !filterVehicleDriver || driver.vehicle === filterVehicleDriver;
         const matchesAvailable = !filterAvailableDriver || 
           (filterAvailableDriver === 'available' ? driver.isAvailable : !driver.isAvailable);
         const matchesSearch = !searchDriverQuery ||
           driver.name.toLowerCase().includes(searchDriverQuery.toLowerCase()) ||
-          driver.district.toLowerCase().includes(searchDriverQuery.toLowerCase()) ||
+          (driver.district && driver.district.toLowerCase().includes(searchDriverQuery.toLowerCase())) ||
           driver.experience.toLowerCase().includes(searchDriverQuery.toLowerCase());
-        return matchesDistrict && matchesVehicle && matchesAvailable && matchesSearch;
+        return matchesGlobalCity && matchesCity && matchesDistrict && matchesVehicle && matchesAvailable && matchesSearch;
       });
+
+      const selectedCityObj = MOROCCO_CITIES[filterCityDriver] || (currentGlobalCity !== 'all' ? MOROCCO_CITIES[currentGlobalCity] : null);
+      const availableDistricts = selectedCityObj ? selectedCityObj.districts : [];
 
       return `
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-xl font-black text-slate-900 dark:text-white">الليفرورات المتوفرون</h2>
-              <p class="text-xs text-slate-500">سائقو توصيل في مختلف أحياء فاس</p>
+              <h2 class="text-xl font-black text-slate-900 dark:text-white">الليفرورات المتوفرون بالمغرب</h2>
+              <p class="text-xs text-slate-500">سائقو توصيل متوفرون حسب المدينة والحي</p>
             </div>
             <button onclick="navigateTo('create', { mode: 'driver' })" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
               <i class="fa-solid fa-id-card text-xs"></i> سجل كليفرور
@@ -1125,7 +1142,7 @@
               placeholder="ابحث باسم السائق، الحي، أو الخبرة..." 
               value="${escapeHTML(searchDriverQuery)}"
               oninput="handleDriverSearch(this.value)"
-              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 dark:focus:border-brand-500 transition-colors shadow-sm"
+              class="w-full pl-9 pr-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:border-brand-500 shadow-sm"
             >
             ${searchDriverQuery ? `
               <button onclick="clearDriverSearch()" class="absolute left-3 top-3 text-slate-400 hover:text-slate-600">
@@ -1138,15 +1155,22 @@
           <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
               <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-500"></i> تصفية الليفرورات</span>
-              ${(filterDistrictDriver || filterVehicleDriver || filterAvailableDriver) ? `
+              ${(filterCityDriver || filterDistrictDriver || filterVehicleDriver || filterAvailableDriver) ? `
                 <button onclick="resetDriverFilters()" class="text-red-500 hover:underline text-[11px]">إعادة التعيين</button>
               ` : ''}
             </div>
 
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <select onchange="handleDriverCityChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+                <option value="">كل المدن</option>
+                ${Object.keys(MOROCCO_CITIES).filter(k => k !== 'all').map(k => `
+                  <option value="${k}" ${filterCityDriver === k ? 'selected' : ''}>${MOROCCO_CITIES[k].nameAr}</option>
+                `).join('')}
+              </select>
+
               <select onchange="handleDriverDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل الأحياء</option>
-                ${FES_DISTRICTS.map(d => `<option value="${d}" ${filterDistrictDriver === d ? 'selected' : ''}>${d}</option>`).join('')}
+                ${availableDistricts.map(d => `<option value="${d}" ${filterDistrictDriver === d ? 'selected' : ''}>${d}</option>`).join('')}
               </select>
 
               <select onchange="handleDriverVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
@@ -1171,8 +1195,8 @@
                   <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center text-2xl">
                     <i class="fa-solid fa-motorcycle"></i>
                   </div>
-                  <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى ليفرور متوفر حالياً</h4>
-                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب البحث في أحياء أخرى، أو سجل نفسك لتكون أول سائق في هذه القائمة.</p>
+                  <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى ليفرور متوفر حالياً في هذا البحث</h4>
+                  <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب التصفح في مدن أو أحياء أخرى.</p>
                   <button onclick="resetDriverFilters(); clearDriverSearch();" class="text-xs font-bold px-4 py-2 rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-300">
                     عرض جميع السائقين
                   </button>
@@ -1186,6 +1210,7 @@
 
     function renderDriverCard(driver) {
       const waLink = makeWhatsAppLink(driver.whatsapp, `خدمات التوصيل مع الليفرور "${driver.name}"`);
+      const cityName = getCityNameArabic(driver.city);
 
       return `
         <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
@@ -1196,7 +1221,7 @@
               </div>
               <div>
                 <h4 class="font-extrabold text-base text-slate-900 dark:text-white">${escapeHTML(driver.name)}</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">📍 ${escapeHTML(driver.district)}</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">📍 ${escapeHTML(cityName)} ${driver.district ? '• ' + escapeHTML(driver.district) : ''}</p>
               </div>
             </div>
 
@@ -1256,6 +1281,11 @@
       searchDriverQuery = '';
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
+    function handleDriverCityChange(val) {
+      filterCityDriver = val;
+      filterDistrictDriver = '';
+      document.getElementById('appContainer').innerHTML = viewDrivers();
+    }
     function handleDriverDistrictChange(val) {
       filterDistrictDriver = val;
       document.getElementById('appContainer').innerHTML = viewDrivers();
@@ -1269,13 +1299,14 @@
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
     function resetDriverFilters() {
+      filterCityDriver = '';
       filterDistrictDriver = '';
       filterVehicleDriver = '';
       filterAvailableDriver = '';
       document.getElementById('appContainer').innerHTML = viewDrivers();
     }
 
-    // 4. CREATE / REGISTER VIEW (FORMS WITH VALIDATION)
+    // 4. CREATE / REGISTER VIEW (DYNAMIC CITY & DISTRICT FORMS)
     function viewCreate(activeTab = 'offer') {
       return `
         <div class="space-y-4">
@@ -1306,6 +1337,9 @@
     }
 
     function renderOfferForm() {
+      const defaultCity = DataService.getSelectedCity() !== 'all' ? DataService.getSelectedCity() : 'casablanca';
+      const cityObj = MOROCCO_CITIES[defaultCity] || MOROCCO_CITIES['casablanca'];
+
       return `
         <form onsubmit="handleOfferSubmit(event)" class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
           <div>
@@ -1319,17 +1353,26 @@
               <input type="text" id="offShopName" required placeholder="مثال: مطعم الأندلس" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نوع المحل</label>
+              <input type="text" id="offShopType" placeholder="مثال: سناك، صيدلية، مخبزة" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+            </div>
+
             <div class="grid grid-cols-2 gap-2.5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نوع المحل</label>
-                <input type="text" id="offShopType" placeholder="مثال: سناك، صيدلية، مخبزة" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">المدينة *</label>
+                <select id="offCity" required onchange="updateFormDistricts('offCity', 'offDistrict')" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+                  ${Object.keys(MOROCCO_CITIES).filter(k => k !== 'all').map(k => `
+                    <option value="${k}" ${k === defaultCity ? 'selected' : ''}>${MOROCCO_CITIES[k].nameAr}</option>
+                  `).join('')}
+                </select>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي في فاس *</label>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي *</label>
                 <select id="offDistrict" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
                   <option value="">اختر الحي</option>
-                  ${FES_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                  ${cityObj.districts.map(d => `<option value="${d}">${d}</option>`).join('')}
                 </select>
               </div>
             </div>
@@ -1393,11 +1436,14 @@
     }
 
     function renderDriverForm() {
+      const defaultCity = DataService.getSelectedCity() !== 'all' ? DataService.getSelectedCity() : 'casablanca';
+      const cityObj = MOROCCO_CITIES[defaultCity] || MOROCCO_CITIES['casablanca'];
+
       return `
         <form onsubmit="handleDriverSubmit(event)" class="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
           <div>
             <h3 class="text-base font-extrabold text-slate-900 dark:text-white">تسجيل سائق توصيل جديد</h3>
-            <p class="text-xs text-slate-500">أنشئ بروفايلك ليجدك أصحاب المحلات والمطاعم في فاس بسهولة</p>
+            <p class="text-xs text-slate-500">أنشئ ملفك الشخصي ليجدك أصحاب المحلات والمطاعم بسهولة</p>
           </div>
 
           <div class="space-y-3">
@@ -1408,19 +1454,28 @@
 
             <div class="grid grid-cols-2 gap-2.5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي المقيم به *</label>
-                <select id="drvDistrict" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
-                  <option value="">اختر الحي</option>
-                  ${FES_DISTRICTS.map(d => `<option value="${d}">${d}</option>`).join('')}
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">المدينة *</label>
+                <select id="drvCity" required onchange="updateFormDistricts('drvCity', 'drvDistrict')" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                  ${Object.keys(MOROCCO_CITIES).filter(k => k !== 'all').map(k => `
+                    <option value="${k}" ${k === defaultCity ? 'selected' : ''}>${MOROCCO_CITIES[k].nameAr}</option>
+                  `).join('')}
                 </select>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وسيلة التوصيل *</label>
-                <select id="drvVehicle" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
-                  ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">الحي *</label>
+                <select id="drvDistrict" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                  <option value="">اختر الحي</option>
+                  ${cityObj.districts.map(d => `<option value="${d}">${d}</option>`).join('')}
                 </select>
               </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">وسيلة التوصيل *</label>
+              <select id="drvVehicle" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500">
+                ${VEHICLE_TYPES.map(v => `<option value="${v}">${v}</option>`).join('')}
+              </select>
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
@@ -1458,11 +1513,26 @@
       `;
     }
 
+    function updateFormDistricts(citySelectId, districtSelectId) {
+      const cityVal = document.getElementById(citySelectId).value;
+      const districtSel = document.getElementById(districtSelectId);
+      if (!districtSel) return;
+
+      const cityObj = MOROCCO_CITIES[cityVal];
+      if (cityObj && cityObj.districts) {
+        districtSel.innerHTML = '<option value="">اختر الحي</option>' + 
+          cityObj.districts.map(d => `<option value="${d}">${d}</option>`).join('');
+      } else {
+        districtSel.innerHTML = '<option value="">اختر الحي</option>';
+      }
+    }
+
     function handleOfferSubmit(e) {
       e.preventDefault();
       const newOffer = {
         shopName: document.getElementById('offShopName').value.trim(),
         shopType: document.getElementById('offShopType').value.trim(),
+        city: document.getElementById('offCity').value,
         district: document.getElementById('offDistrict').value,
         vehicle: document.getElementById('offVehicle').value,
         paymentType: document.getElementById('offPaymentType').value,
@@ -1483,6 +1553,7 @@
       e.preventDefault();
       const newDriver = {
         name: document.getElementById('drvName').value.trim(),
+        city: document.getElementById('drvCity').value,
         district: document.getElementById('drvDistrict').value,
         vehicle: document.getElementById('drvVehicle').value,
         phone: document.getElementById('drvPhone').value.trim(),
@@ -1493,7 +1564,7 @@
       };
 
       DataService.addDriver(newDriver);
-      showToast('تم تسجيل بروفايلك كليفرور بنجاح!', 'success');
+      showToast('تم تسجيل ملفك كليفرور بنجاح!', 'success');
       navigateTo('drivers');
     }
 
@@ -1501,6 +1572,7 @@
     function viewAccount() {
       const offers = DataService.getOffers();
       const currentRole = DataService.getUserRole();
+      const currentCity = DataService.getSelectedCity();
 
       return `
         <div class="space-y-5">
@@ -1512,6 +1584,15 @@
               <h2 class="text-base font-extrabold text-slate-900 dark:text-white">إدارة الحساب والبيانات</h2>
               <p class="text-xs text-slate-500">الوضع الحالي: <span class="font-bold text-brand-600 dark:text-brand-400">${currentRole === 'shop' ? 'صاحب محل' : 'ليفرور'}</span></p>
             </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+            <h3 class="text-xs font-extrabold text-slate-900 dark:text-white">المدينة الافتراضية للتصفح</h3>
+            <select onchange="handleGlobalCityChange(this.value)" class="w-full text-xs font-bold py-2.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
+              ${Object.keys(MOROCCO_CITIES).map(key => `
+                <option value="${key}" ${key === currentCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
+              `).join('')}
+            </select>
           </div>
 
           <div class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
@@ -1537,11 +1618,11 @@
                 <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between text-xs">
                   <div>
                     <h5 class="font-bold text-slate-900 dark:text-white">${escapeHTML(o.shopName)}</h5>
-                    <span class="text-[10px] text-slate-500">${escapeHTML(o.district)} •${o.price} درهم</span>
+                    <span class="text-[10px] text-slate-500">${getCityNameArabic(o.city)} •${escapeHTML(o.district)}</span>
                   </div>
                   <div class="flex items-center gap-1.5">
                     <button onclick="toggleOfferStatus('${o.id}')" class="px-2 py-1 rounded-lg text-[10px] font-bold ${o.status === 'open' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'}">
-                      ${o.status === 'open' ? 'إغلاق العرض' : 'إعادة فتح'}
+                      ${o.status === 'open' ? 'إغلاق' : 'تنشيط'}
                     </button>
                     <button onclick="deleteOfferConfirm('${o.id}')" class="w-7 h-7 rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center">
                       <i class="fa-solid fa-trash text-xs"></i>
@@ -1553,8 +1634,8 @@
           </div>
 
           <div class="p-4 rounded-3xl bg-red-50/50 dark:bg-red-950/20 border border-red-200/60 dark:border-red-900/40 space-y-2.5">
-            <h4 class="text-xs font-bold text-red-700 dark:text-red-400">منطقة التحكم والضبط</h4>
-            <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">يمكنك استعادة البيانات الافتراضية للتطبيق في حال أردت مسح البيانات المخزنة محلياً.</p>
+            <h4 class="text-xs font-bold text-red-700 dark:text-red-400">منطقة الضبط والتحكم</h4>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">استعادة القائمة والبيانات الافتراضية المسجلة أول مرة.</p>
             <button onclick="resetPlatformDataConfirm()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm active:scale-95 transition-all">
               <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات الافتراضية
             </button>
@@ -1589,7 +1670,7 @@
     function resetPlatformDataConfirm() {
       showConfirmModal(
         'إعادة ضبط البيانات',
-        'سيتم استرجاع قائمة العروض والسائقين الافتراضية المسجلة أول مرة.',
+        'سيتم استرجاع قائمة العروض والسائقين الافتراضية.',
         () => {
           DataService.resetAllData();
           showToast('تمت إعادة ضبط البيانات بنجاح', 'success');
@@ -1604,6 +1685,7 @@
       DataService.init();
       initTheme();
       updateRoleHeader();
+      populateGlobalCitySelector();
       renderPage('home');
     });
   </script>
