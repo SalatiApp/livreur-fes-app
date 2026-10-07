@@ -202,7 +202,7 @@
     const MOROCCO_CITIES = {
       all: {
         id: 'all',
-        nameAr: 'جميع مدن المغرب 🇲🇦',
+        nameAr: 'جميع مدن المغرب',
         districts: []
       },
       casablanca: {
@@ -787,10 +787,10 @@
                 تواصل مباشر عبر الاتصال وواتساب بدون وسيط أو عمولات خفية.
               </p>
               
-              <!-- Action Buttons Row (Removed duplicate + icon & adjusted city dropdown width) -->
+              <!-- Action Buttons Row -->
               <div class="pt-2.5 flex items-center justify-between gap-1.5">
                 
-                <!-- City Dropdown Button (Fully Visible "جميع مدن المغرب" & Visible Chevron) -->
+                <!-- City Dropdown Button -->
                 <div class="flex-[1.4] min-w-0 relative">
                   <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-2 pl-6 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-9 flex items-center whitespace-nowrap overflow-hidden">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
@@ -803,8 +803,9 @@
                   </div>
                 </div>
 
-                <!-- New Offer Button (Removed small + icon) -->
-                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center h-9 whitespace-nowrap">
+                <!-- New Offer Button (With + Icon and small spacing) -->
+                <button onclick="navigateTo('create')" class="flex-1 min-w-0 py-2 px-1 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] sm:text-[11px] rounded-xl border border-white/20 transition-all active:scale-95 flex items-center justify-center gap-1.5 h-9 whitespace-nowrap">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
                   <span>نشر جديد</span>
                 </button>
 
