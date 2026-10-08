@@ -161,7 +161,7 @@
         <span class="text-[11px] font-bold mt-[-2px]">إضافة</span>
       </button>
       <button onclick="navigateTo('drivers')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="drivers">
-        <i class="fa-solid fa-helmet-safety text-lg"></i>
+        <i class="fa-solid fa-motorcycle text-lg"></i>
         <span class="text-[11px] font-bold">الليفرورات</span>
       </button>
       <button onclick="navigateTo('account')" class="nav-btn flex-1 py-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" data-page="account">
@@ -646,7 +646,7 @@
             <div class="grid grid-cols-2 gap-3">
               <div onclick="navigateTo('drivers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-brand-500 transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-helmet-safety"></i>
+                  <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">قائمة الليفرورات</h4>
                 <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لأصحاب المحلات للبحث عن سائق متوفر</p>
@@ -658,9 +658,9 @@
 
               <div onclick="navigateTo('offers')" class="cursor-pointer group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-amber-500 transition-all">
                 <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-3 group-hover:scale-105 transition-transform">
-                  <i class="fa-solid fa-briefcase"></i>
+                  <i class="fa-solid fa-store"></i>
                 </div>
-                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">عروض المطاعم</h4>
+                <h4 class="font-extrabold text-sm text-slate-900 dark:text-white mb-1">عروض المحلات</h4>
                 <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">لليفرورات للعثور على فرص عمل وتوصيل</p>
                 <div class="mt-3 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <span>تصفح العروض</span>
@@ -695,7 +695,7 @@
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-              <i class="fa-solid fa-helmet-safety text-brand-500"></i> الليفرورات المتوفرون حالياً ${city !== 'all' ? `في ${getCityNameArabic(city)}` : ''}
+              <i class="fa-solid fa-motorcycle text-brand-500"></i> الليفرورات المتوفرون حالياً ${city !== 'all' ? `في ${getCityNameArabic(city)}` : ''}
             </h3>
             <button onclick="navigateTo('drivers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
               رؤية الكل (${drivers.length})
@@ -725,7 +725,7 @@
           <div class="space-y-3">
             ${offers.length > 0 
               ? offers.slice(0, 3).map(offer => renderOfferCard(offer)).join('')
-              : '<p class="text-xs text-slate-500 text-center py-4">لا توجد عروض مطاعم حالياً في هذه المدينة.</p>'
+              : '<p class="text-xs text-slate-500 text-center py-4">لا توجد عروض محلات حالياً في هذه المدينة.</p>'
             }
           </div>
         </div>
@@ -1081,7 +1081,7 @@
           <div class="flex items-start justify-between gap-2">
             <div class="flex items-center gap-3">
               <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 text-white flex items-center justify-center text-base font-black shadow-sm">
-                <i class="fa-solid fa-helmet-safety"></i>
+                <i class="fa-solid fa-motorcycle"></i>
               </div>
               <div>
                 <h4 class="font-extrabold text-base text-slate-900 dark:text-white">${escapeHTML(driver.name)}</h4>
