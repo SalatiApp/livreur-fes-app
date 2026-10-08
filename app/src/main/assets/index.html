@@ -80,10 +80,10 @@
 
   <!-- Top App Bar -->
   <header class="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-    <div class="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-1">
+    <div class="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-2">
       
-      <!-- Left Side (RTL Start): Role Selector & Theme Toggle -->
-      <div class="flex items-center gap-1.5 shrink-0">
+      <!-- Left Side (RTL Start): Role Selector & Theme Toggle & Scooter -->
+      <div class="flex items-center justify-between gap-3 flex-1 max-w-[230px]">
         <!-- Role Switcher Button -->
         <button onclick="openQuickRoleModal()" class="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 py-1.5 shadow-md flex items-center gap-1 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer">
           <div class="text-right flex flex-col justify-center">
@@ -95,7 +95,7 @@
           </svg>
         </button>
 
-        <!-- Dark/Light Theme Button -->
+        <!-- Dark/Light Theme Button (In the Middle) -->
         <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
           <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
             <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -104,24 +104,24 @@
             </svg>
           </span>
         </button>
-      </div>
 
-      <!-- Center: Scooter Rider Icon -->
-      <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')">
-        <svg viewBox="0 0 120 85" class="w-11 h-9 shrink-0 filter drop-shadow" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-          <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
-          <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
-          <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.75"/>
-          <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
-          <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
-          <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
-          <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
-          <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-          <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
-          <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-          <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-          <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
-        </svg>
+        <!-- Scooter Rider Icon (Prominent & Scaled) -->
+        <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')">
+          <svg viewBox="0 0 120 85" class="w-14 h-11 shrink-0 filter drop-shadow transition-transform hover:scale-105" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
+            <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+            <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.75"/>
+            <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
+            <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
+            <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
+            <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
+            <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+            <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
+            <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+            <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
+            <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
+          </svg>
+        </div>
       </div>
 
       <!-- Right Side (RTL End): Map & App Titles -->
@@ -1048,7 +1048,7 @@
 
               <select onchange="handleDriverDistrictChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
                 <option value="">كل الأحياء</option>
-                ${availableDistricts.map(d => `<option value="${d}" ${filterDistrictDriver === d ? 'selected' : ''}>${d}</option>`).join('')}
+                ${availableDistricts.map(d => `<option value="${d}">${d}</option>`).join('')}
               </select>
 
               <select onchange="handleDriverVehicleChange(this.value)" class="w-full text-xs font-semibold py-2 px-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none">
@@ -1242,12 +1242,12 @@
           <div class="space-y-3">
             <div>
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">اسم المحل / المطعم *</label>
-              <input type="text" id="offShopName" required placeholder="مثال: مطعم الأندلس" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+              <input type="text" id="offShopName" required placeholder="150" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
             <div>
               <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">نوع المحل</label>
-              <input type="text" id="offShopType" placeholder="مثال: سناك، صيدلية، مخبزة" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
+              <input type="text" id="offShopType" placeholder="150" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-brand-500">
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
