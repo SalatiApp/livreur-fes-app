@@ -105,21 +105,48 @@
           </span>
         </button>
 
-        <!-- Scooter Rider Icon (Prominent & Scaled) -->
-        <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')">
-          <svg viewBox="0 0 120 85" class="w-14 h-11 shrink-0 filter drop-shadow transition-transform hover:scale-105" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-            <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
-            <line x1="70" y1="29" x2="106" y2="29" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
-            <line x1="78" y1="37" x2="112" y2="37" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.75"/>
-            <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" stroke="#475569" stroke-width="1.2"/>
-            <rect x="67" y="24" width="15" height="13" rx="1.5" fill="#1e293b"/>
-            <text x="74.5" y="33" font-size="5.5" font-family="'Cairo', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">ليفرور</text>
-            <ellipse cx="46" cy="16" rx="7.5" ry="8.5" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2"/>
-            <path d="M42 15 Q38 17 42 20" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-            <path d="M45 24 L58 30 L55 49 L43 49 L39 32 Z" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>
-            <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <circle cx="67" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" stroke-width="2.5"/>
-            <path d="M23 66 L30 43 L35 41 L39 53 L63 53 L67 66 Z" fill="#ef4444"/>
+        <!-- Scooter Rider Icon (Updated to match reference image) -->
+        <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')" title="ليفرور">
+          <svg viewBox="0 0 140 95" class="w-16 h-12 shrink-0 filter drop-shadow transition-transform hover:scale-105" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+            <!-- خلفية سوداء متناسقة مع أسلوب الأيقونة المرجعية -->
+            <rect x="2" y="2" width="136" height="91" rx="12" fill="#090d16" stroke="#1e293b" stroke-width="2"/>
+            
+            <!-- خطوط السرعة والحركة (خلف السائق والدراجة) -->
+            <line x1="25" y1="30" x2="60" y2="30" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
+            <line x1="18" y1="40" x2="52" y2="40" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            <line x1="28" y1="50" x2="58" y2="50" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+            <line x1="15" y1="60" x2="45" y2="60" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+            <line x1="32" y1="70" x2="50" y2="70" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            <line x1="22" y1="80" x2="40" y2="80" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+
+            <!-- صندوق التوصيل الخلفي -->
+            <g transform="translate(42, 16)">
+              <rect x="0" y="0" width="30" height="26" rx="4" fill="#0f172a" stroke="#ffffff" stroke-width="2"/>
+              <!-- شعار أو تصميم مبسط على الصندوق -->
+              <path d="M12 8 L18 8 L18 18 L12 18 Z" fill="#ffffff" opacity="0.9"/>
+              <circle cx="15" cy="13" r="3" fill="#0f172a"/>
+            </g>
+
+            <!-- هيكل السائق (مع خوذة وحركة الانحناء للأمام) -->
+            <!-- الخوذة -->
+            <path d="M78 20 C87 20 94 26 95 35 C96 42 91 48 85 48 L78 45 Z" fill="#ffffff" stroke="#ffffff" stroke-width="1.5"/>
+            <path d="M84 27 L92 32 C93 33 93 35 91 37 C89 38 86 37 84 35 Z" fill="#0f172a"/> <!-- واجهة الخوذة -->
+            
+            <!-- جسم السائق والذراعين -->
+            <path d="M73 38 C70 42 62 48 54 53 L62 64 C70 58 78 50 82 46 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M72 45 L92 42" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/> <!-- الذراع والمقود -->
+
+            <!-- هيكل الدراجة النارية (سكوتر أنيق باللون الأبيض والأسود) -->
+            <path d="M42 68 L54 48 L72 47 L80 54 L98 52 C104 52 108 58 103 63 L95 68 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2"/>
+            <path d="M78 40 L88 45 L98 43" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/> <!-- المقود والأضواء الأمامية -->
+            <circle cx="100" cy="40" r="3.5" fill="#facc15"/> <!-- الضوء الأمامي -->
+
+            <!-- عجلات الدراجة النارية (الإطار الخلفي والأمامي) -->
+            <circle cx="48" cy="74" r="13" fill="#0f172a" stroke="#ffffff" stroke-width="3"/>
+            <circle cx="48" cy="74" r="7" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+            <circle cx="102" cy="74" r="13" fill="#0f172a" stroke="#ffffff" stroke-width="3"/>
+            <circle cx="102" cy="74" r="7" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3 3"/>
           </svg>
         </div>
       </div>
