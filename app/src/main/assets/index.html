@@ -78,6 +78,10 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
+    /* دمج أنيق لخريطة الوضع الداكن إذا تطلب الأمر لتتوافق مع تصميم التطبيق */
+    .dark .leaflet-tile-pane {
+      filter: brightness(0.7) invert(1) contrast(2.2) hue-rotate(200deg) saturate(0.3);
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -99,7 +103,7 @@
           </svg>
         </button>
 
-        <!-- Dark/Light Theme Button (In the Middle) -->
+        <!-- Dark/Light Theme Button -->
         <button id="themeToggleBtn" onclick="toggleDarkMode()" title="تبديل الوضع الليلي / النهاري" class="w-8 h-8 rounded-full bg-[#141e2e] hover:bg-[#1a273b] border border-slate-700/80 shadow-md flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer">
           <span id="themeIconContainer" class="flex items-center justify-center pointer-events-none">
             <svg viewBox="0 0 24 24" class="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -657,7 +661,7 @@
       }
     }
 
-    // خريطة احترافية عالية الدقة ومتناسقة تلقائياً مع وضع التطبيق (داكن/نهاري) بدون أي علامات مائية
+    // تهيئة الخريطة بـ OpenStreetMap الخالية تماماً من قيود ومفاتيح API
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       if (!mapEl) return;
@@ -675,15 +679,8 @@
         attributionControl: false
       }).setView(cityData.coords, cityData.zoom);
 
-      const isDark = document.documentElement.classList.contains('dark');
-      // استخدام CartoDB Voyager للنهار و CartoDB Dark Matter للوضع الداكن (تصميم عصري ونظيف 100%)
-      const tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png' // تم تعديلها لتكون فائقة الوضوح والسطوع العصري
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-
-      L.tileLayer(tileUrl, {
-        maxZoom: 19,
-        subdomains: 'abcd'
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
       }).addTo(homeLeafletMap);
 
       L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
@@ -798,13 +795,13 @@
             </div>
           </div>
 
-          <!-- خريطة احترافية نقية وعالية الجودة -->
+          <!-- خريطة نظيفة واضحة 100% بدون أي شعارات أو أخطاء -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
               </h3>
-              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">احترافية فائقة الوضوح</span>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">نظيفة وواضحة</span>
             </div>
             <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10">
               <div id="homeInteractiveMap" class="w-full h-full"></div>
