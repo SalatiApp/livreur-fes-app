@@ -78,10 +78,6 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
-    /* تعديل مظهر الخريطة لتتطابق مع الوضع الليلي */
-    .dark .leaflet-layer {
-      filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
-    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -552,7 +548,7 @@
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem(DataService.KEY_THEME, isDark ? 'dark' : 'light');
       updateThemeIcon();
-      // إعادة تحميل الخريطة لتطبيق الـ Filter الليلي
+      // تحديث الخريطة فوراً لتبديل التصميم الداكن أو الفاتح فائق الوضوح
       if (currentPage === 'home') {
         setTimeout(initHomeMap, 100);
       }
@@ -634,7 +630,6 @@
 
     function renderPage(page, params = {}) {
       const container = document.getElementById('appContainer');
-      // تنظيف خريطة الصفحة الرئيسية إذا انتقلنا لصفحة أخرى
       if (page !== 'home' && homeLeafletMap) {
         homeLeafletMap.remove();
         homeLeafletMap = null;
@@ -663,7 +658,7 @@
       }
     }
 
-    // تهيئة الخريطة المجانية في الواجهة الرئيسية
+    // تهيئة الخريطة بوضوح فائق ومظهر متناسق تماماً مع الوضع الداكن أو الفاتح
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       if (!mapEl) return;
@@ -681,14 +676,19 @@
         attributionControl: false
       }).setView(cityData.coords, cityData.zoom);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
+      // اختيار طبقة خرائط عالية الوضوح جداً تتناسب مع الوضع الليلي والنهاري للتطبيق
+      const isDark = document.documentElement.classList.contains('dark');
+      const tileUrl = isDark 
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png' // خريطة داكنة فائقة الوضوح والاحترافية
+        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'; // خريطة فاتحة واضحة ونظيفة جداً
+
+      L.tileLayer(tileUrl, {
+        maxZoom: 19,
+        subdomains: 'abcd'
       }).addTo(homeLeafletMap);
 
-      // إضافة زر تحكم بالتكبير مصغر وأنيق
       L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
 
-      // إضافة علامة (Marker) تدل على المدينة المحددة
       const marker = L.marker(cityData.coords).addTo(homeLeafletMap);
       marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`).openPopup();
     }
@@ -799,13 +799,13 @@
             </div>
           </div>
 
-          <!-- الخريطة التفاعلية المجانية في المكان الاحترافي (تحت الإحصائيات مباشرة) -->
+          <!-- الخريطة التفاعلية فائقة الوضوح (CartoDB Vector) -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
               </h3>
-              <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">تفاعلية مجانية</span>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">عالية الوضوح HD</span>
             </div>
             <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10">
               <div id="homeInteractiveMap" class="w-full h-full"></div>
