@@ -19,6 +19,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet JS for Map -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
     tailwind.config = {
@@ -74,6 +78,10 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
+    /* تعديل مظهر الخريطة لتتطابق مع الوضع الليلي */
+    .dark .leaflet-layer {
+      filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -105,7 +113,7 @@
           </span>
         </button>
 
-        <!-- Scooter Rider Icon (Prominent & Scaled) -->
+        <!-- Scooter Rider Icon -->
         <div class="flex items-center justify-center shrink-0 cursor-pointer" onclick="navigateTo('home')">
           <svg viewBox="0 0 120 85" class="w-14 h-11 shrink-0 filter drop-shadow transition-transform hover:scale-105" fill="none" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
             <line x1="75" y1="22" x2="115" y2="22" stroke="#ef4444" stroke-width="2.8" stroke-linecap="round" opacity="0.85"/>
@@ -232,102 +240,91 @@
 
   <script>
     /* ==========================================================================
-       1. COMPREHENSIVE MOROCCO CITIES & DISTRICTS DATASTRUCTURE
+       1. CITIES & COORDINATES & DATASTRUCTURE
        ========================================================================== */
     const MOROCCO_CITIES = {
-      all: { id: 'all', nameAr: 'جميع مدن المغرب', districts: [] },
+      all: { id: 'all', nameAr: 'جميع مدن المغرب', coords: [31.7917, -7.0926], zoom: 6, districts: [] },
       
-      // جهة الدار البيضاء - سطات
-      casablanca: { id: 'casablanca', nameAr: 'الدار البيضاء', districts: ['أنفا', 'المعاريف', 'سيدي بليوط', 'عين الشق', 'الحي الحسني', 'سيدي البرنوصي', 'عين السبع', 'مولاي رشيد', 'سيدي عثمان', 'بن مسيك', 'سباتة', 'بوركون', 'كاليفورنيا', 'الولفة', 'حي المحمدي', 'عين الحرودة', 'سيدي مومن', 'الوازيس', 'المستقبل'] },
-      mohammedia: { id: 'mohammedia', nameAr: 'المحمدية', districts: ['وسط المدينة', 'العالية', 'الراشيدية', 'حي السعادة', 'حي النصر', 'فدالة', 'رياض سلام', 'المنصور'] },
-      el_jadida: { id: 'el_jadida', nameAr: 'الجديدة', districts: ['وسط المدينة', 'حي القليعة', 'الحي البرتغالي', 'حي السعادة', 'حي السلام', 'سيدي الضاوي', 'المطار'] },
-      settat: { id: 'settat', nameAr: 'سطات', districts: ['وسط المدينة', 'حي السماعلة', 'حي الدويمة', 'حي الميمونة', 'حي السلام', 'تاميسنا', 'الحي الإداري'] },
-      berrechid: { id: 'berrechid', nameAr: 'برشيد', districts: ['وسط المدينة', 'حي الحسني', 'حي الكمال', 'حي الراس العام', 'حي القدس', 'الازدهار'] },
-      benslimane: { id: 'benslimane', nameAr: 'بنسليمان', districts: ['وسط المدينة', 'حي الفتح', 'حي الرياض', 'المنصورية', 'حي الإنبات'] },
-      houceima_provinces_etc: { id: 'mediouna', nameAr: 'مديونة', districts: ['مديونة المركز', 'الهراويين', 'مجاطية أولاد الطالب'] },
-      nouaceur: { id: 'nouaceur', nameAr: 'نواصر', districts: ['بوسكورة', 'الدار البيضاء العمالة', 'أولاد صالح', 'المهدية'] },
+      casablanca: { id: 'casablanca', nameAr: 'الدار البيضاء', coords: [33.5731, -7.5898], zoom: 12, districts: ['أنفا', 'المعاريف', 'سيدي بليوط', 'عين الشق', 'الحي الحسني', 'سيدي البرنوصي', 'عين السبع', 'مولاي رشيد', 'سيدي عثمان', 'بن مسيك', 'سباتة', 'بوركون', 'كاليفورنيا', 'الولفة', 'حي المحمدي', 'عين الحرودة', 'سيدي مومن', 'الوازيس'] },
+      mohammedia: { id: 'mohammedia', nameAr: 'المحمدية', coords: [33.682, -7.382], zoom: 13, districts: ['وسط المدينة', 'العالية', 'الراشيدية', 'حي السعادة', 'حي النصر', 'فدالة', 'رياض سلام', 'المنصور'] },
+      el_jadida: { id: 'el_jadida', nameAr: 'الجديدة', coords: [33.2316, -8.5007], zoom: 13, districts: ['وسط المدينة', 'حي القليعة', 'الحي البرتغالي', 'حي السعادة', 'حي السلام', 'سيدي الضاوي', 'المطار'] },
+      settat: { id: 'settat', nameAr: 'سطات', coords: [33.001, -7.616], zoom: 13, districts: ['وسط المدينة', 'حي السماعلة', 'حي الدويمة', 'حي الميمونة', 'حي السلام', 'تاميسنا', 'الحي الإداري'] },
+      berrechid: { id: 'berrechid', nameAr: 'برشيد', coords: [33.265, -7.588], zoom: 13, districts: ['وسط المدينة', 'حي الحسني', 'حي الكمال', 'حي الراس العام', 'حي القدس', 'الازدهار'] },
+      benslimane: { id: 'benslimane', nameAr: 'بنسليمان', coords: [33.618, -7.121], zoom: 13, districts: ['وسط المدينة', 'حي الفتح', 'حي الرياض', 'المنصورية', 'حي الإنبات'] },
+      mediouna: { id: 'mediouna', nameAr: 'مديونة', coords: [33.451, -7.505], zoom: 13, districts: ['مديونة المركز', 'الهراويين', 'مجاطية أولاد الطالب'] },
+      nouaceur: { id: 'nouaceur', nameAr: 'نواصر', coords: [33.359, -7.623], zoom: 13, districts: ['بوسكورة', 'الدار البيضاء العمالة', 'أولاد صالح', 'المهدية'] },
 
-      // جهة الرباط - سلا - القنيطرة
-      rabat: { id: 'rabat', nameAr: 'الرباط', districts: ['أقدال', 'حسان', 'يعقوب المنصور', 'السويسي', 'الرياض', 'اليوسفية', 'حي النهضة', 'ديور الجامع', 'العكاري', 'المنزه', 'حي الفتح', 'المحيط', 'التقددم', 'المريسة'] },
-      salé: { id: 'salé', nameAr: 'سلا', districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى', 'سعيد حجي', 'حي السلام', 'المعمورة', 'سيدي عبد الله'] },
-      temara: { id: 'temara', nameAr: 'تمارة', districts: ['وسط المدينة', 'الولجة', 'قصبة الأقا', 'المسيرة', 'التمارة المركز', 'السهول', 'حي الوفاق', 'الهارورة'] },
-      skhirat: { id: 'skhirat', nameAr: 'الصخيرات', districts: ['الصخيرات المركز', 'بوزنيقة', 'الرمل', 'الساحل'] },
-      kenitra: { id: 'kenitra', nameAr: 'القنيطرة', districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي', 'حي الوفاء', 'البلاطيو', 'الحدادة', 'المكارم'] },
-      khemisset: { id: 'khemisset', nameAr: 'الخميسات', districts: ['وسط المدينة', 'حي السلام', 'حي الياسمين', 'المنزه', 'حي النصر'] },
-      tiflet: { id: 'tiflet', nameAr: 'تيفلت', districts: ['تيفلت المركز', 'حي الأمل', 'حي الفرح', 'الرشاد'] },
-      sidi_kacem: { id: 'sidi_kacem', nameAr: 'سيدي قاسم', districts: ['وسط المدينة', 'حي الزيتون', 'حي النهضة', 'الأنوار'] },
-      sidi_slimane: { id: 'sidi_slimane', nameAr: 'سيدي سليمان', districts: ['وسط المدينة', 'حي الليمون', 'حي السعادة', 'البام'] },
+      rabat: { id: 'rabat', nameAr: 'الرباط', coords: [34.0209, -6.8416], zoom: 12, districts: ['أقدال', 'حسان', 'يعقوب المنصور', 'السويسي', 'الرياض', 'اليوسفية', 'حي النهضة', 'ديور الجامع', 'العكاري', 'المنزه', 'حي الفتح', 'المحيط', 'التقدم', 'المريسة'] },
+      salé: { id: 'salé', nameAr: 'سلا', coords: [34.0389, -6.8163], zoom: 12, districts: ['بطانة', 'تابريكت', 'العيايدة', 'حصين', 'قرية أولاد موسى', 'سلا الجديدة', 'سيدي موسى', 'سعيد حجي', 'حي السلام', 'المعمورة', 'سيدي عبد الله'] },
+      temara: { id: 'temara', nameAr: 'تمارة', coords: [33.928, -6.912], zoom: 13, districts: ['وسط المدينة', 'الولجة', 'قصبة الأقا', 'المسيرة', 'التمارة المركز', 'السهول', 'حي الوفاق', 'الهارورة'] },
+      skhirat: { id: 'skhirat', nameAr: 'الصخيرات', coords: [33.847, -7.032], zoom: 13, districts: ['الصخيرات المركز', 'بوزنيقة', 'الرمل', 'الساحل'] },
+      kenitra: { id: 'kenitra', nameAr: 'القنيطرة', coords: [34.261, -6.580], zoom: 13, districts: ['وسط المدينة', 'الخبازات', 'حي الساكنية', 'أولاد أوجيه', 'حي الميموزا', 'بير رامي', 'حي الوفاء', 'البلاطيو', 'الحدادة', 'المكارم'] },
+      khemisset: { id: 'khemisset', nameAr: 'الخميسات', coords: [33.824, -6.066], zoom: 13, districts: ['وسط المدينة', 'حي السلام', 'حي الياسمين', 'المنزه', 'حي النصر'] },
+      tiflet: { id: 'tiflet', nameAr: 'تيفلت', coords: [33.890, -6.304], zoom: 13, districts: ['تيفلت المركز', 'حي الأمل', 'حي الفرح', 'الرشاد'] },
+      sidi_kacem: { id: 'sidi_kacem', nameAr: 'سيدي قاسم', coords: [34.221, -5.707], zoom: 13, districts: ['وسط المدينة', 'حي الزيتون', 'حي النهضة', 'الأنوار'] },
+      sidi_slimane: { id: 'sidi_slimane', nameAr: 'سيدي سليمان', coords: [34.264, -5.926], zoom: 13, districts: ['وسط المدينة', 'حي الليمون', 'حي السعادة', 'البام'] },
 
-      // جهة فاس - مكناس
-      fes: { id: 'fes', nameAr: 'فاس', districts: ['أكدال', 'المرينيين', 'زواغة', 'سائس', 'فاس المدينة (المدن القديمة)', 'النرجس', 'طريق صفرو', 'بنسودة', 'طارق', 'عين هارون', 'سهب الورد', 'حي طارق', 'مونفلوري', 'عين الشقف', 'بطحاء', 'باب الفتوح', 'الوندريس'] },
-      meknes: { id: 'meknes', nameAr: 'مكناس', districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين', 'برج التستوري', 'سعيد عواد', 'الرغاي'] },
-      sefrou: { id: 'sefrou', nameAr: 'صفرو', districts: ['صفرو المركز', 'المدينة القديمة', 'بئر الرامي', 'المنزه', 'سيدي بوسحاق'] },
-      taza: { id: 'taza', nameAr: 'تازة', districts: ['تازة العليا', 'تازة السفلى', 'حي بيت غلام', 'حي المسيرة', 'الشارع الرئيسي', 'الكويرحة', 'سعادة'] },
-      taounate: { id: 'taounate', nameAr: 'تاونات', districts: ['تاونات المركز', 'حي الوداد', 'حي السلام'] },
-      tahela: { id: 'tahela', nameAr: 'تاهلة', districts: ['تاهلة المركز', 'المحطة', 'التعاونية'] },
-      boulemane: { id: 'boulemane', nameAr: 'بولمان', districts: ['بولمان المركز', 'ميسور', 'أوطاط الحاج', 'إرجاء'] },
-      ifrane: { id: 'ifrane', nameAr: 'إفران', districts: ['إفران المركز', 'الأرز', 'حي الونشريس', 'حي Atlas'] },
-      azrou: { id: 'azrou', nameAr: 'أزرو', districts: ['أزرو المركز', 'حي تيط ملال', 'طريق إفران', 'سيدي ميمون'] },
-      el_hajeb: { id: 'el_hajeb', nameAr: 'الحاجب', districts: ['الحاجب المركز', 'تامسلوت', 'حي الرشاد'] },
+      fes: { id: 'fes', nameAr: 'فاس', coords: [34.0331, -5.0003], zoom: 13, districts: ['أكدال', 'المرينيين', 'زواغة', 'سائس', 'فاس المدينة (المدن القديمة)', 'النرجس', 'طريق صفرو', 'بنسودة', 'طارق', 'عين هارون', 'سهب الورد', 'مونفلوري', 'عين الشقف', 'بطحاء', 'باب الفتوح', 'الوندريس'] },
+      meknes: { id: 'meknes', nameAr: 'مكناس', coords: [33.8935, -5.5547], zoom: 13, districts: ['حمرية', 'الزيتون', 'الإسماعيلية', 'المنصور', 'سيدي بوزكري', 'تواركة', 'حي السلام', 'كامليا', 'البساتين', 'برج التستوري', 'سعيد عواد', 'الرغاي'] },
+      sefrou: { id: 'sefrou', nameAr: 'صفرو', coords: [33.833, -4.833], zoom: 13, districts: ['صفرو المركز', 'المدينة القديمة', 'بئر الرامي', 'المنزه', 'سيدي بوسحاق'] },
+      taza: { id: 'taza', nameAr: 'تازة', coords: [34.216, -4.010], zoom: 13, districts: ['تازة العليا', 'تازة السفلى', 'حي بيت غلام', 'حي المسيرة', 'الشارع الرئيسي', 'الكويرحة', 'سعادة'] },
+      taounate: { id: 'taounate', nameAr: 'تاونات', coords: [34.538, -4.640], zoom: 13, districts: ['تاونات المركز', 'حي الوداد', 'حي السلام'] },
+      tahela: { id: 'tahela', nameAr: 'تاهلة', coords: [34.043, -4.417], zoom: 13, districts: ['تاهلة المركز', 'المحطة', 'التعاونية'] },
+      boulemane: { id: 'boulemane', nameAr: 'بولمان', coords: [33.363, -4.730], zoom: 13, districts: ['بولمان المركز', 'ميسور', 'أوطاط الحاج', 'إرجاء'] },
+      ifrane: { id: 'ifrane', nameAr: 'إفران', coords: [33.522, -5.111], zoom: 13, districts: ['إفران المركز', 'الأرز', 'حي الونشريس', 'حي الأطلس'] },
+      azrou: { id: 'azrou', nameAr: 'أزرو', coords: [33.434, -5.221], zoom: 13, districts: ['أزرو المركز', 'حي تيط ملال', 'طريق إفران', 'سيدي ميمون'] },
+      el_hajeb: { id: 'el_hajeb', nameAr: 'الحاجب', coords: [33.693, -5.371], zoom: 13, districts: ['الحاجب المركز', 'تامسلوت', 'حي الرشاد'] },
 
-      // جهة مراكش - آسفي
-      marrakech: { id: 'marrakech', nameAr: 'مراكش', districts: ['جليز', 'المدينة القديمة (مراكش)', 'النخيل', 'المحاميد', 'سيدي يوسف بن علي', 'المسيرة', 'تاركة', 'داوديات', 'أزلي', 'سعادة', 'المعاريف', 'أغادير بوعشوش', 'سيدي مسعود', 'العزوزية', 'ازلي الجنوبي'] },
-      essaouira: { id: 'essaouira', nameAr: 'الصويرة', districts: ['الصويرة المدينة', 'الغزوة', 'ديابات', 'حي الصفا', 'المحيط'] },
-      chichaoua: { id: 'chichaoua', nameAr: 'شيشاوة', districts: ['شيشاوة المركز', 'التحدي', 'المسيرة'] },
-      kelaat_sraghna: { id: 'kelaat_sraghna', nameAr: 'قلعة السراغنة', districts: ['القلعة المركز', 'حي الروامشة', 'حي النور'] },
-      safi: { id: 'safi', nameAr: 'آسفي', districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية', 'حي أنس', 'سيدي عبدالريم', 'البلاطيو'] },
-      youssoufia: { id: 'youssoufia', nameAr: 'اليوسفية', districts: ['اليوسفية المركز', 'حي التقدم', 'حي المطار', 'الشماتية'] },
-      benguerir: { id: 'benguerir', nameAr: 'بن جرير', districts: ['بن جرير المركز', 'حي الفتح', 'حي النور', 'المدينة الجضراء'] },
+      marrakech: { id: 'marrakech', nameAr: 'مراكش', coords: [31.6295, -7.9811], zoom: 12, districts: ['جليز', 'المدينة القديمة (مراكش)', 'النخيل', 'المحاميد', 'سيدي يوسف بن علي', 'المسيرة', 'تاركة', 'داوديات', 'أزلي', 'سعادة', 'المعاريف', 'أغادير بوعشوش', 'سيدي مسعود', 'العزوزية', 'ازلي الجنوبي'] },
+      essaouira: { id: 'essaouira', nameAr: 'الصويرة', coords: [31.508, -9.759], zoom: 13, districts: ['الصويرة المدينة', 'الغزوة', 'ديابات', 'حي الصفا', 'المحيط'] },
+      chichaoua: { id: 'chichaoua', nameAr: 'شيشاوة', coords: [31.533, -8.766], zoom: 13, districts: ['شيشاوة المركز', 'التحدي', 'المسيرة'] },
+      kelaat_sraghna: { id: 'kelaat_sraghna', nameAr: 'قلعة السراغنة', coords: [32.049, -7.408], zoom: 13, districts: ['القلعة المركز', 'حي الروامشة', 'حي النور'] },
+      safi: { id: 'safi', nameAr: 'آسفي', coords: [32.299, -9.237], zoom: 13, districts: ['وسط المدينة', 'حي المطار', 'جنوب آسفي', 'حي الكورس', 'حي الزاوية', 'حي أنس', 'سيدي عبدالريم', 'البلاطيو'] },
+      youssoufia: { id: 'youssoufia', nameAr: 'اليوسفية', coords: [32.246, -8.529], zoom: 13, districts: ['اليوسفية المركز', 'حي التقدم', 'حي المطار', 'الشماتية'] },
+      benguerir: { id: 'benguerir', nameAr: 'بن جرير', coords: [32.228, -7.953], zoom: 13, districts: ['بن جرير المركز', 'حي الفتح', 'حي النور', 'المدينة الخضراء'] },
 
-      // جهة طنجة - تطوان - الحسيمة
-      tangier: { id: 'tangier', nameAr: 'طنجة', districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب', 'العوامة', 'الزياتين', 'سيدي البشير', 'رأس المصلى'] },
-      tetouan: { id: 'tetouan', nameAr: 'تطوان', districts: ['المدينة القديمة (تطوان)', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة', 'حي الملاح', 'المرجان', 'البطالة', 'كاستيليخو'] },
-      al_hoceima: { id: 'al_hoceima', nameAr: 'الحسيمة', districts: ['الحسيمة المركز', 'ميرامار', 'سيدي عابد', 'إمزورن', 'بني بوعياش'] },
-      larache: { id: 'larache', nameAr: 'العرائش', districts: ['العرائش المركز', 'المنزلة', 'حي الناظور', 'باب الوادي'] },
-      asilah: { id: 'asilah', nameAr: 'أصيلة', districts: ['أصيلة المركز', 'المدينة العتيقة', 'البوغاز'] },
-      chefchaouen: { id: 'chefchaouen', nameAr: 'شفشاون', districts: ['شفشاون المركز', 'المدينة العتيقة', 'رأس الماء', 'طنجاوة'] },
-      ouezzane: { id: 'ouezzane', nameAr: 'وزان', districts: ['وزان المركز', 'حي العشابين', 'الدار العسراء'] },
-      ksar_el_kebir: { id: 'ksar_el_kebir', nameAr: 'القصر الكبير', districts: ['القصر الكبير المركز', 'أولاد حميد', 'المنصورية', 'الباب العالي'] },
+      tangier: { id: 'tangier', nameAr: 'طنجة', coords: [35.7595, -5.8340], zoom: 12, districts: ['طنجة المدينة', 'بني مكادة', 'السواني', 'مالاباطا', 'مسنانة', 'بوخالف', 'مرشان', 'الدرادب', 'العوامة', 'الزياتين', 'سيدي البشير', 'رأس المصلى'] },
+      tetouan: { id: 'tetouan', nameAr: 'تطوان', coords: [35.5889, -5.3626], zoom: 13, districts: ['المدينة القديمة (تطوان)', 'الولاية', 'حي المطار', 'جامع مزواق', 'سنيبلة', 'جبل درسة', 'حي الملاح', 'المرجان', 'البطالة', 'كاستيليخو'] },
+      al_hoceima: { id: 'al_hoceima', nameAr: 'الحسيمة', coords: [35.251, -3.931], zoom: 13, districts: ['الحسيمة المركز', 'ميرامار', 'سيدي عابد', 'إمزورن', 'بني بوعياش'] },
+      larache: { id: 'larache', nameAr: 'العرائش', coords: [35.193, -6.155], zoom: 13, districts: ['العرائش المركز', 'المنزلة', 'حي الناظور', 'باب الوادي'] },
+      asilah: { id: 'asilah', nameAr: 'أصيلة', coords: [35.465, -6.034], zoom: 13, districts: ['أصيلة المركز', 'المدينة العتيقة', 'البوغاز'] },
+      chefchaouen: { id: 'chefchaouen', nameAr: 'شفشاون', coords: [35.168, -5.263], zoom: 13, districts: ['شفشاون المركز', 'المدينة العتيقة', 'رأس الماء', 'طنجاوة'] },
+      ouezzane: { id: 'ouezzane', nameAr: 'وزان', coords: [34.795, -5.577], zoom: 13, districts: ['وزان المركز', 'حي العشابين', 'الدار العسراء'] },
+      ksar_el_kebir: { id: 'ksar_el_kebir', nameAr: 'القصر الكبير', coords: [35.000, -5.900], zoom: 13, districts: ['القصر الكبير المركز', 'أولاد حميد', 'المنصورية', 'الباب العالي'] },
 
-      // جهة سوس - ماسة
-      agadir: { id: 'agadir', nameAr: 'أكادير', districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'تيلضي', 'الحي المحمدي (أكادير)', 'الفردوس', 'تيكيوات'] },
-      inzegan: { id: 'inzegan', nameAr: 'إنزكان', districts: ['إنزكان المركز', 'الدشيرة الجهادية', 'آيت ملول', 'تماست', 'القليعة'] },
-      taroudant: { id: 'taroudant', nameAr: 'تارودانت', districts: ['تارودانت المركز', 'المدينة العتيقة', 'بونمان', 'سيدي واساي'] },
-      tiznit: { id: 'tiznit', nameAr: 'تزنيت', districts: ['تزنيت المركز', 'أغروض', 'المدينة العتيقة'] },
-      tata: { id: 'tata', nameAr: 'طاطا', districts: ['طاطا المركز', 'فليليس', 'أقصري'] },
+      agadir: { id: 'agadir', nameAr: 'أكادير', coords: [30.4278, -9.5981], zoom: 12, districts: ['أكادير أوفلا', 'تالبورجت', 'الداخلة', 'السلام', 'الهدى', 'أنزا', 'بنسركاو', 'تيلضي', 'الحي المحمدي (أكادير)', 'الفردوس', 'تيكيويت'] },
+      inzegan: { id: 'inzegan', nameAr: 'إنزكان', coords: [30.359, -9.539], zoom: 13, districts: ['إنزكان المركز', 'الدشيرة الجهادية', 'آيت ملول', 'تماست', 'القليعة'] },
+      taroudant: { id: 'taroudant', nameAr: 'تارودانت', coords: [30.470, -8.877], zoom: 13, districts: ['تارودانت المركز', 'المدينة العتيقة', 'بونمان', 'سيدي واساي'] },
+      tiznit: { id: 'tiznit', nameAr: 'تزنيت', coords: [29.697, -9.731], zoom: 13, districts: ['تزنيت المركز', 'أغروض', 'المدينة العتيقة'] },
+      tata: { id: 'tata', nameAr: 'طاطا', coords: [29.740, -7.978], zoom: 13, districts: ['طاطا المركز', 'فليليس', 'أقصري'] },
 
-      // جهة الشرق
-      oujda: { id: 'oujda', nameAr: 'وجدة', districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش', 'حي الوحدة', 'تولال', 'حي الوداد'] },
-      berkan: { id: 'berkan', nameAr: 'بركان', districts: ['بركان المركز', 'سيدي سليمان الشراقة', 'أحفير', 'السعيدية'] },
-      nador: { id: 'nador', nameAr: 'الناظور', districts: ['وسط المدينة', 'حي العريض', 'حي المطار', 'حي أولاد بوطيب', 'تاويمة', 'بني انصار', 'سلوان', 'العروي'] },
-      driouch: { id: 'driouch', nameAr: 'الدريوش', districts: ['الدريوش المركز', 'ميضار', 'بن الطيب'] },
-      taourirt: { id: 'taourirt', nameAr: 'تاوريرت', districts: ['تاوريرت المركز', 'حي النهضة', 'العيون الشرقية'] },
-      jerada: { id: 'jerada', nameAr: 'جرادة', districts: ['جرادة المركز', 'عين بني مطهر'] },
-      figuig: { id: 'figuig', nameAr: 'فكيك', districts: ['فكيك المركز', 'بوعنان', 'تندرارة'] },
-      al_hoceima_east: { id: 'guercif', nameAr: 'جرسيف', districts: ['جرسيف المركز', 'حي الشفاء', 'حي حمرية'] },
+      oujda: { id: 'oujda', nameAr: 'وجدة', coords: [34.6814, -1.9086], zoom: 12, districts: ['وسط المدينة', 'حي لازاري', 'سيدي يحيى', 'حي الجرف', 'حي القدس', 'حي كولوش', 'حي الوحدة', 'تولال', 'حي الوداد'] },
+      berkan: { id: 'berkan', nameAr: 'بركان', coords: [34.921, -2.320], zoom: 13, districts: ['بركان المركز', 'سيدي سليمان الشراقة', 'أحفير', 'السعيدية'] },
+      nador: { id: 'nador', nameAr: 'الناظور', coords: [35.168, -2.933], zoom: 12, districts: ['وسط المدينة', 'حي العريض', 'حي المطار', 'حي أولاد بوطيب', 'تاويمة', 'بني انصار', 'سلوان', 'العروي'] },
+      driouch: { id: 'driouch', nameAr: 'الدريوش', coords: [34.953, -3.377], zoom: 13, districts: ['الدريوش المركز', 'ميضار', 'بن الطيب'] },
+      taourirt: { id: 'taourirt', nameAr: 'تاوريرت', coords: [34.411, -2.898], zoom: 13, districts: ['تاوريرت المركز', 'حي النهضة', 'العيون الشرقية'] },
+      jerada: { id: 'jerada', nameAr: 'جرادة', coords: [34.312, -2.160], zoom: 13, districts: ['جرادة المركز', 'عين بني مطهر'] },
+      figuig: { id: 'figuig', nameAr: 'فكيك', coords: [32.115, -1.229], zoom: 13, districts: ['فكيك المركز', 'بوعنان', 'تندرارة'] },
+      guercif: { id: 'guercif', nameAr: 'جرسيف', coords: [34.225, -3.353], zoom: 13, districts: ['جرسيف المركز', 'حي الشفاء', 'حي حمرية'] },
 
-      // جهة بني ملال - خنيفرة
-      beni_mellal: { id: 'beni_mellal', nameAr: 'بني ملال', districts: ['وسط المدينة', 'حي الأمل', 'حي الهدى', 'حي العامرية', 'عين أسردون', 'الصومعة', 'الرياض'] },
-      khouribga: { id: 'khouribga', nameAr: 'خريبكة', districts: ['وسط المدينة', 'حي الفردوس', 'حي البيوت', 'حي الياسمين', 'حي الفرح', 'المستقبل'] },
-      oued_zem: { id: 'oued_zem', nameAr: 'وادي زم', districts: ['وادي زم المركز', 'الشهداء', 'المقاطعة الأولى'] },
-      kasba_tadla: { id: 'kasba_tadla', nameAr: 'قصبة تادلة', districts: ['قصبة تادلة المركز', 'المرابطين', 'حي البام'] },
-      fqih_ben_saleh: { id: 'fqih_ben_saleh', nameAr: 'الفقيه بن صالح', districts: ['الفقيه بن صالح المركز', 'حي التقدم', 'أولاد عياد'] },
-      azilal: { id: 'azilal', nameAr: 'أزيلال', districts: ['أزيلال المركز', 'دمنات', 'تنانت'] },
-      khenifra: { id: 'khenifra', nameAr: 'خنيفرة', districts: ['خنيفرة المركز', 'مريرت', 'أكلمام'] },
+      beni_mellal: { id: 'beni_mellal', nameAr: 'بني ملال', coords: [32.339, -6.360], zoom: 13, districts: ['وسط المدينة', 'حي الأمل', 'حي الهدى', 'حي العامرية', 'عين أسردون', 'الصومعة', 'الرياض'] },
+      khouribga: { id: 'khouribga', nameAr: 'خريبكة', coords: [32.881, -6.906], zoom: 13, districts: ['وسط المدينة', 'حي الفردوس', 'حي البيوت', 'حي الياسمين', 'حي الفرح', 'المستقبل'] },
+      oued_zem: { id: 'oued_zem', nameAr: 'وادي زم', coords: [32.864, -6.573], zoom: 13, districts: ['وادي زم المركز', 'الشهداء', 'المقاطعة الأولى'] },
+      kasba_tadla: { id: 'kasba_tadla', nameAr: 'قصبة تادلة', coords: [32.600, -6.266], zoom: 13, districts: ['قصبة تادلة المركز', 'المرابطين', 'حي البام'] },
+      fqih_ben_saleh: { id: 'fqih_ben_saleh', nameAr: 'الفقيه بن صالح', coords: [32.503, -6.696], zoom: 13, districts: ['الفقيه بن صالح المركز', 'حي التقدم', 'أولاد عياد'] },
+      azilal: { id: 'azilal', nameAr: 'أزيلال', coords: [31.968, -6.569], zoom: 13, districts: ['أزيلال المركز', 'دمنات', 'تنانت'] },
+      khenifra: { id: 'khenifra', nameAr: 'خنيفرة', coords: [32.939, -5.666], zoom: 13, districts: ['خنيفرة المركز', 'مريرت', 'أكلمام'] },
 
-      // جهة كلميم - واد نون
-      guelmim: { id: 'guelmim', nameAr: 'كلميم', districts: ['كلميم المركز', 'الامان', 'تاسريرت'] },
-      sidi_ifni: { id: 'sidi_ifni', nameAr: 'سيدي إفني', districts: ['سيدي إفني المركز', 'المرسى القديم'] },
-      assa: { id: 'assa', nameAr: 'أسا الزاك', districts: ['أسا المركز', 'الزاك'] },
+      guelmim: { id: 'guelmim', nameAr: 'كلميم', coords: [28.987, -10.057], zoom: 13, districts: ['كلميم المركز', 'الأمان', 'تاسريرت'] },
+      sidi_ifni: { id: 'sidi_ifni', nameAr: 'سيدي إفني', coords: [29.379, -10.175], zoom: 13, districts: ['سيدي إفني المركز', 'المرسى القديم'] },
+      assa: { id: 'assa', nameAr: 'أسا الزاك', coords: [28.606, -9.428], zoom: 13, districts: ['أسا المركز', 'الزاك'] },
 
-      // جهة العيون - الساقية الحمراء
-      laayoune: { id: 'laayoune', nameAr: 'العيون', districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل', 'الحي الحسني (العيون)', 'القسم', 'المسيرة'] },
-      smara: { id: 'smara', nameAr: 'السمارة', districts: ['السمارة المركز', 'حي السلام', 'الربيب'] },
-      boujdour: { id: 'boujdour', nameAr: 'بوجدور', districts: ['بوجدور المركز', 'حي التضامن'] },
-      tarfaya: { id: 'tarfaya', nameAr: 'طرفاية', districts: ['طرفاية المركز', 'أخفنير'] },
+      laayoune: { id: 'laayoune', nameAr: 'العيون', coords: [27.1536, -13.2033], zoom: 12, districts: ['حي العودة', 'حي الوفاق', 'حي 25 مارس', 'حي الشرف', 'حي الأمل', 'الحي الحسني (العيون)', 'القسم', 'المسيرة'] },
+      smara: { id: 'smara', nameAr: 'السمارة', coords: [26.738, -11.671], zoom: 13, districts: ['السمارة المركز', 'حي السلام', 'الربيب'] },
+      boujdour: { id: 'boujdour', nameAr: 'بوجدور', coords: [26.126, -14.482], zoom: 13, districts: ['بوجدور المركز', 'حي التضامن'] },
+      tarfaya: { id: 'tarfaya', nameAr: 'طرفاية', coords: [27.939, -12.924], zoom: 13, districts: ['طرفاية المركز', 'أخفنير'] },
 
-      // جهة الداخلة - وادي الذهب
-      dakhla: { id: 'dakhla', nameAr: 'الداخلة', districts: ['الداخلة المركز', 'حي المسيرة', 'حي الوحدة', 'حي السلام', 'الولاء', 'البصري'] }
+      dakhla: { id: 'dakhla', nameAr: 'الداخلة', coords: [23.708, -15.939], zoom: 12, districts: ['الداخلة المركز', 'حي المسيرة', 'حي الوحدة', 'حي السلام', 'الولاء', 'البصري'] }
     };
 
     const VEHICLE_TYPES = ['دراجة نارية', 'دراجة هوائية', 'سيارة', 'هوندا'];
@@ -555,6 +552,10 @@
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem(DataService.KEY_THEME, isDark ? 'dark' : 'light');
       updateThemeIcon();
+      // إعادة تحميل الخريطة لتطبيق الـ Filter الليلي
+      if (currentPage === 'home') {
+        setTimeout(initHomeMap, 100);
+      }
     }
 
     function updateThemeIcon() {
@@ -605,6 +606,8 @@
     let filterAvailableDriver = '';
     let searchDriverQuery = '';
 
+    let homeLeafletMap = null;
+
     function navigateTo(page, params = {}) {
       currentPage = page;
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -631,9 +634,16 @@
 
     function renderPage(page, params = {}) {
       const container = document.getElementById('appContainer');
+      // تنظيف خريطة الصفحة الرئيسية إذا انتقلنا لصفحة أخرى
+      if (page !== 'home' && homeLeafletMap) {
+        homeLeafletMap.remove();
+        homeLeafletMap = null;
+      }
+
       switch (page) {
         case 'home':
           container.innerHTML = viewHome();
+          setTimeout(initHomeMap, 50);
           break;
         case 'offers':
           container.innerHTML = viewOffers();
@@ -649,7 +659,38 @@
           break;
         default:
           container.innerHTML = viewHome();
+          setTimeout(initHomeMap, 50);
       }
+    }
+
+    // تهيئة الخريطة المجانية في الواجهة الرئيسية
+    function initHomeMap() {
+      const mapEl = document.getElementById('homeInteractiveMap');
+      if (!mapEl) return;
+
+      if (homeLeafletMap) {
+        homeLeafletMap.remove();
+        homeLeafletMap = null;
+      }
+
+      const currentGlobalCity = DataService.getSelectedCity();
+      const cityData = MOROCCO_CITIES[currentGlobalCity] || MOROCCO_CITIES['all'];
+
+      homeLeafletMap = L.map('homeInteractiveMap', {
+        zoomControl: false,
+        attributionControl: false
+      }).setView(cityData.coords, cityData.zoom);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+      }).addTo(homeLeafletMap);
+
+      // إضافة زر تحكم بالتكبير مصغر وأنيق
+      L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
+
+      // إضافة علامة (Marker) تدل على المدينة المحددة
+      const marker = L.marker(cityData.coords).addTo(homeLeafletMap);
+      marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`).openPopup();
     }
 
     // 1. HOME VIEW
@@ -689,7 +730,6 @@
                 ${isShop ? 'تواصل مباشرة مع سائقي التوصيل القريبين من محلك بدون عمولات.' : 'اعثر على طلبات توصيل يومية مع المحلات والمطاعم بمدينتك.'}
               </p>
               
-              <!-- التعديل 1 و 2: توحيد المقاسات والقياسات والمسافات وزر المدن بنفس الابعاد بدون بروز للنص -->
               <div class="pt-2.5 grid grid-cols-2 gap-2.5">
                 <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="w-full py-2.5 px-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 h-10 whitespace-nowrap">
                   <i class="fa-solid fa-plus text-[10px]"></i>
@@ -756,6 +796,19 @@
             <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-center shadow-sm">
               <span class="block text-xl font-black text-emerald-600 dark:text-emerald-400">${Object.keys(MOROCCO_CITIES).length - 1}</span>
               <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">مدينة مغربية</span>
+            </div>
+          </div>
+
+          <!-- الخريطة التفاعلية المجانية في المكان الاحترافي (تحت الإحصائيات مباشرة) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
+              </h3>
+              <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">تفاعلية مجانية</span>
+            </div>
+            <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10">
+              <div id="homeInteractiveMap" class="w-full h-full"></div>
             </div>
           </div>
 
@@ -836,7 +889,7 @@
               <i class="fa-solid fa-folder-open"></i>
             </div>
             <h4 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 mb-1">ما كاين حتى عرض مطابق لبحثك حالياً</h4>
-            <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب تغيير المدينة أو الحي، أو قم بنشر عرض جديدة.</p>
+            <p class="text-xs text-slate-500 max-w-xs mx-auto mb-4">جرب تغيير المدينة أو الحي، أو قم بنشر عرض جديد.</p>
             <button onclick="resetOfferFilters(); clearOfferSearch();" class="text-xs font-bold px-4 py-2 rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-950/50 dark:text-brand-300">
               عرض جميع العروض
             </button>
@@ -864,7 +917,6 @@
             </button>
           </div>
 
-          <!-- Search Bar -->
           <div class="relative">
             <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
             <input 
@@ -879,7 +931,6 @@
             </button>
           </div>
 
-          <!-- Filters Section -->
           <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
               <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brand-600"></i> تصفية حسب المدينة والحي</span>
@@ -915,7 +966,6 @@
             </div>
           </div>
 
-          <!-- Container dynamic cards -->
           <div id="offersCardsContainer" class="space-y-3.5">
             ${renderOffersCardsHTML()}
           </div>
@@ -1083,14 +1133,12 @@
               <h2 class="text-xl font-black text-slate-900 dark:text-white">الليفرورات المتوفرون بالمغرب</h2>
               <p class="text-xs text-slate-500">سائقو توصيل متوفرون حسب المدينة والحي</p>
             </div>
-            <!-- التعديل 4: جعل نص زر "نشر عرض" في سطر واحد بدون تقطيع -->
             <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm whitespace-nowrap">
               <i class="fa-solid fa-id-card text-xs"></i> 
               <span class="whitespace-nowrap">${isShop ? 'نشر عرض' : 'سجل كليفرور'}</span>
             </button>
           </div>
 
-          <!-- Search Bar -->
           <div class="relative">
             <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
             <input 
@@ -1105,7 +1153,6 @@
             </button>
           </div>
 
-          <!-- Filters Section -->
           <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
             <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
               <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-500"></i> تصفية الليفرورات</span>
@@ -1140,7 +1187,6 @@
             </div>
           </div>
 
-          <!-- Drivers List -->
           <div id="driversCardsContainer" class="space-y-3.5">
             ${renderDriversCardsHTML()}
           </div>
@@ -1269,7 +1315,6 @@
 
       return `
         <div class="space-y-4">
-          <!-- Switcher Buttons -->
           <div class="flex p-1.5 bg-slate-200/80 dark:bg-slate-800/80 rounded-2xl gap-1">
             <button id="btnTabOffer" onclick="switchCreateTab('offer')" class="flex-1 py-2.5 px-2 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${offerTabClass}">
               <i class="fa-solid fa-shop"></i> 
@@ -1475,7 +1520,6 @@
             </div>
           </div>
 
-          <!-- التعديل 3: ضبط تباعد الحروف في كلمة "الشخصي" لمنع التداخل تماماً -->
           <button type="submit" class="w-full py-3.5 px-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 leading-normal">
             <i class="fa-solid fa-check text-xs shrink-0"></i> 
             <span class="tracking-wide whitespace-nowrap">تسجيل الملف الشخصي</span>
