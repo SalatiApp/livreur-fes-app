@@ -351,91 +351,9 @@
       'أسبوعي'
     ];
 
-    // Initial mock dataset
-    const INITIAL_OFFERS = [
-      {
-        id: 'off-1',
-        shopName: 'مطعم فاس الأصيل',
-        shopType: 'مأكولات ووجبات مغربية',
-        city: 'fes',
-        district: 'فاس المدينة',
-        vehicle: 'دراجة نارية',
-        paymentType: 'يومي (باليوم)',
-        price: 180,
-        workingHours: '12:00 - 22:00',
-        phone: '0661234567',
-        whatsapp: '0661234567',
-        description: 'توصيل وجبات الغداء والعشاء للزبائن داخل المدينة القديمة والنواحي، يشترط الجدية والانضباط.',
-        notes: 'بنزين الدراجة مدفوع + وجبة غداء يومية مجاناً',
-        status: 'open',
-        createdAt: '2026-10-01'
-      },
-      {
-        id: 'off-2',
-        shopName: 'سناك المعاريف السريع',
-        shopType: 'سناك ومأكولات خفيفة',
-        city: 'casablanca',
-        district: 'المعاريف',
-        vehicle: 'دراجة نارية',
-        paymentType: 'بالتوصيلة (لكل كورس)',
-        price: 20,
-        workingHours: '12:00 - 00:00',
-        phone: '0662345678',
-        whatsapp: '0662345678',
-        description: 'مطلوب سائق دراجة نارية لنقل طلبات السناك والسندويتشات في المعاريف وجليز.',
-        notes: 'توصيلات سريعة ومتتالية، مداخيل ممتازة في نهاية الأسبوع.',
-        status: 'open',
-        createdAt: '2026-10-02'
-      },
-      {
-        id: 'off-3',
-        shopName: 'صيدلية أكدال',
-        shopType: 'صيدلية وشبه طبية',
-        city: 'rabat',
-        district: 'أقدال',
-        vehicle: 'دراجة هوائية',
-        paymentType: 'يومي (باليوم)',
-        price: 140,
-        workingHours: '09:00 - 17:00',
-        phone: '0663456789',
-        whatsapp: '0663456789',
-        description: 'توصيل أدوية ومستلزمات طبية للمنازل القريبة داخل حي أقدال والرياض.',
-        notes: 'عمل هادئ ومناسب لدراجة هوائية عادية أو كهربائية.',
-        status: 'open',
-        createdAt: '2026-10-02'
-      }
-    ];
-
-    const INITIAL_DRIVERS = [
-      {
-        id: 'drv-1',
-        name: 'ياسين الفاسي',
-        city: 'fes',
-        district: 'أكدال',
-        vehicle: 'دراجة نارية',
-        phone: '0671112233',
-        whatsapp: '0671112233',
-        freeHours: 'مساءً (17:00 - 00:00)',
-        experience: 'سنتان في توصيل المطاعم (Glovo سابقاً)',
-        isAvailable: true,
-        notes: 'عندي صندوق حراري ودراجة نارية جديدة واقتصادية.',
-        createdAt: '2026-10-01'
-      },
-      {
-        id: 'drv-2',
-        name: 'عثمان البيضاوي',
-        city: 'casablanca',
-        district: 'عين الشق',
-        vehicle: 'دراجة نارية',
-        phone: '0672223344',
-        whatsapp: '0672223344',
-        freeHours: 'طيلة اليوم (تفرغ كامل)',
-        experience: '3 سنوات في التوصيل الحر مع المحلات بالدار البيضاء',
-        isAvailable: true,
-        notes: 'أبحث عن عمل قار مع مطعم أو محل تجاري، منضبط وجاد.',
-        createdAt: '2026-10-02'
-      }
-    ];
+    // Empty dataset for production ready application
+    const INITIAL_OFFERS = [];
+    const INITIAL_DRIVERS = [];
 
     /* Data Service Repository */
     const DataService = {
@@ -464,7 +382,7 @@
         try {
           return JSON.parse(localStorage.getItem(this.KEY_OFFERS)) || [];
         } catch (e) {
-          return INITIAL_OFFERS;
+          return [];
         }
       },
 
@@ -503,7 +421,7 @@
         try {
           return JSON.parse(localStorage.getItem(this.KEY_DRIVERS)) || [];
         } catch (e) {
-          return INITIAL_DRIVERS;
+          return [];
         }
       },
 
@@ -555,8 +473,8 @@
       },
 
       resetAllData() {
-        localStorage.setItem(this.KEY_OFFERS, JSON.stringify(INITIAL_OFFERS));
-        localStorage.setItem(this.KEY_DRIVERS, JSON.stringify(INITIAL_DRIVERS));
+        localStorage.setItem(this.KEY_OFFERS, JSON.stringify([]));
+        localStorage.setItem(this.KEY_DRIVERS, JSON.stringify([]));
       }
     };
 
@@ -1702,7 +1620,7 @@
               </h3>
             </div>
             <div class="space-y-2 max-h-56 overflow-y-auto pl-1">
-              ${offers.map(o => `
+              ${offers.length > 0 ? offers.map(o => `
                 <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between text-xs">
                   <div>
                     <h5 class="font-bold text-slate-900 dark:text-white">${escapeHTML(o.shopName)}</h5>
@@ -1717,15 +1635,15 @@
                     </button>
                   </div>
                 </div>
-              `).join('')}
+              `).join('') : '<p class="text-xs text-slate-500 text-center py-2">لا توجد عروض مسجلة بحسابك حالياً.</p>'}
             </div>
           </div>
 
           <div class="p-4 rounded-3xl bg-red-50/50 dark:bg-red-950/20 border border-red-200/60 dark:border-red-900/40 space-y-2.5">
             <h4 class="text-xs font-bold text-red-700 dark:text-red-400">منطقة الضبط والتحكم</h4>
-            <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">استعادة القائمة والبيانات الافتراضية المسجلة أول مرة.</p>
+            <p class="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">تفريغ ومسح جميع البيانات المحلية المسجلة والتطبيق.</p>
             <button onclick="resetPlatformDataConfirm()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm active:scale-95 transition-all">
-              <i class="fa-solid fa-rotate-left ml-1"></i> إعادة ضبط البيانات الافتراضية
+              <i class="fa-solid fa-rotate-left ml-1"></i> مسح البيانات المحفوظة
             </button>
           </div>
         </div>
@@ -1757,11 +1675,11 @@
 
     function resetPlatformDataConfirm() {
       showConfirmModal(
-        'إعادة ضبط البيانات',
-        'سيتم استرجاع قائمة العروض والسائقين الافتراضية.',
+        'مسح البيانات',
+        'سيتم مسح وتفريغ قائمة العروض والسائقين المسجلة.',
         () => {
           DataService.resetAllData();
-          showToast('تمت إعادة ضبط البيانات بنجاح', 'success');
+          showToast('تمت إعادة الضبط ومسح البيانات بنجاح', 'success');
           navigateTo('home');
         },
         true
