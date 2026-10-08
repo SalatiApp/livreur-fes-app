@@ -689,22 +689,23 @@
                 ${isShop ? 'تواصل مباشرة مع سائقي التوصيل القريبين من محلك بدون عمولات.' : 'اعثر على طلبات توصيل يومية مع المحلات والمطاعم بمدينتك.'}
               </p>
               
-              <div class="pt-2.5 flex items-center justify-between gap-1.5">
-                <div class="flex-[1.4] min-w-0 relative">
-                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-2 pl-6 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-9 flex items-center whitespace-nowrap overflow-hidden">
+              <!-- التعديل 1 و 2: توحيد المقاسات والقياسات والمسافات وزر المدن بنفس الابعاد بدون بروز للنص -->
+              <div class="pt-2.5 grid grid-cols-2 gap-2.5">
+                <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="w-full py-2.5 px-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 h-10 whitespace-nowrap">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                  <span>${isShop ? 'نشر عرض جديد' : 'تسجّل كليفرور'}</span>
+                </button>
+
+                <div class="relative w-full">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-2 pl-6 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-10 flex items-center whitespace-nowrap overflow-hidden">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
                   </select>
-                  <div class="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-amber-400 text-[10px] font-black">
+                  <div class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-amber-400 text-[10px] font-black">
                     <i class="fa-solid fa-chevron-down"></i>
                   </div>
                 </div>
-
-                <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="flex-1 min-w-0 py-2 px-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-[10px] sm:text-[11px] rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1 h-9 whitespace-nowrap">
-                  <i class="fa-solid fa-plus text-[9px]"></i>
-                  <span>${isShop ? 'نشر عرض جديد' : 'تسجّل كليفرور'}</span>
-                </button>
               </div>
             </div>
             <div class="absolute -left-6 -bottom-6 text-white/10 text-8xl pointer-events-none select-none">
@@ -858,7 +859,7 @@
               <h2 class="text-xl font-black text-slate-900 dark:text-white">عروض العمل بالتوصيل</h2>
               <p class="text-xs text-slate-500">تصفح الفرص في مدينتك وتواصل فوراً</p>
             </div>
-            <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="px-3 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm whitespace-nowrap">
               <i class="fa-solid fa-plus text-xs"></i> ${isShop ? 'نشر عرض' : 'تسجّل كليفرور'}
             </button>
           </div>
@@ -1082,8 +1083,10 @@
               <h2 class="text-xl font-black text-slate-900 dark:text-white">الليفرورات المتوفرون بالمغرب</h2>
               <p class="text-xs text-slate-500">سائقو توصيل متوفرون حسب المدينة والحي</p>
             </div>
-            <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-id-card text-xs"></i> ${isShop ? 'نشر عرض' : 'سجل كليفرور'}
+            <!-- التعديل 4: جعل نص زر "نشر عرض" في سطر واحد بدون تقطيع -->
+            <button onclick="navigateTo('create', { mode: '${isShop ? 'offer' : 'driver'}' })" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+              <i class="fa-solid fa-id-card text-xs"></i> 
+              <span class="whitespace-nowrap">${isShop ? 'نشر عرض' : 'سجل كليفرور'}</span>
             </button>
           </div>
 
@@ -1472,7 +1475,7 @@
             </div>
           </div>
 
-          <!-- تعديل حجم الخط والتباعد داخل زر تسجيل الملف الشخصي لمنع التداخل -->
+          <!-- التعديل 3: ضبط تباعد الحروف في كلمة "الشخصي" لمنع التداخل تماماً -->
           <button type="submit" class="w-full py-3.5 px-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 leading-normal">
             <i class="fa-solid fa-check text-xs shrink-0"></i> 
             <span class="tracking-wide whitespace-nowrap">تسجيل الملف الشخصي</span>
