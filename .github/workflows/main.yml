@@ -27,7 +27,7 @@ jobs:
           cache-disabled: true
 
       - name: Build Release APK
-        run: gradle --no-daemon --no-configuration-cache --build-cache=false --project-dir . :App:assembleRelease --stacktrace
+        run: gradle --no-daemon --no-configuration-cache --no-build-cache --project-dir . :App:assembleRelease --stacktrace
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
