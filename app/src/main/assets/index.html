@@ -78,6 +78,11 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
+    /* ضمان توسيط النص تماماً داخل عناصر الـ select */
+    select {
+      text-align: center;
+      text-align-last: center;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -657,7 +662,6 @@
       }
     }
 
-    // تهيئة الخريطة الاحترافية الحقيقية برابط OpenStreetMap الرسمي المباشر وبدون أي قيود أو مفاتيح
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       const offlineFallback = document.getElementById('mapOfflineFallback');
@@ -688,7 +692,6 @@
           scrollWheelZoom: true
         }).setView(cityData.coords, cityData.zoom);
 
-        // استخدام مزود البلاطات الرسمي لـ OpenStreetMap بدون أي مفاتيح API
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -719,7 +722,6 @@
       }
     }
 
-    // دالة تحديد الموقع الجغرافي الفوري للخريطة الرئيسية مع إجبار إظهار نافذة إذن الوصول
     function locateUserOnHomeMap() {
       if (!homeLeafletMap) return;
       if (!navigator.geolocation) {
@@ -792,8 +794,9 @@
                   <span>${isShop ? 'نشر عرض جديد' : 'تسجّل كليفرور'}</span>
                 </button>
 
+                <!-- تم تعديل القائمة المنسدلة هنا لإضافة text-center ليكون النص في المنتصف تماماً -->
                 <div class="relative w-full">
-                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 pr-2 pl-6 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-right appearance-none leading-none h-10 flex items-center whitespace-nowrap overflow-hidden">
+                  <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 px-2 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none leading-none h-10 flex items-center justify-center whitespace-nowrap overflow-hidden">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
                       <option value="${key}" ${key === currentGlobalCity ? 'selected' : ''}>${MOROCCO_CITIES[key].nameAr}</option>
                     `).join('')}
@@ -855,7 +858,7 @@
             </div>
           </div>
 
-          <!-- خريطة حقيقية واضحة تفاعلية بالكامل بدون أي أشرطة زائدة مع زر تحديد الموقع -->
+          <!-- خريطة حقيقية واضحة تفاعلية بالكامل -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
