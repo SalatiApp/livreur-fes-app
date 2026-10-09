@@ -794,7 +794,6 @@
                   <span>${isShop ? 'نشر عرض جديد' : 'تسجّل كليفرور'}</span>
                 </button>
 
-                <!-- تم تعديل القائمة المنسدلة هنا لإضافة text-center ليكون النص في المنتصف تماماً -->
                 <div class="relative w-full">
                   <select onchange="handleGlobalCityChange(this.value)" class="w-full py-2.5 px-2 bg-[#141e2e] hover:bg-[#1a273b] text-amber-400 font-extrabold text-[10px] sm:text-xs rounded-xl border border-slate-700/80 shadow-md focus:outline-none cursor-pointer text-center appearance-none leading-none h-10 flex items-center justify-center whitespace-nowrap overflow-hidden">
                     ${Object.keys(MOROCCO_CITIES).map(key => `
@@ -858,11 +857,11 @@
             </div>
           </div>
 
-          <!-- خريطة حقيقية واضحة تفاعلية بالكامل -->
+          <!-- خريطة حقيقية واضحة تفاعلية بالكامل تم تعديل اسمها وإزالة الكتابة السفلية -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
+                <i class="fa-solid fa-map-location-dot text-emerald-500"></i> LIVLINK MAP
               </h3>
               <button onclick="locateUserOnHomeMap()" class="text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1 rounded-lg flex items-center gap-1.5 shadow active:scale-95 transition-all cursor-pointer">
                 <i class="fa-solid fa-location-crosshairs"></i> موقعي الحالي
@@ -1586,9 +1585,10 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full py-3.5 px-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 leading-normal">
+          <!-- تم تصحيح وتهيئة تباعد الأحرف ونزع التداخل في زر تسجيل الملف الشخصي هنا -->
+          <button type="submit" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2 leading-normal">
             <i class="fa-solid fa-check text-xs shrink-0"></i> 
-            <span class="tracking-wide whitespace-nowrap">تسجيل الملف الشخصي</span>
+            <span style="letter-spacing: 0.3px;" class="whitespace-nowrap">تسجيل الملف الشخصي</span>
           </button>
         </form>
       `;
