@@ -719,28 +719,33 @@
       }
     }
 
-    // زر تحديد الموقع الجغرافي الفوري للخريطة الرئيسية
+    // دالة تحديد الموقع الجغرافي الفوري للخريطة الرئيسية مع إجبار إظهار نافذة إذن الوصول
     function locateUserOnHomeMap() {
       if (!homeLeafletMap) return;
       if (!navigator.geolocation) {
         showToast('متصفحك لا يدعم تحديد الموقع الجغرافي', 'error');
         return;
       }
-      showToast('جاري تحديد موقعك الحالي...', 'info');
+      showToast('جاري طلب إذن الوصول للموقع...', 'info');
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          homeLeafletMap.setView([lat, lng], 15);
+          homeLeafletMap.setView([lat, lng], 16);
           L.marker([lat, lng]).addTo(homeLeafletMap)
             .bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 موقعك الحالي</div>`)
             .openPopup();
           showToast('تم تحديد موقعك بنجاح', 'success');
         },
         (error) => {
-          showToast('تعذر الوصول إلى موقعك الجغرافي، تحقق من الأذونات', 'error');
+          console.error(error);
+          showToast('يرجى الموافقة على إذن الوصول للموقع من النافذة المنبثقة', 'error');
         },
-        { timeout: 10000 }
+        { 
+          enableHighAccuracy: true, 
+          timeout: 15000, 
+          maximumAge: 0 
+        }
       );
     }
 
