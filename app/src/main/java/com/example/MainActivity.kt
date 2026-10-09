@@ -19,7 +19,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -34,37 +33,41 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
 
-  private var geolocationCallback: GeolocationPermissions.Callback? = null
-  private var geolocationOrigin: String? = null
-
-  private val locationPermissionRequest = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissions ->
-    val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
-                  permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-    if (granted) {
-      geolocationCallback?.invoke(geolocationOrigin, true, false)
-    } else {
-      geolocationCallback?.invoke(geolocationOrigin, false, false)
-    }
-    geolocationCallback = null
-    geolocationOrigin = null
-  }
+  private var pendingOrigin: String? = null
+  private var pendingCallback: GeolocationPermissions.Callback? = null
+  private val LOCATION_PERMISSION_REQUEST_CODE = 100
 
   fun requestLocationPermission(origin: String?, callback: GeolocationPermissions.Callback?) {
-    geolocationOrigin = origin
-    geolocationCallback = callback
-    locationPermissionRequest.launch(
+    pendingOrigin = origin
+    pendingCallback = callback
+    ActivityCompat.requestPermissions(
+      this,
       arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
-      )
+      ),
+      LOCATION_PERMISSION_REQUEST_CODE
     )
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+  ) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+      val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+      pendingCallback?.invoke(pendingOrigin, granted, false)
+      pendingOrigin = null
+      pendingCallback = null
+    }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +117,7 @@ fun HybridAppScreen(onRequestPermission: (String?, GeolocationPermissions.Callba
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
-            setGeolocationEnabled(true) // تفعيل الجيوكولكيشن
+            setGeolocationEnabled(true)
             cacheMode = WebSettings.LOAD_DEFAULT
             useWideViewPort = true
             loadWithOverviewMode = true
