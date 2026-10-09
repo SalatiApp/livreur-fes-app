@@ -26,6 +26,10 @@ jobs:
           gradle-version: '8.2'
           cache-disabled: true
 
+      - name: Generate Gradle Wrapper Files
+        run: |
+          gradle wrapper --gradle-version 8.2
+
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
