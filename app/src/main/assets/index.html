@@ -78,10 +78,6 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
-    /* دمج أنيق لخريطة الوضع الداكن إذا تطلب الأمر لتتوافق مع تصميم التطبيق */
-    .dark .leaflet-tile-pane {
-      filter: brightness(0.7) invert(1) contrast(2.2) hue-rotate(200deg) saturate(0.3);
-    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -661,10 +657,18 @@
       }
     }
 
-    // تهيئة الخريطة بـ OpenStreetMap الخالية تماماً من قيود ومفاتيح API
+    // تهيئة الخريطة التفاعلية الحقيقية مع OpenStreetMap وحالة انقطاع الإنترنت وعلامات المحلات/الليفرورات
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
+      const offlineFallback = document.getElementById('mapOfflineFallback');
       if (!mapEl) return;
+
+      if (!navigator.onLine) {
+        if (offlineFallback) offlineFallback.classList.remove('hidden');
+        return;
+      } else {
+        if (offlineFallback) offlineFallback.classList.add('hidden');
+      }
 
       if (homeLeafletMap) {
         homeLeafletMap.remove();
@@ -674,19 +678,42 @@
       const currentGlobalCity = DataService.getSelectedCity();
       const cityData = MOROCCO_CITIES[currentGlobalCity] || MOROCCO_CITIES['all'];
 
-      homeLeafletMap = L.map('homeInteractiveMap', {
-        zoomControl: false,
-        attributionControl: false
-      }).setView(cityData.coords, cityData.zoom);
+      try {
+        homeLeafletMap = L.map('homeInteractiveMap', {
+          zoomControl: false,
+          attributionControl: true
+        }).setView(cityData.coords, cityData.zoom);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-      }).addTo(homeLeafletMap);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(homeLeafletMap);
 
-      L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
+        L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
 
-      const marker = L.marker(cityData.coords).addTo(homeLeafletMap);
-      marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`).openPopup();
+        const mainMarker = L.marker(cityData.coords).addTo(homeLeafletMap);
+        mainMarker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`);
+
+        const currentOffers = DataService.getOffers().filter(o => currentGlobalCity === 'all' || o.city === currentGlobalCity);
+        const currentDrivers = DataService.getDrivers().filter(d => currentGlobalCity === 'all' || d.city === currentGlobalCity);
+
+        currentOffers.forEach((offer, idx) => {
+          const offsetLat = cityData.coords[0] + (Math.sin(idx) * 0.02);
+          const offsetLng = cityData.coords[1] + (Math.cos(idx) * 0.02);
+          const marker = L.marker([offsetLat, offsetLng]).addTo(homeLeafletMap);
+          marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px;">🏪 <b>${escapeHTML(offer.shopName)}</b><br><span>${escapeHTML(offer.shopType || 'محل تجاري')}</span><br><b>${offer.price} درهم</b></div>`);
+        });
+
+        currentDrivers.forEach((driver, idx) => {
+          const offsetLat = cityData.coords[0] + (Math.cos(idx + 1) * 0.025);
+          const offsetLng = cityData.coords[1] + (Math.sin(idx + 1) * 0.025);
+          const marker = L.marker([offsetLat, offsetLng]).addTo(homeLeafletMap);
+          marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px;">🏍️ <b>${escapeHTML(driver.name)}</b><br><span>وسيلة: ${escapeHTML(driver.vehicle)}</span><br><span style="color:${driver.isAvailable ? 'green' : 'gray'}">${driver.isAvailable ? 'متاح للتوصيل' : 'غير متاح'}</span></div>`);
+        });
+
+      } catch (err) {
+        if (offlineFallback) offlineFallback.classList.remove('hidden');
+      }
     }
 
     // 1. HOME VIEW
@@ -795,16 +822,21 @@
             </div>
           </div>
 
-          <!-- خريطة نظيفة واضحة 100% بدون أي شعارات أو أخطاء -->
+          <!-- خريطة تفاعلية حقيقية مع معالجة حالة غياب الإنترنت وحقوق OpenStreetMap -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
               </h3>
-              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">نظيفة وواضحة</span>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">تفاعلية حية</span>
             </div>
-            <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10">
+            <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10 bg-slate-900 flex items-center justify-center">
               <div id="homeInteractiveMap" class="w-full h-full"></div>
+              <div id="mapOfflineFallback" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-4 text-center hidden z-20">
+                <i class="fa-solid fa-wifi-slash text-amber-400 text-2xl mb-2"></i>
+                <p class="text-xs font-bold text-white mb-1">تحميل الخريطة يحتاج إلى اتصال بالإنترنت</p>
+                <p class="text-[10px] text-slate-400">ستستمر باقي بيانات التطبيق والصفحات في العمل محلياً.</p>
+              </div>
             </div>
           </div>
 
