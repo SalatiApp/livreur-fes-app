@@ -23,14 +23,26 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.2'
+          gradle-version: '9.3.1'
 
-      - name: Build Release APK
-        run: ./gradlew assembleRelease --no-configuration-cache --no-daemon --stacktrace
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper --gradle-version 9.3.1
 
-      - name: Upload Release APK
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Generate CI Debug Keystore
+        run: |
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v -keystore debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: app/build/outputs/apk/release/app-release.apk
+          name: livreur-fes-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
