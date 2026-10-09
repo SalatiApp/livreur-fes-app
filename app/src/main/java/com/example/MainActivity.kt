@@ -1,15 +1,12 @@
 package com.example
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color as AndroidColor
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.ConsoleMessage
-import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -33,43 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
-
-  private var pendingOrigin: String? = null
-  private var pendingCallback: GeolocationPermissions.Callback? = null
-  private val LOCATION_PERMISSION_REQUEST_CODE = 100
-
-  fun requestLocationPermission(origin: String?, callback: GeolocationPermissions.Callback?) {
-    pendingOrigin = origin
-    pendingCallback = callback
-    ActivityCompat.requestPermissions(
-      this,
-      arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-      ),
-      LOCATION_PERMISSION_REQUEST_CODE
-    )
-  }
-
-  override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<out String>,
-    grantResults: IntArray
-  ) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-      val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-      pendingCallback?.invoke(pendingOrigin, granted, false)
-      pendingOrigin = null
-      pendingCallback = null
-    }
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -103,6 +66,7 @@ fun HybridAppScreen() {
         WebView(context).apply {
           setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
+          // Give the WebView the same initial background as the app
           setBackgroundColor(
             if (isDark) AndroidColor.rgb(2, 6, 23)
             else AndroidColor.rgb(248, 250, 252)
@@ -113,7 +77,6 @@ fun HybridAppScreen() {
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
-            setGeolocationEnabled(true)
             cacheMode = WebSettings.LOAD_DEFAULT
             useWideViewPort = true
             loadWithOverviewMode = true
@@ -125,26 +88,6 @@ fun HybridAppScreen() {
           webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
               return true
-            }
-
-            override fun onGeolocationPermissionsShowPrompt(
-              origin: String?,
-              callback: GeolocationPermissions.Callback?
-            ) {
-              val activity = context as? MainActivity
-              if (activity != null) {
-                if (ContextCompat.checkSelfPermission(
-                    activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                  ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                  callback?.invoke(origin, true, false)
-                } else {
-                  activity.requestLocationPermission(origin, callback)
-                }
-              } else {
-                callback?.invoke(origin, false, false)
-              }
             }
           }
 
