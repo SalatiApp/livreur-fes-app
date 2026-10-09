@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
@@ -26,12 +26,50 @@ jobs:
           gradle-version: '9.3.1'
           cache-disabled: true
 
+      - name: Prepare signing key
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
+            echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/livlink-key.jks"
+          else
+            STORE_PASSWORD="$(openssl rand -hex 24)"
+            KEY_PASSWORD="$STORE_PASSWORD"
+            keytool -genkeypair \
+              -keystore "$RUNNER_TEMP/livlink-key.jks" \
+              -storepass "$STORE_PASSWORD" \
+              -keypass "$KEY_PASSWORD" \
+              -alias upload \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Livlink MA,O=Livlink MA,C=MA"
+            echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+            echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+          fi
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/livlink-key.jks" >> "$GITHUB_ENV"
+
       - name: Build Release APK
-        run: gradle --no-daemon --no-configuration-cache --no-build-cache --project-dir . :App:assembleRelease --stacktrace
+        run: gradle --no-daemon --no-configuration-cache --no-build-cache --project-dir . :app:assembleRelease --stacktrace
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: App/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
+
+      - name: Save signing key for safekeeping
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: livlink-signing-key-BACKUP
+          path: ${{ runner.temp }}/livlink-key.jks
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Remove temporary signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/livlink-key.jks"
