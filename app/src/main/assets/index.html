@@ -175,6 +175,33 @@
     </div>
   </nav>
 
+  <!-- Fullscreen Interactive Pro Map Modal (لتجربة خريطة احترافية حقيقية بكامل الشاشة) -->
+  <div id="proMapModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex flex-col p-3 sm:p-6 animate-scale-up">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-map-location-dot text-emerald-500 text-lg"></i>
+        <div>
+          <h3 id="proMapTitle" class="text-sm font-black text-white">خريطة المغرب الاحترافية الحية</h3>
+          <p class="text-[10px] text-slate-400">تكبير، تحريك، وعلامات حقيقية للمحلات والليفرورات</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="locateUserOnProMap()" class="bg-brand-600 hover:bg-brand-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow">
+          <i class="fa-solid fa-location-crosshairs"></i> موقعي
+        </button>
+        <button onclick="closeProMapModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-sm font-bold">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+    <div class="relative flex-1 w-full my-3 rounded-3xl overflow-hidden border border-slate-800 bg-slate-900">
+      <div id="proInteractiveMap" class="w-full h-full"></div>
+    </div>
+    <div class="text-center text-[10px] text-slate-400 font-semibold">
+      <span>مبنية باستعمال Leaflet و OpenStreetMap الرسمي</span>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div id="toastContainer" class="fixed top-16 left-4 right-4 z-50 pointer-events-none flex flex-col items-center gap-2 max-w-sm mx-auto"></div>
 
@@ -602,6 +629,7 @@
     let searchDriverQuery = '';
 
     let homeLeafletMap = null;
+    let proLeafletMap = null;
 
     function navigateTo(page, params = {}) {
       currentPage = page;
@@ -657,10 +685,11 @@
       }
     }
 
-    // تهيئة الخريطة بـ المصدر الرسمي المباشر لـ OpenStreetMap مع التركيز الافتراضي على فاس
+    // تهيئة الخريطة المصغرة في الصفحة الرئيسية مع عنوان ديناميكي وزر لفتح الخريطة الاحترافية كاملة الشاشة
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       const offlineFallback = document.getElementById('mapOfflineFallback');
+      const badgeEl = document.getElementById('mapCityBadge');
       if (!mapEl) return;
 
       if (!navigator.onLine) {
@@ -678,27 +707,28 @@
       const currentGlobalCity = DataService.getSelectedCity();
       const cityData = currentGlobalCity !== 'all' && MOROCCO_CITIES[currentGlobalCity] 
         ? MOROCCO_CITIES[currentGlobalCity] 
-        : MOROCCO_CITIES['fes']; // التركيز على مدينة فاس افتراضياً
+        : MOROCCO_CITIES['fes'];
+
+      if (badgeEl) {
+        badgeEl.innerText = `شوارع ${cityData.nameAr}`;
+      }
 
       try {
         homeLeafletMap = L.map('homeInteractiveMap', {
           zoomControl: false,
-          attributionControl: true
+          attributionControl: true,
+          dragging: true,
+          scrollWheelZoom: false
         }).setView(cityData.coords, cityData.zoom);
 
-        // استخدام المصدر الرسمي المباشر لبلاطات شوارع OpenStreetMap دون فلاتر مظلمة أو بهتان
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(homeLeafletMap);
 
-        L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
-
-        // العلامة الرئيسية للمدينة
         const mainMarker = L.marker(cityData.coords).addTo(homeLeafletMap);
         mainMarker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`);
 
-        // ربط العلامات الحقيقية المتوفرة في قاعدة البيانات فقط
         const currentOffers = DataService.getOffers().filter(o => currentGlobalCity === 'all' || o.city === currentGlobalCity);
         const currentDrivers = DataService.getDrivers().filter(d => currentGlobalCity === 'all' || d.city === currentGlobalCity);
 
@@ -719,6 +749,90 @@
       } catch (err) {
         if (offlineFallback) offlineFallback.classList.remove('hidden');
       }
+    }
+
+    // فتح الخريطة الاحترافية الحقيقية بكامل الشاشة (Full Interactive Map)
+    function openProMapModal() {
+      const modal = document.getElementById('proMapModal');
+      modal.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (proLeafletMap) {
+          proLeafletMap.remove();
+          proLeafletMap = null;
+        }
+
+        const currentGlobalCity = DataService.getSelectedCity();
+        const cityData = currentGlobalCity !== 'all' && MOROCCO_CITIES[currentGlobalCity] 
+          ? MOROCCO_CITIES[currentGlobalCity] 
+          : MOROCCO_CITIES['fes'];
+
+        document.getElementById('proMapTitle').innerText = `خريطة ${cityData.nameAr} التفاعلية الاحترافية`;
+
+        proLeafletMap = L.map('proInteractiveMap', {
+          zoomControl: true,
+          attributionControl: true
+        }).setView(cityData.coords, cityData.zoom + 1);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(proLeafletMap);
+
+        const mainMarker = L.marker(cityData.coords).addTo(proLeafletMap);
+        mainMarker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:12px; font-weight:bold;">📍 مركز ${cityData.nameAr}<br><span style="font-size:10px; color:#555;">منطقة التوصيل النشطة</span></div>`);
+
+        const currentOffers = DataService.getOffers().filter(o => currentGlobalCity === 'all' || o.city === currentGlobalCity);
+        const currentDrivers = DataService.getDrivers().filter(d => currentGlobalCity === 'all' || d.city === currentGlobalCity);
+
+        currentOffers.forEach((offer, idx) => {
+          const offsetLat = cityData.coords[0] + (Math.sin(idx) * 0.015);
+          const offsetLng = cityData.coords[1] + (Math.cos(idx) * 0.015);
+          const marker = L.marker([offsetLat, offsetLng]).addTo(proLeafletMap);
+          marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:12px;">🏪 <b>${escapeHTML(offer.shopName)}</b><br><span>${escapeHTML(offer.shopType || 'محل تجاري')}</span><br><b>السعر: ${offer.price} درهم</b></div>`);
+        });
+
+        currentDrivers.forEach((driver, idx) => {
+          const offsetLat = cityData.coords[0] + (Math.cos(idx + 1) * 0.02);
+          const offsetLng = cityData.coords[1] + (Math.sin(idx + 1) * 0.02);
+          const marker = L.marker([offsetLat, offsetLng]).addTo(proLeafletMap);
+          marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:12px;">🏍️ <b>${escapeHTML(driver.name)}</b><br><span>وسيلة: ${escapeHTML(driver.vehicle)}</span><br><span style="color:${driver.isAvailable ? 'green' : 'gray'}">${driver.isAvailable ? 'متاح للتوصيل' : 'غير متاح'}</span></div>`);
+        });
+
+        proLeafletMap.invalidateSize();
+      }, 100);
+    }
+
+    function closeProMapModal() {
+      document.getElementById('proMapModal').classList.add('hidden');
+      if (proLeafletMap) {
+        proLeafletMap.remove();
+        proLeafletMap = null;
+      }
+    }
+
+    function locateUserOnProMap() {
+      if (!proLeafletMap) return;
+      if (!navigator.geolocation) {
+        showToast('متصفحك لا يدعم تحديد الموقع الجغرافي', 'error');
+        return;
+      }
+      showToast('جاري تحديد موقعك الحالي...', 'info');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          proLeafletMap.setView([lat, lng], 15);
+          L.marker([lat, lng]).addTo(proLeafletMap)
+            .bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:12px; font-weight:bold;">📍 موقعك الحالي</div>`)
+            .openPopup();
+          showToast('تم تحديد موقعك بنجاح', 'success');
+        },
+        (error) => {
+          showToast('تعذر الوصول إلى موقعك الجغرافي، تحقق من الأذونات', 'error');
+        },
+        { timeout: 10000 }
+      );
     }
 
     // 1. HOME VIEW
@@ -827,16 +941,26 @@
             </div>
           </div>
 
-          <!-- خريطة شوارع فاس العادية الرسمية بـ OpenStreetMap دون فلاتر باهتة -->
+          <!-- خريطة تفاعلية مع زر تكبير الشاشة الاحترافي -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
               </h3>
-              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">شوارع فاس العادية</span>
+              <div class="flex items-center gap-2">
+                <button onclick="openProMapModal()" class="text-[10px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow active:scale-95 transition-all">
+                  <i class="fa-solid fa-expand"></i> خريطة كاملة
+                </button>
+                <span id="mapCityBadge" class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">شوارع حية</span>
+              </div>
             </div>
-            <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10 bg-slate-900 flex items-center justify-center">
-              <div id="homeInteractiveMap" class="w-full h-full"></div>
+            <div onclick="openProMapModal()" class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10 bg-slate-900 flex items-center justify-center cursor-pointer group">
+              <div id="homeInteractiveMap" class="w-full h-full pointer-events-none"></div>
+              <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/0 transition-colors flex items-center justify-center">
+                <span class="bg-slate-950/80 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl border border-slate-700 shadow-lg opacity-90 group-hover:opacity-100 transition-opacity">
+                  <i class="fa-solid fa-hand-pointer text-emerald-400 ml-1"></i> اضغط لفتح الخريطة الاحترافية بكامل الشاشة
+                </span>
+              </div>
               <div id="mapOfflineFallback" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-4 text-center hidden z-20">
                 <i class="fa-solid fa-wifi-slash text-amber-400 text-2xl mb-2"></i>
                 <p class="text-xs font-bold text-white mb-1">تحميل الخريطة يحتاج إلى اتصال بالإنترنت</p>
