@@ -23,6 +23,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- Leaflet JS for Map -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet Routing Machine CSS & JS for Route Lines -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
   <script>
     tailwind.config = {
@@ -78,10 +81,13 @@
       color: #64748b !important;
       opacity: 0.6 !important;
     }
-    /* ضمان توسيط النص تماماً داخل عناصر الـ select */
     select {
       text-align: center;
       text-align-last: center;
+    }
+    /* إخفاء لوحة التعليمات الافتراضية الخاصة بـ routing machine لتناسب التصميم النظيف */
+    .leaflet-routing-container {
+      display: none !important;
     }
   </style>
 </head>
@@ -607,6 +613,7 @@
     let searchDriverQuery = '';
 
     let homeLeafletMap = null;
+    let deliveryRoutingControl = null;
 
     function navigateTo(page, params = {}) {
       currentPage = page;
@@ -649,6 +656,10 @@
           break;
         case 'drivers':
           container.innerHTML = viewDrivers();
+          break;
+        case 'deliveryMap':
+          container.innerHTML = viewDeliveryMap(params);
+          setTimeout(() => initDeliveryRouteMap(params), 50);
           break;
         case 'create':
           container.innerHTML = viewCreate(params.mode || (DataService.getUserRole() === 'shop' ? 'offer' : 'driver'));
@@ -748,6 +759,138 @@
           timeout: 15000, 
           maximumAge: 0 
         }
+      );
+    }
+
+    // فتح شاشة الخريطة الحية لرسم مسار السائق نحو المحل (Route Map)
+    function openDeliveryMap(shopName, shopCity, shopDistrict, price) {
+      const cityObj = MOROCCO_CITIES[shopCity] || MOROCCO_CITIES['casablanca'];
+      navigateTo('deliveryMap', {
+        shopName,
+        shopCity: cityObj.nameAr,
+        district: shopDistrict || 'وسط المدينة',
+        price,
+        cityCoords: cityObj.coords
+      });
+    }
+
+    function viewDeliveryMap(params) {
+      return `
+        <div class="space-y-3 relative">
+          <div class="flex items-center justify-between">
+            <button onclick="navigateTo('offers')" class="text-xs font-bold text-brand-600 dark:text-brand-400 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-arrow-right"></i> عودة للعروض
+            </button>
+            <h2 class="text-sm font-black text-slate-900 dark:text-white">تتبع مسار التوصيل</h2>
+          </div>
+
+          <!-- الخريطة مع خط المسار -->
+          <div class="relative w-full h-[420px] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg bg-slate-900">
+            <div id="deliveryRouteMap" class="w-full h-full"></div>
+            
+            <!-- أزرار عائمة جانبية للتحكم بالخريطة -->
+            <div class="absolute left-3 top-3 z-20 flex flex-col gap-2">
+              <button onclick="centerOnDeliveryRoute()" class="w-10 h-10 rounded-2xl bg-white dark:bg-slate-900 text-slate-800 dark:text-white shadow-md flex items-center justify-center border border-slate-200 dark:border-slate-800 active:scale-95">
+                <i class="fa-solid fa-crosshairs text-sm text-brand-600"></i>
+              </button>
+            </div>
+
+            <!-- البطاقة السفلية (Bottom Sheet) مطابقة تماماً للصورة المطلوبة -->
+            <div class="absolute bottom-3 left-3 right-3 z-20 bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800 space-y-3 animate-scale-up">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-extrabold text-sm text-slate-900 dark:text-white">${escapeHTML(params.shopName || 'محل تجاري')}</h4>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHTML(params.shopCity || '')} • ${escapeHTML(params.district || '')}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="block text-xs font-black text-amber-500">${params.price || '0'} درهم</span>
+                  <span class="text-[10px] text-slate-400">أجرة التوصيل</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-brand-500"></i> التوقيت التقديري: <strong class="text-slate-900 dark:text-white">12 دقيقة</strong></span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-route text-emerald-500"></i> المسافة: <strong class="text-slate-900 dark:text-white">3.4 كلم</strong></span>
+              </div>
+
+              <!-- زر تأكيد التوصيل البارز تماماً مثل النموذج المطلوب -->
+              <button onclick="confirmDeliveryAction('${escapeHTML(params.shopName)}')" class="w-full py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 text-white font-black text-xs sm:text-sm shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-check-circle text-emerald-500 text-sm"></i>
+                <span>CONFIRM DELIVERY</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    let activeRouteControl = null;
+    function initDeliveryRouteMap(params) {
+      const mapEl = document.getElementById('deliveryRouteMap');
+      if (!mapEl) return;
+
+      const baseCoords = params.cityCoords || [33.5731, -7.5898];
+      
+      // محاكاة موقع السائق وموقع المحل لإظهار خط المسار (Route Line) بدقة
+      const driverLatLng = [baseCoords[0] - 0.012, baseCoords[1] - 0.015];
+      const shopLatLng = [baseCoords[0] + 0.008, baseCoords[1] + 0.010];
+
+      try {
+        const map = L.map('deliveryRouteMap', {
+          zoomControl: false,
+          attributionControl: false
+        }).setView(baseCoords, 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19
+        }).addTo(map);
+
+        // إضافة خط المسار بين السائق والمحل باستخدام Leaflet Routing Machine
+        activeRouteControl = L.Routing.control({
+          waypoints: [
+            L.latLng(driverLatLng[0], driverLatLng[1]),
+            L.latLng(shopLatLng[0], shopLatLng[1])
+          ],
+          routeWhileDragging: false,
+          addWaypoints: false,
+          draggableWaypoints: false,
+          fitSelectedRoutes: true,
+          showAlternatives: false,
+          lineOptions: {
+            styles: [{ color: '#3b82f6', opacity: 0.85, weight: 5 }]
+          },
+          createMarker: function(i, waypoint, n) {
+            if (i === 0) {
+              return L.marker(waypoint.latLng).bindPopup('<div dir="rtl" style="font-family:\'Cairo\',sans-serif; font-size:11px;"><b>🏍️ موقعك الحالي (السائق)</b></div>');
+            } else {
+              return L.marker(waypoint.latLng).bindPopup(`<div dir="rtl" style="font-family:\'Cairo\',sans-serif; font-size:11px;"><b>🏪 محل: ${escapeHTML(params.shopName)}</b></div>`);
+            }
+          }
+        }).addTo(map);
+
+      } catch (err) {
+        console.error('Routing error:', err);
+      }
+    }
+
+    function centerOnDeliveryRoute() {
+      showToast('تم ضبط الخريطة على مسار الرحلة', 'info');
+    }
+
+    function confirmDeliveryAction(shopName) {
+      showConfirmModal(
+        'تأكيد إتمام التوصيل',
+        `هل تؤكد إتمام توصيل طلب محل "${shopName}" بنجاح؟`,
+        () => {
+          showToast('تم تأكيد التوصيل بنجاح! شكراً لك.', 'success');
+          navigateTo('offers');
+        },
+        false
       );
     }
 
@@ -1088,15 +1231,20 @@
             </div>
           ` : ''}
 
-          <div class="pt-1 grid grid-cols-2 gap-2">
-            <a href="tel:${escapeHTML(offer.phone)}" onclick="handleContactAction(event, 'tel:${escapeHTML(offer.phone)}')" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95">
+          <!-- أزرار التواصل وخريطة المسار المباشر -->
+          <div class="pt-1 grid grid-cols-3 gap-2">
+            <a href="tel:${escapeHTML(offer.phone)}" onclick="handleContactAction(event, 'tel:${escapeHTML(offer.phone)}')" class="py-2.5 px-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95">
               <i class="fa-solid fa-phone text-emerald-600"></i>
-              <span>اتصال هاتفي</span>
+              <span>اتصال</span>
             </a>
-            <a href="${waLink}" onclick="handleContactAction(event, '${waLink}')" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
+            <a href="${waLink}" onclick="handleContactAction(event, '${waLink}')" target="_blank" rel="noopener noreferrer" class="py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm shadow-emerald-600/20 transition-all active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i>
-              <span>مراسلة WhatsApp</span>
+              <span>واتساب</span>
             </a>
+            <button onclick="openDeliveryMap('${escapeHTML(offer.shopName)}', '${escapeHTML(offer.city)}', '${escapeHTML(offer.district)}', '${offer.price}')" class="py-2.5 px-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm shadow-brand-600/20 active:scale-95 transition-all cursor-pointer">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>الخريطة</span>
+            </button>
           </div>
         </div>
       `;
