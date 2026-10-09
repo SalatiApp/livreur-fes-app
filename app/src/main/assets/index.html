@@ -657,7 +657,7 @@
       }
     }
 
-    // تهيئة الخريطة الاحترافية الحقيقية للمغرب بـ Leaflet و OpenStreetMap مع زر تحديد الموقع وحقوق النشر
+    // تهيئة الخريطة بـ المصدر الرسمي المباشر لـ OpenStreetMap مع التركيز الافتراضي على فاس
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       const offlineFallback = document.getElementById('mapOfflineFallback');
@@ -676,7 +676,9 @@
       }
 
       const currentGlobalCity = DataService.getSelectedCity();
-      const cityData = MOROCCO_CITIES[currentGlobalCity] || MOROCCO_CITIES['all'];
+      const cityData = currentGlobalCity !== 'all' && MOROCCO_CITIES[currentGlobalCity] 
+        ? MOROCCO_CITIES[currentGlobalCity] 
+        : MOROCCO_CITIES['fes']; // التركيز على مدينة فاس افتراضياً
 
       try {
         homeLeafletMap = L.map('homeInteractiveMap', {
@@ -684,32 +686,32 @@
           attributionControl: true
         }).setView(cityData.coords, cityData.zoom);
 
-        // استخدام بلاط خريطة OpenStreetMap مع إسناد الحقوق الرسمية
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // استخدام المصدر الرسمي المباشر لبلاطات شوارع OpenStreetMap دون فلاتر مظلمة أو بهتان
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(homeLeafletMap);
 
         L.control.zoom({ position: 'bottomleft' }).addTo(homeLeafletMap);
 
-        // العلامة الرئيسية للمدينة المحددة بإحداثياتها الحقيقية
+        // العلامة الرئيسية للمدينة
         const mainMarker = L.marker(cityData.coords).addTo(homeLeafletMap);
         mainMarker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 ${cityData.nameAr}<br><span style="font-size:9px; color:#555;">منطقة التوصيل النشطة</span></div>`);
 
-        // جلب العلامات المرتبطة فقط ببيانات حقيقية من التطبيق (المحلات والعروض)
+        // ربط العلامات الحقيقية المتوفرة في قاعدة البيانات فقط
         const currentOffers = DataService.getOffers().filter(o => currentGlobalCity === 'all' || o.city === currentGlobalCity);
         const currentDrivers = DataService.getDrivers().filter(d => currentGlobalCity === 'all' || d.city === currentGlobalCity);
 
         currentOffers.forEach((offer, idx) => {
-          const offsetLat = cityData.coords[0] + (Math.sin(idx) * 0.02);
-          const offsetLng = cityData.coords[1] + (Math.cos(idx) * 0.02);
+          const offsetLat = cityData.coords[0] + (Math.sin(idx) * 0.015);
+          const offsetLng = cityData.coords[1] + (Math.cos(idx) * 0.015);
           const marker = L.marker([offsetLat, offsetLng]).addTo(homeLeafletMap);
           marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px;">🏪 <b>${escapeHTML(offer.shopName)}</b><br><span>${escapeHTML(offer.shopType || 'محل تجاري')}</span><br><b>${offer.price} درهم</b></div>`);
         });
 
         currentDrivers.forEach((driver, idx) => {
-          const offsetLat = cityData.coords[0] + (Math.cos(idx + 1) * 0.025);
-          const offsetLng = cityData.coords[1] + (Math.sin(idx + 1) * 0.025);
+          const offsetLat = cityData.coords[0] + (Math.cos(idx + 1) * 0.02);
+          const offsetLng = cityData.coords[1] + (Math.sin(idx + 1) * 0.02);
           const marker = L.marker([offsetLat, offsetLng]).addTo(homeLeafletMap);
           marker.bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px;">🏍️ <b>${escapeHTML(driver.name)}</b><br><span>وسيلة: ${escapeHTML(driver.vehicle)}</span><br><span style="color:${driver.isAvailable ? 'green' : 'gray'}">${driver.isAvailable ? 'متاح للتوصيل' : 'غير متاح'}</span></div>`);
         });
@@ -717,31 +719,6 @@
       } catch (err) {
         if (offlineFallback) offlineFallback.classList.remove('hidden');
       }
-    }
-
-    // وظيفة زر تحديد الموقع الحالي للمستخدم بعد طلب إذن الموقع
-    function locateUserOnMap() {
-      if (!homeLeafletMap) return;
-      if (!navigator.geolocation) {
-        showToast('متصفحك لا يدعم تحديد الموقع الجغرافي', 'error');
-        return;
-      }
-      showToast('جاري تحديد موقعك الحالي...', 'info');
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          homeLeafletMap.setView([lat, lng], 15);
-          L.marker([lat, lng]).addTo(homeLeafletMap)
-            .bindPopup(`<div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold;">📍 موقعك الحالي</div>`)
-            .openPopup();
-          showToast('تم تحديد موقعك بنجاح', 'success');
-        },
-        (error) => {
-          showToast('تعذر الوصول إلى موقعك الجغرافي، تحقق من الأذونات', 'error');
-        },
-        { timeout: 10000 }
-      );
     }
 
     // 1. HOME VIEW
@@ -850,25 +827,20 @@
             </div>
           </div>
 
-          <!-- خريطة تفاعلية حقيقية مع زر تحديد الموقع وحالة انقطاع الإنترنت -->
+          <!-- خريطة شوارع فاس العادية الرسمية بـ OpenStreetMap دون فلاتر باهتة -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-emerald-500"></i> خريطة التغطية والتوزيع الجغرافي
               </h3>
-              <div class="flex items-center gap-2">
-                <button onclick="locateUserOnMap()" title="تحديد موقعي" class="text-[10px] font-bold text-white bg-brand-600 hover:bg-brand-700 px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm active:scale-95 transition-all">
-                  <i class="fa-solid fa-location-crosshairs"></i> موقعي
-                </button>
-                <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">تفاعلية حية</span>
-              </div>
+              <span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">شوارع فاس العادية</span>
             </div>
             <div class="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm z-10 bg-slate-900 flex items-center justify-center">
               <div id="homeInteractiveMap" class="w-full h-full"></div>
               <div id="mapOfflineFallback" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center p-4 text-center hidden z-20">
                 <i class="fa-solid fa-wifi-slash text-amber-400 text-2xl mb-2"></i>
                 <p class="text-xs font-bold text-white mb-1">تحميل الخريطة يحتاج إلى اتصال بالإنترنت</p>
-                <p class="text-[10px] text-slate-400">ستستمر باقي بيانات التطبيق والصفحات في العمل محلياً دون انقطاع.</p>
+                <p class="text-[10px] text-slate-400">ستستمر بيانات التطبيق المحلية في العمل دون انقطاع.</p>
               </div>
             </div>
           </div>
