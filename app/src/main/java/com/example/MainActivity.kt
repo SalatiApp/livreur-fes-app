@@ -1,12 +1,15 @@
 package com.example
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color as AndroidColor
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.ConsoleMessage
+import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
@@ -16,6 +19,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -30,15 +34,49 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import com.example.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
+
+  private var geolocationCallback: GeolocationPermissions.Callback? = null
+  private var geolocationOrigin: String? = null
+
+  private val locationPermissionRequest = registerForActivityResult(
+    ActivityResultContracts.RequestMultiplePermissions()
+  ) { permissions ->
+    val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                  permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+    if (granted) {
+      geolocationCallback?.invoke(geolocationOrigin, true, false)
+    } else {
+      geolocationCallback?.invoke(geolocationOrigin, false, false)
+    }
+    geolocationCallback = null
+    geolocationOrigin = null
+  }
+
+  fun requestLocationPermission(origin: String?, callback: GeolocationPermissions.Callback?) {
+    geolocationOrigin = origin
+    geolocationCallback = callback
+    locationPermissionRequest.launch(
+      arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+      )
+    )
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
     setContent {
       MyApplicationTheme {
-        HybridAppScreen()
+        HybridAppScreen(
+          onRequestPermission = { origin, callback ->
+            requestLocationPermission(origin, callback)
+          }
+        )
       }
     }
   }
@@ -46,7 +84,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun HybridAppScreen() {
+fun HybridAppScreen(onRequestPermission: (String?, GeolocationPermissions.Callback?) -> Unit) {
   val isDark = isSystemInDarkTheme()
   var webViewInstance by remember { mutableStateOf<WebView?>(null) }
 
@@ -66,7 +104,6 @@ fun HybridAppScreen() {
         WebView(context).apply {
           setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
-          // Give the WebView the same initial background as the app
           setBackgroundColor(
             if (isDark) AndroidColor.rgb(2, 6, 23)
             else AndroidColor.rgb(248, 250, 252)
@@ -77,6 +114,7 @@ fun HybridAppScreen() {
             domStorageEnabled = true
             allowFileAccess = true
             allowContentAccess = true
+            setGeolocationEnabled(true) // تفعيل الجيوكولكيشن
             cacheMode = WebSettings.LOAD_DEFAULT
             useWideViewPort = true
             loadWithOverviewMode = true
@@ -88,6 +126,26 @@ fun HybridAppScreen() {
           webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
               return true
+            }
+
+            override fun onGeolocationPermissionsShowPrompt(
+              origin: String?,
+              callback: GeolocationPermissions.Callback?
+            ) {
+              val activity = context as? MainActivity
+              if (activity != null) {
+                if (ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                  ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                  callback?.invoke(origin, true, false)
+                } else {
+                  activity.requestLocationPermission(origin, callback)
+                }
+              } else {
+                callback?.invoke(origin, false, false)
+              }
             }
           }
 
