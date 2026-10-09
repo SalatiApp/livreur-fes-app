@@ -75,11 +75,7 @@ class MainActivity : ComponentActivity() {
     enableEdgeToEdge()
     setContent {
       MyApplicationTheme {
-        HybridAppScreen(
-          onRequestPermission = { origin, callback ->
-            requestLocationPermission(origin, callback)
-          }
-        )
+        HybridAppScreen()
       }
     }
   }
@@ -87,7 +83,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun HybridAppScreen(onRequestPermission: (String?, GeolocationPermissions.Callback?) -> Unit) {
+fun HybridAppScreen() {
   val isDark = isSystemInDarkTheme()
   var webViewInstance by remember { mutableStateOf<WebView?>(null) }
 
