@@ -657,7 +657,7 @@
       }
     }
 
-    // تهيئة الخريطة الاحترافية الحقيقية بوضوح تام وتفاعل كامل بدون أي أشرطة زائدة
+    // تهيئة الخريطة الاحترافية الحقيقية برابط OpenStreetMap الرسمي المباشر وبدون أي قيود أو مفاتيح
     function initHomeMap() {
       const mapEl = document.getElementById('homeInteractiveMap');
       const offlineFallback = document.getElementById('mapOfflineFallback');
@@ -688,10 +688,10 @@
           scrollWheelZoom: true
         }).setView(cityData.coords, cityData.zoom);
 
-        // استخدام مزود بلاطات عالي الوضوح والنقاء (CartoDB Positron) لنتيجة مذهلة تشبه خرائط جوجل
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        // استخدام مزود البلاطات الرسمي لـ OpenStreetMap بدون أي مفاتيح API
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(homeLeafletMap);
 
         const mainMarker = L.marker(cityData.coords).addTo(homeLeafletMap);
