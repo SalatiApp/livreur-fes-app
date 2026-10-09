@@ -703,9 +703,10 @@
           scrollWheelZoom: true
         }).setView(cityData.coords, cityData.zoom);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // تم التحديث هنا إلى طبقة CARTO Voyager الاحترافية الملونة والمفصلة تماماً مثل التطبيقات الكبرى
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
           maxZoom: 19,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
         }).addTo(homeLeafletMap);
 
         const mainMarker = L.marker(cityData.coords).addTo(homeLeafletMap);
@@ -846,8 +847,10 @@
           attributionControl: false
         }).setView(baseCoords, 14);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19
+        // تم التحديث هنا أيضاً إلى طبقة CARTO Voyager الاحترافية الملونة
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
         }).addTo(map);
 
         // إضافة خط المسار بين السائق والمحل باستخدام Leaflet Routing Machine
@@ -868,7 +871,7 @@
             if (i === 0) {
               return L.marker(waypoint.latLng).bindPopup('<div dir="rtl" style="font-family:\'Cairo\',sans-serif; font-size:11px;"><b>🏍️ موقعك الحالي (السائق)</b></div>');
             } else {
-              return L.marker(waypoint.latLng).bindPopup(`<div dir="rtl" style="font-family:\'Cairo\',sans-serif; font-size:11px;"><b>🏪 محل: ${escapeHTML(params.shopName)}</b></div>`);
+              return L.marker(waypoint.latLng).bindPopup(`<div dir="rtl" style="font-family:'Cairo\',sans-serif; font-size:11px;"><b>🏪 محل: ${escapeHTML(params.shopName)}</b></div>`);
             }
           }
         }).addTo(map);
@@ -1000,7 +1003,7 @@
             </div>
           </div>
 
-          <!-- خريطة حقيقية واضحة تفاعلية بالكامل تم تعديل اسمها وإزالة الكتابة السفلية -->
+          <!-- خريطة احترافية تفاعلية بالكامل -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
@@ -1733,7 +1736,6 @@
             </div>
           </div>
 
-          <!-- تم تصحيح وتهيئة تباعد الأحرف ونزع التداخل في زر تسجيل الملف الشخصي هنا -->
           <button type="submit" class="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2 leading-normal">
             <i class="fa-solid fa-check text-xs shrink-0"></i> 
             <span style="letter-spacing: 0.3px;" class="whitespace-nowrap">تسجيل الملف الشخصي</span>
