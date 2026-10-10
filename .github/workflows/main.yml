@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm ci || npm install
+          npm ci
           npm run build
           mkdir -p app/src/main/assets
           rm -rf app/src/main/assets/*
