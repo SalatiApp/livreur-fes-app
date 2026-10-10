@@ -1,3 +1,4 @@
+
 name: Build Livlink MA Release APK
 
 on:
@@ -20,13 +21,7 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.3.1'
-          cache-disabled: true
-
-      - name: Prepare and verify permanent signing key
+      - name: Prepare and verify signing key
         shell: bash
         env:
           SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
@@ -34,32 +29,42 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          if [ -z "$SIGNING_KEYSTORE_BASE64" ] || [ -z "$STORE_PASSWORD" ] \vert{}\vert{} [ -z "$KEY_PASSWORD" ]; then
+
+          if test -z "${SIGNING_KEYSTORE_BASE64:-}" || test -z "${STORE_PASSWORD:-}" || test -z "${KEY_PASSWORD:-}"; then
             echo "::error::One or more signing secrets are missing."
             exit 1
           fi
+
           KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
-          printf '%s' "$SIGNING_KEYSTORE_BASE64" \vert{} tr -d '[:space:]' \vert{} base64 --decode > "$KEYSTORE"
-          if [ ! -s "$KEYSTORE" ]; then
+
+          printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE"
+
+          if test ! -s "$KEYSTORE"; then
             echo "::error::Decoded keystore is empty."
             exit 1
           fi
+
           keytool -list -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -alias upload > /dev/null
+
           keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" -file "$RUNNER_TEMP/signing-check.csr" -noprompt
+
           echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
           echo "Signing key verified."
 
       - name: Build Release APK
+        shell: bash
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
         run: |
           set -euo pipefail
-          if [ ! -f ./gradlew ]; then
+
+          if test ! -f ./gradlew; then
             echo "::error::gradlew is missing from the repository root."
             exit 1
           fi
+
           chmod +x ./gradlew
           ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease --stacktrace
 
@@ -67,29 +72,38 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
           APK_PATH=$(find app/build/outputs/apk/release -type f -name '*.apk' -print -quit)
-          if [ -z "$APK_PATH" ]; then
+
+          if test -z "$APK_PATH"; then
             echo "::error::Release APK not found."
             exit 1
           fi
+
           APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
-          if [ -z "$APKSIGNER" ]; then
+
+          if test -z "$APKSIGNER"; then
             APKSIGNER=$(find "$HOME" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
           fi
-          if [ -z "$APKSIGNER" ]; then
+
+          if test -z "$APKSIGNER"; then
             echo "::error::apksigner not found."
             exit 1
           fi
-          "$APKSIGNER" verify --print-certs "$APK_PATH" \vert{} tee "$RUNNER_TEMP/cert-info.txt"
+
+          "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
+
           SHA1=$(grep -i 'certificate SHA-1' "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.*: *//')
-          if [ -z "$SHA1" ]; then
+
+          if test -z "$SHA1"; then
             echo "::error::SHA-1 fingerprint not found."
             exit 1
           fi
+
           {
-            echo "## LIVLINK SHA-1 Certificate Fingerprint"
+            echo "## LIVLINK MA SHA-1 Certificate Fingerprint"
             echo ""
-            echo "\`$SHA1\`"
+            echo "$SHA1"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Release APK
