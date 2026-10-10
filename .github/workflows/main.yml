@@ -1,3 +1,4 @@
+
 name: Build Livlink MA Release APK
 
 on:
@@ -19,6 +20,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -53,6 +57,29 @@ jobs:
 
       - name: Build Release APK
         run: gradle --no-daemon --no-configuration-cache --no-build-cache --project-dir . :app:assembleRelease --stacktrace
+
+      - name: Extract SHA-1 Certificate Fingerprint
+        shell: bash
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/release -name '*.apk' -print -quit)
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+
+          if [ -z "$APK_PATH" ] || [ -z "$APKSIGNER" ]; then
+            echo "ERROR: APK or apksigner not found"
+            exit 1
+          fi
+
+          "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
+
+          SHA1=$(grep -i "certificate SHA-1" "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.*: //')
+
+          if [ -z "$SHA1" ]; then
+            echo "ERROR: SHA-1 fingerprint not found"
+            exit 1
+          fi
+
+          echo "## LIVLINK SHA-1 Certificate Fingerprint" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`$SHA1\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
