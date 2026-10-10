@@ -237,6 +237,11 @@ jobs:
             exit 1
           fi
 
+          # In PKCS12 keystores (standard in Android/Java), the key password is by standard identical to the store password.
+          if [ "${WORKING_STORETYPE,,}" = "pkcs12" ]; then
+            WORKING_KEYPASS="$WORKING_STOREPASS"
+          fi
+
           echo "Private key for alias '$TARGET_ALIAS' verified successfully."
 
           # Mask both passwords from logs
@@ -247,9 +252,13 @@ jobs:
           echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
           echo "STORE_PASSWORD=$WORKING_STOREPASS" >> "$GITHUB_ENV"
           echo "KEY_PASSWORD=$WORKING_KEYPASS" >> "$GITHUB_ENV"
+          echo "RELEASE_STORE_PASSWORD=$WORKING_STOREPASS" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_PASSWORD=$WORKING_KEYPASS" >> "$GITHUB_ENV"
           echo "KEY_ALIAS=$TARGET_ALIAS" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_ALIAS=$TARGET_ALIAS" >> "$GITHUB_ENV"
           if [ -n "$WORKING_STORETYPE" ]; then
             echo "STORE_TYPE=$WORKING_STORETYPE" >> "$GITHUB_ENV"
+            echo "RELEASE_STORE_TYPE=$WORKING_STORETYPE" >> "$GITHUB_ENV"
           fi
 
           {
