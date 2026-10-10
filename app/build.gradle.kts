@@ -19,23 +19,37 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH")
+            val kPath = (project.findProperty("RELEASE_STORE_FILE") as? String)
                 ?: (project.findProperty("KEYSTORE_PATH") as? String)
+                ?: System.getenv("KEYSTORE_PATH")
 
-            if (!keystorePath.isNullOrEmpty()) {
-                val kFile = file(keystorePath)
+            if (!kPath.isNullOrEmpty()) {
+                val kFile = file(kPath)
                 if (kFile.exists()) {
-                    val storePass = System.getenv("STORE_PASSWORD")
+                    val storePass = (project.findProperty("RELEASE_STORE_PASSWORD") as? String)
                         ?: (project.findProperty("STORE_PASSWORD") as? String)
-                        ?: ""
-                    val keyPass = System.getenv("KEY_PASSWORD")
+                        ?: System.getenv("STORE_PASSWORD") ?: ""
+
+                    val keyPass = (project.findProperty("RELEASE_KEY_PASSWORD") as? String)
                         ?: (project.findProperty("KEY_PASSWORD") as? String)
-                        ?: storePass
+                        ?: System.getenv("KEY_PASSWORD") ?: storePass
+
+                    val sType = (project.findProperty("RELEASE_STORE_TYPE") as? String)
+                        ?: (project.findProperty("STORE_TYPE") as? String)
+                        ?: System.getenv("STORE_TYPE")
+
+                    val kAlias = (project.findProperty("RELEASE_KEY_ALIAS") as? String)
+                        ?: (project.findProperty("KEY_ALIAS") as? String)
+                        ?: System.getenv("KEY_ALIAS")
+                        ?: "upload"
 
                     storeFile = kFile
-                    storePassword = storePass
-                    keyAlias = "upload"
-                    keyPassword = if (keyPass.isNotEmpty()) keyPass else storePass
+                    storePassword = storePass.trim()
+                    keyAlias = kAlias.trim()
+                    keyPassword = (if (keyPass.isNotEmpty()) keyPass else storePass).trim()
+                    if (!sType.isNullOrEmpty()) {
+                        storeType = sType.trim()
+                    }
                 }
             }
         }

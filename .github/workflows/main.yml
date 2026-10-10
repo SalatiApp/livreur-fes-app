@@ -42,13 +42,16 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Prepare and verify signing key
+      - name: Verify and prepare signing key
         shell: bash
         env:
           SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          SEC_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SEC_STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          SEC_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          SEC_SIGNING_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          SEC_REL_STORE_PASS: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          SEC_REL_KEY_PASS: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
           set -euo pipefail
 
@@ -56,49 +59,180 @@ jobs:
           rm -f "$KEYSTORE"
 
           if [ -z "${SIGNING_KEYSTORE_BASE64:-}" ]; then
-            echo "::error::SIGNING_KEYSTORE_BASE64 secret is missing or empty."
+            echo "::error title=Missing Secret::SIGNING_KEYSTORE_BASE64 secret is missing or empty."
             exit 1
           fi
 
-          PASSWORD="${KEYSTORE_PASSWORD:-${STORE_PASSWORD:-${KEY_PASSWORD:-}}}"
-          if [ -z "$PASSWORD" ]; then
-            echo "::error::Signing password secret (KEYSTORE_PASSWORD or STORE_PASSWORD) is missing or empty."
-            exit 1
+          # 1. Decode base64 keystore
+          printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '\r\n ' | base64 -d > "$KEYSTORE" 2>/dev/null || true
+          if [ ! -s "$KEYSTORE" ]; then
+            printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 -d > "$KEYSTORE" 2>/dev/null || true
           fi
-
-          # Decode the base64 keystore into livlink.jks, cleaning any line-endings and ignoring garbage
-          printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode -i > "$KEYSTORE"
 
           if [ ! -s "$KEYSTORE" ]; then
-            echo "::error::Decoded livlink.jks is empty. Verify the SIGNING_KEYSTORE_BASE64 secret format."
+            echo "::error title=Corrupted Secret::Failed to decode SIGNING_KEYSTORE_BASE64. The decoded file is empty."
             exit 1
           fi
 
-          # 1. Verify that the keystore can be read with the password and that alias 'upload' exists
-          if ! keytool -list -keystore "$KEYSTORE" -storepass "$PASSWORD" -alias upload >/dev/null 2>&1; then
-            echo "::error::Unable to find alias 'upload' in livlink.jks using the provided password. Please check alias name or password."
+          KS_SIZE=$(wc -c < "$KEYSTORE")
+          echo "Decoded keystore size: ${KS_SIZE} bytes."
+
+          if [ "$KS_SIZE" -lt 100 ]; then
+            echo "::error title=Invalid File Size::Decoded keystore is unexpectedly small (${KS_SIZE} bytes). Check SIGNING_KEYSTORE_BASE64."
             exit 1
           fi
 
-          # 2. Verify that the private key for alias 'upload' is unlocked with the password (prevents BadPaddingException)
-          TEST_CSR="${{ runner.temp }}/signing-verify.csr"
-          rm -f "$TEST_CSR"
-          if ! keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$PASSWORD" -keypass "$PASSWORD" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
-            echo "::error::Failed to decrypt key 'upload' (Given final block not properly padded). The key password does not match the keystore."
+          # 2. Inspect header magic bytes (safe, no secrets)
+          MAGIC=$(od -An -tx1 -N4 "$KEYSTORE" 2>/dev/null | tr -d ' \n' || true)
+          echo "Keystore magic header: ${MAGIC}"
+
+          DETECTED_TYPE=""
+          if [ "$MAGIC" = "feedfeed" ]; then
+            DETECTED_TYPE="jks"
+          elif [ "$MAGIC" = "cececece" ]; then
+            DETECTED_TYPE="jceks"
+          elif [[ "$MAGIC" == 3082* ]]; then
+            DETECTED_TYPE="pkcs12"
+          fi
+          echo "Detected format by magic: ${DETECTED_TYPE:-generic}"
+
+          # 3. Gather candidate passwords safely without boolean expression collapse
+          CANDIDATES=()
+          for p in \
+            "${SEC_KEYSTORE_PASSWORD:-}" \
+            "${SEC_STORE_PASSWORD:-}" \
+            "${SEC_KEY_PASSWORD:-}" \
+            "${SEC_SIGNING_PASSWORD:-}" \
+            "${SEC_REL_STORE_PASS:-}" \
+            "${SEC_REL_KEY_PASS:-}"; do
+            if [ -n "$p" ]; then
+              CANDIDATES+=("$p")
+              # Also add trimmed version if different
+              p_trimmed=$(printf '%s' "$p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+              if [ "$p_trimmed" != "$p" ] && [ -n "$p_trimmed" ]; then
+                CANDIDATES+=("$p_trimmed")
+              fi
+            fi
+          done
+
+          if [ "${#CANDIDATES[@]}" -eq 0 ]; then
+            echo "::error title=Missing Password::No password secrets found. Set KEYSTORE_PASSWORD or STORE_PASSWORD."
+            exit 1
+          fi
+
+          # 4. Test store password with keytool
+          WORKING_STOREPASS=""
+          WORKING_STORETYPE=""
+
+          for cand in "${CANDIDATES[@]}"; do
+            for stype in "${DETECTED_TYPE}" "" "jks" "pkcs12"; do
+              TYPE_ARGS=()
+              if [ -n "$stype" ]; then
+                TYPE_ARGS=("-storetype" "$stype")
+              fi
+              if keytool -list -keystore "$KEYSTORE" -storepass "$cand" "${TYPE_ARGS[@]}" >/dev/null 2>&1; then
+                WORKING_STOREPASS="$cand"
+                WORKING_STORETYPE="$stype"
+                break 2
+              fi
+            done
+          done
+
+          if [ -z "$WORKING_STOREPASS" ]; then
+            echo "::error title=Store Password Failed::None of the provided secrets opened the keystore. Please verify KEYSTORE_PASSWORD / STORE_PASSWORD."
+            {
+              echo "### ❌ Keystore Diagnostic Summary"
+              echo "- **File Size:** ${KS_SIZE} bytes"
+              echo "- **Magic Bytes:** \`${MAGIC}\` (${DETECTED_TYPE:-unknown})"
+              echo "- **Store Password Test:** FAILED for all candidate secrets"
+              echo "- **Action Required:** Verify KEYSTORE_PASSWORD / STORE_PASSWORD in GitHub Secrets."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "Keystore store password verified successfully."
+
+          # 5. List aliases in the keystore
+          STORETYPE_OPT=()
+          if [ -n "$WORKING_STORETYPE" ]; then
+            STORETYPE_OPT=("-storetype" "$WORKING_STORETYPE")
+          fi
+
+          ALIASES=$(keytool -list -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" "${STORETYPE_OPT[@]}" 2>/dev/null | grep -i 'Alias name:' | sed 's/.*: *//' | tr -d '\r' || true)
+          echo "Found alias(es) in keystore:"
+          echo "$ALIASES"
+
+          TARGET_ALIAS="upload"
+          if ! echo "$ALIASES" | grep -qx "upload"; then
+            echo "::error title=Alias Missing::Alias 'upload' not found in keystore. Found: ${ALIASES:-none}"
+            {
+              echo "### ❌ Keystore Diagnostic Summary"
+              echo "- **Store Password:** Valid"
+              echo "- **Expected Alias:** \`upload\`"
+              echo "- **Found Aliases:** \`${ALIASES:-none}\`"
+              echo "- **Action Required:** Ensure the keystore contains the alias 'upload' or update RELEASE_KEY_ALIAS."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          # 6. Test decrypting the private key for alias 'upload' (prevents Given final block not properly padded)
+          WORKING_KEYPASS=""
+          TEST_CSR="${{ runner.temp }}/test-key.csr"
+
+          # Test key password candidates
+          for kcand in "${SEC_KEY_PASSWORD:-}" "$WORKING_STOREPASS" "${CANDIDATES[@]}"; do
+            if [ -z "$kcand" ]; then continue; fi
             rm -f "$TEST_CSR"
+            if keytool -certreq -alias "$TARGET_ALIAS" -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" -keypass "$kcand" -file "$TEST_CSR" -noprompt "${STORETYPE_OPT[@]}" >/dev/null 2>&1; then
+              WORKING_KEYPASS="$kcand"
+              rm -f "$TEST_CSR"
+              break
+            fi
+            rm -f "$TEST_CSR"
+          done
+
+          if [ -z "$WORKING_KEYPASS" ]; then
+            # Capture the exact failure message safely
+            ERR_MSG=$(keytool -certreq -alias "$TARGET_ALIAS" -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" -keypass "$WORKING_STOREPASS" -file "$TEST_CSR" -noprompt "${STORETYPE_OPT[@]}" 2>&1 || true)
+            rm -f "$TEST_CSR"
+
+            echo "::error title=Key Decryption Failed (BadPaddingException)::The keystore was opened, but the private key 'upload' could NOT be decrypted with KEY_PASSWORD. Error: ${ERR_MSG}"
+            {
+              echo "### ❌ Key Password Decryption Failed"
+              echo "- **Keystore:** Valid (${KS_SIZE} bytes, ${WORKING_STORETYPE:-auto})"
+              echo "- **Alias:** \`upload\` found"
+              echo "- **Store Password:** Valid"
+              echo "- **Key Password:** FAILED — UnrecoverableKeyException: Given final block not properly padded"
+              echo "- **Root Cause:** The key password set inside the keystore for alias 'upload' does NOT match KEY_PASSWORD or KEYSTORE_PASSWORD."
+              echo "- **Action Required:** Verify the exact private key password for alias 'upload' and update the KEY_PASSWORD secret in GitHub."
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-          rm -f "$TEST_CSR"
 
-          echo "livlink.jks successfully verified: alias 'upload' and password are valid and accessible."
+          echo "Private key for alias '$TARGET_ALIAS' verified successfully."
+
+          # Mask both passwords from logs
+          echo "::add-mask::$WORKING_STOREPASS"
+          echo "::add-mask::$WORKING_KEYPASS"
+
+          # Export to GITHUB_ENV for Gradle
           echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+          echo "STORE_PASSWORD=$WORKING_STOREPASS" >> "$GITHUB_ENV"
+          echo "KEY_PASSWORD=$WORKING_KEYPASS" >> "$GITHUB_ENV"
+          echo "KEY_ALIAS=$TARGET_ALIAS" >> "$GITHUB_ENV"
+          if [ -n "$WORKING_STORETYPE" ]; then
+            echo "STORE_TYPE=$WORKING_STORETYPE" >> "$GITHUB_ENV"
+          fi
+
+          {
+            echo "### ✅ Keystore & Key Verification Passed"
+            echo "- **Keystore File:** Verified (${KS_SIZE} bytes)"
+            echo "- **Format:** \`${WORKING_STORETYPE:-auto}\`"
+            echo "- **Alias:** \`upload\` (Private key decrypted successfully)"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build Release APK
         shell: bash
-        env:
-          KEYSTORE_PATH: ${{ runner.temp }}/livlink.jks
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD || secrets.STORE_PASSWORD || secrets.KEY_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD || secrets.KEYSTORE_PASSWORD || secrets.STORE_PASSWORD }}
         run: |
           set -euo pipefail
 
@@ -113,7 +247,14 @@ jobs:
           fi
 
           chmod +x ./gradlew
-          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease --stacktrace
+
+          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
+            -PRELEASE_STORE_FILE="$KEYSTORE_PATH" \
+            -PRELEASE_STORE_PASSWORD="$STORE_PASSWORD" \
+            -PRELEASE_KEY_PASSWORD="$KEY_PASSWORD" \
+            -PRELEASE_KEY_ALIAS="$KEY_ALIAS" \
+            ${STORE_TYPE:+-PRELEASE_STORE_TYPE="$STORE_TYPE"} \
+            --stacktrace
 
       - name: Verify APK and extract SHA-1
         shell: bash
@@ -162,4 +303,4 @@ jobs:
         run: |
           rm -f "${{ runner.temp }}/livlink.jks"
           rm -f "${{ runner.temp }}/cert-info.txt"
-          rm -f "${{ runner.temp }}/signing-verify.csr"
+          rm -f "${{ runner.temp }}/test-key.csr"
