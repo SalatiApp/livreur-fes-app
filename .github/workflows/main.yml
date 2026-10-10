@@ -14,23 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Build Web Application
-        shell: bash
-        run: |
-          set -euo pipefail
-          npm ci
-          npm run build
-          mkdir -p app/src/main/assets
-          rm -rf app/src/main/assets/*
-          cp -r dist/* app/src/main/assets/
-          echo "Web assets successfully compiled and synced to Android assets."
-
       - name: Setup JDK 21
         uses: actions/setup-java@v4
         with:
@@ -40,7 +23,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: false
+          gradle-version: '9.3.1'
+          cache-disabled: true
 
       - name: Verify and prepare signing key
         shell: bash
@@ -278,14 +262,13 @@ jobs:
             exit 1
           fi
 
-          if test ! -f ./gradlew; then
-            echo "::error::gradlew is missing from repository root."
-            exit 1
+          GRADLE_BIN="gradle"
+          if test -f ./gradlew; then
+            chmod +x ./gradlew
+            GRADLE_BIN="./gradlew"
           fi
 
-          chmod +x ./gradlew
-
-          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
+          $GRADLE_BIN --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
             -PRELEASE_STORE_FILE="$KEYSTORE_PATH" \
             -PRELEASE_STORE_PASSWORD="$STORE_PASSWORD" \
             -PRELEASE_KEY_PASSWORD="$KEY_PASSWORD" \

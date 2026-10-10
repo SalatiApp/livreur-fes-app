@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <path
-        android:fillColor="#F59E0B"
-        android:pathData="M35,45h38v8h-38z M30,55h48v6h-48z M40,65h28v5h-28z" />
-</vector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="96dp"
+        android:height="96dp"
+        android:drawable="@drawable/livlink_ma"
+        android:gravity="center" />
+</layer-list>
