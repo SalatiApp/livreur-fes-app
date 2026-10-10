@@ -46,91 +46,59 @@ jobs:
         shell: bash
         env:
           SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           set -euo pipefail
 
-          # 1. Clean up any previous temporary keys and initialize isolated directory
-          KEYSTORE_DIR="$RUNNER_TEMP/livlink_keystore"
-          rm -rf "$KEYSTORE_DIR"
-          rm -f "$RUNNER_TEMP/livlink-key.jks" "$RUNNER_TEMP/livlink-release.jks"
-          mkdir -p "$KEYSTORE_DIR"
+          KEYSTORE="${{ runner.temp }}/livlink.jks"
+          rm -f "$KEYSTORE"
 
-          KEYSTORE_FILE="$KEYSTORE_DIR/livlink.jks"
-          ACTIVE_STORE_PASS=""
-          ACTIVE_KEY_PASS=""
-          USE_REPO_SECRETS=false
-
-          # 2. Check if repository secrets are provided and test if key can be recovered
-          if [ -n "${SIGNING_KEYSTORE_BASE64:-}" ] && [ -n "${STORE_PASSWORD:-}" ]; then
-            CANDIDATE_FILE="$KEYSTORE_DIR/candidate.jks"
-            if printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$CANDIDATE_FILE" 2>/dev/null && [ -s "$CANDIDATE_FILE" ]; then
-              TEST_KEY_PW="${KEY_PASSWORD:-$STORE_PASSWORD}"
-              TEST_CSR="$KEYSTORE_DIR/candidate_check.csr"
-              rm -f "$TEST_CSR"
-
-              # Test candidate key extraction with keytool
-              if keytool -certreq -alias upload -keystore "$CANDIDATE_FILE" -storepass "$STORE_PASSWORD" -keypass "$TEST_KEY_PW" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
-                USE_REPO_SECRETS=true
-                mv "$CANDIDATE_FILE" "$KEYSTORE_FILE"
-                ACTIVE_STORE_PASS="$STORE_PASSWORD"
-                ACTIVE_KEY_PASS="$TEST_KEY_PW"
-                rm -f "$TEST_CSR"
-                echo "Repository signing keystore and key password verified successfully."
-              elif keytool -certreq -alias upload -keystore "$CANDIDATE_FILE" -storepass "$STORE_PASSWORD" -keypass "$STORE_PASSWORD" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
-                USE_REPO_SECRETS=true
-                mv "$CANDIDATE_FILE" "$KEYSTORE_FILE"
-                ACTIVE_STORE_PASS="$STORE_PASSWORD"
-                ACTIVE_KEY_PASS="$STORE_PASSWORD"
-                rm -f "$TEST_CSR"
-                echo "Repository signing keystore verified using store password as key password."
-              else
-                echo "::warning::Repository signing secrets failed key recovery check. Will generate a clean verified test keystore."
-              fi
-            fi
-            rm -f "$CANDIDATE_FILE"
-          fi
-
-          # 3. If repository secrets are absent or invalid, generate a fresh test keystore with matching passwords
-          if [ "$USE_REPO_SECRETS" != "true" ]; then
-            rm -f "$KEYSTORE_FILE"
-            WORKFLOW_PASS="livlink_release_pass_2026"
-
-            keytool -genkeypair -v \
-              -keystore "$KEYSTORE_FILE" \
-              -alias upload \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -storetype PKCS12 \
-              -storepass "$WORKFLOW_PASS" \
-              -keypass "$WORKFLOW_PASS" \
-              -dname "CN=LIVLINK MA, OU=Mobile, O=LIVLINK, L=Fes, C=MA" >/dev/null 2>&1
-
-            ACTIVE_STORE_PASS="$WORKFLOW_PASS"
-            ACTIVE_KEY_PASS="$WORKFLOW_PASS"
-            echo "Clean test keystore generated with unified credentials."
-          fi
-
-          # 4. Strictly verify with keytool that the key is readable and recoverable before passing to Gradle
-          VERIFY_CSR="$KEYSTORE_DIR/verify_check.csr"
-          rm -f "$VERIFY_CSR"
-          if ! keytool -certreq -alias upload -keystore "$KEYSTORE_FILE" -storepass "$ACTIVE_STORE_PASS" -keypass "$ACTIVE_KEY_PASS" -file "$VERIFY_CSR" -noprompt >/dev/null 2>&1; then
-            echo "::error::Keystore verification failed: unable to recover key 'upload' with the specified password."
-            rm -f "$VERIFY_CSR"
+          if [ -z "${SIGNING_KEYSTORE_BASE64:-}" ]; then
+            echo "::error::SIGNING_KEYSTORE_BASE64 secret is missing or empty."
             exit 1
           fi
-          rm -f "$VERIFY_CSR"
-          echo "Keystore readiness confirmed: alias 'upload' is fully recoverable."
 
-          # 5. Export values to GITHUB_ENV without printing secrets
-          echo "KEYSTORE_PATH=$KEYSTORE_FILE" >> "$GITHUB_ENV"
-          echo "STORE_PASSWORD=$ACTIVE_STORE_PASS" >> "$GITHUB_ENV"
-          echo "KEY_PASSWORD=$ACTIVE_KEY_PASS" >> "$GITHUB_ENV"
+          PASSWORD="${KEYSTORE_PASSWORD:-${STORE_PASSWORD:-${KEY_PASSWORD:-}}}"
+          if [ -z "$PASSWORD" ]; then
+            echo "::error::Signing password secret (KEYSTORE_PASSWORD or STORE_PASSWORD) is missing or empty."
+            exit 1
+          fi
+
+          # Decode the base64 keystore into livlink.jks, cleaning any line-endings and ignoring garbage
+          printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode -i > "$KEYSTORE"
+
+          if [ ! -s "$KEYSTORE" ]; then
+            echo "::error::Decoded livlink.jks is empty. Verify the SIGNING_KEYSTORE_BASE64 secret format."
+            exit 1
+          fi
+
+          # 1. Verify that the keystore can be read with the password and that alias 'upload' exists
+          if ! keytool -list -keystore "$KEYSTORE" -storepass "$PASSWORD" -alias upload >/dev/null 2>&1; then
+            echo "::error::Unable to find alias 'upload' in livlink.jks using the provided password. Please check alias name or password."
+            exit 1
+          fi
+
+          # 2. Verify that the private key for alias 'upload' is unlocked with the password (prevents BadPaddingException)
+          TEST_CSR="${{ runner.temp }}/signing-verify.csr"
+          rm -f "$TEST_CSR"
+          if ! keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$PASSWORD" -keypass "$PASSWORD" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
+            echo "::error::Failed to decrypt key 'upload' (Given final block not properly padded). The key password does not match the keystore."
+            rm -f "$TEST_CSR"
+            exit 1
+          fi
+          rm -f "$TEST_CSR"
+
+          echo "livlink.jks successfully verified: alias 'upload' and password are valid and accessible."
+          echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
 
       - name: Build Release APK
         shell: bash
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/livlink.jks
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD || secrets.STORE_PASSWORD || secrets.KEY_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD || secrets.KEYSTORE_PASSWORD || secrets.STORE_PASSWORD }}
         run: |
           set -euo pipefail
 
@@ -145,11 +113,7 @@ jobs:
           fi
 
           chmod +x ./gradlew
-          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
-            -PKEYSTORE_PATH="${KEYSTORE_PATH}" \
-            -PSTORE_PASSWORD="${STORE_PASSWORD}" \
-            -PKEY_PASSWORD="${KEY_PASSWORD}" \
-            --stacktrace
+          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease --stacktrace
 
       - name: Verify APK and extract SHA-1
         shell: bash
@@ -172,8 +136,8 @@ jobs:
           fi
 
           if [ -n "$APKSIGNER" ]; then
-            "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
-            SHA1=$(grep -i 'certificate SHA-1' "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.*: *//' || true)
+            "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "${{ runner.temp }}/cert-info.txt"
+            SHA1=$(grep -i 'certificate SHA-1' "${{ runner.temp }}/cert-info.txt" | head -n 1 | sed 's/.*: *//' || true)
             if [ -n "$SHA1" ]; then
               {
                 echo "## LIVLINK MA Release SHA-1 Fingerprint"
@@ -196,5 +160,6 @@ jobs:
         if: always()
         shell: bash
         run: |
-          rm -rf "${RUNNER_TEMP:-/tmp}/livlink_keystore"
-          rm -f "${RUNNER_TEMP:-/tmp}/cert-info.txt"
+          rm -f "${{ runner.temp }}/livlink.jks"
+          rm -f "${{ runner.temp }}/cert-info.txt"
+          rm -f "${{ runner.temp }}/signing-verify.csr"
