@@ -45,7 +45,7 @@ jobs:
           KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
 
           if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
-            echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
+            printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
             echo "bootstrap=false" >> "$GITHUB_OUTPUT"
           else
             keytool -genkeypair \
@@ -58,16 +58,17 @@ jobs:
               -validity 10000 \
               -dname "CN=Livlink MA,O=Livlink MA,C=MA"
 
-            base64 -w 0 "$KEYSTORE" \
-              > "$RUNNER_TEMP/keystore-base64.txt"
-
+            base64 -w 0 "$KEYSTORE" > "$RUNNER_TEMP/keystore-base64.txt"
             echo "bootstrap=true" >> "$GITHUB_OUTPUT"
           fi
 
           echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-          echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build Release APK
+        env:
+          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
         run: |
           gradle --no-daemon \
             --no-configuration-cache \
