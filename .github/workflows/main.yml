@@ -152,25 +152,53 @@ jobs:
 
           echo "Keystore store password verified successfully."
 
-          # 5. List aliases in the keystore
+          # 5. List and check aliases in the keystore
           STORETYPE_OPT=()
           if [ -n "$WORKING_STORETYPE" ]; then
             STORETYPE_OPT=("-storetype" "$WORKING_STORETYPE")
           fi
 
-          ALIASES=$(keytool -list -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" "${STORETYPE_OPT[@]}" 2>/dev/null | grep -i 'Alias name:' | sed 's/.*: *//' | tr -d '\r' || true)
-          echo "Found alias(es) in keystore:"
-          echo "$ALIASES"
-
+          # First: Direct test for alias 'upload' (standard in keytool across all JDK versions)
           TARGET_ALIAS="upload"
-          if ! echo "$ALIASES" | grep -qx "upload"; then
-            echo "::error title=Alias Missing::Alias 'upload' not found in keystore. Found: ${ALIASES:-none}"
+          ALIAS_FOUND=false
+          if LC_ALL=C keytool -list -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" "${STORETYPE_OPT[@]}" -alias "$TARGET_ALIAS" >/dev/null 2>&1; then
+            ALIAS_FOUND=true
+          fi
+
+          # Extract all aliases using both standard keytool output and verbose mode (-v)
+          ALIASES=""
+          # Method A: Verbose listing with LC_ALL=C (contains "Alias name: <alias>")
+          V_OUTPUT=$(LC_ALL=C keytool -list -v -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" "${STORETYPE_OPT[@]}" 2>/dev/null || true)
+          ALIASES=$(echo "$V_OUTPUT" | grep -i '^[[:space:]]*Alias name:' | sed 's/^[[:space:]]*[Aa]lias name:[[:space:]]*//' | tr -d '\r' | grep -v '^$' || true)
+
+          # Method B: Standard non-verbose listing (lines like "upload, Oct 10, 2026, PrivateKeyEntry,")
+          if [ -z "$ALIASES" ]; then
+            S_OUTPUT=$(LC_ALL=C keytool -list -keystore "$KEYSTORE" -storepass "$WORKING_STOREPASS" "${STORETYPE_OPT[@]}" 2>/dev/null || true)
+            ALIASES=$(echo "$S_OUTPUT" | grep -E ',.*Entry' | sed 's/,.*//' | tr -d '\r' | grep -v '^$' || true)
+          fi
+
+          # Method C: Fallback to comma-separated date lines
+          if [ -z "$ALIASES" ]; then
+            ALIASES=$(echo "$S_OUTPUT" | awk -F',' '/,/ {gsub(/^[ \t]+|[ \t]+$/, "", $1); if ($1 != "" && $1 !~ /^Keystore type/ && $1 !~ /^Keystore provider/) print $1}' | tr -d '\r' || true)
+          fi
+
+          # If direct test succeeded but ALIASES string was empty, set ALIASES to upload
+          if [ "$ALIAS_FOUND" = true ] && [ -z "$ALIASES" ]; then
+            ALIASES="$TARGET_ALIAS"
+          fi
+
+          echo "Found alias(es) in keystore:"
+          echo "${ALIASES:-none}"
+
+          # Check if TARGET_ALIAS exists either by direct check or listed aliases
+          if [ "$ALIAS_FOUND" = false ] && ! echo "$ALIASES" | grep -qxi "^${TARGET_ALIAS}$"; then
+            echo "::error title=Alias Missing::Alias '$TARGET_ALIAS' not found in keystore. Found: ${ALIASES:-none}"
             {
               echo "### ❌ Keystore Diagnostic Summary"
               echo "- **Store Password:** Valid"
-              echo "- **Expected Alias:** \`upload\`"
+              echo "- **Expected Alias:** \`$TARGET_ALIAS\`"
               echo "- **Found Aliases:** \`${ALIASES:-none}\`"
-              echo "- **Action Required:** Ensure the keystore contains the alias 'upload' or update RELEASE_KEY_ALIAS."
+              echo "- **Action Required:** The keystore does not contain the alias '$TARGET_ALIAS'. Please verify the keystore contents."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
