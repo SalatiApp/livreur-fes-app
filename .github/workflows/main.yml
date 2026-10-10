@@ -48,6 +48,7 @@ STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
 run: |
+set -euo pipefail
 if [ ! -f ./gradlew ]; then
 echo "::error::gradlew is missing from the repository root."
 exit 1
