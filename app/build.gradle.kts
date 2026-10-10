@@ -49,15 +49,13 @@ android {
             ?: System.getenv("KEY_ALIAS")
             ?: "upload"
 
-          val isPkcs12 = sType?.trim()?.equals("pkcs12", ignoreCase = true) == true
-
           storeFile = kFile
           storePassword = storePass.trim()
           keyAlias = kAlias.trim()
-          keyPassword = if (isPkcs12 || keyPass.trim().isEmpty()) {
-            storePass.trim()
-          } else {
+          keyPassword = if (keyPass.trim().isNotEmpty()) {
             keyPass.trim()
+          } else {
+            storePass.trim()
           }
 
           if (!sType.isNullOrEmpty()) {

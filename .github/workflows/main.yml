@@ -221,10 +221,8 @@ jobs:
             exit 1
           fi
 
-          # In PKCS12 keystores (standard in Android/Java), the key password is by standard identical to the store password.
-          if [ "${WORKING_STORETYPE,,}" = "pkcs12" ]; then
-            WORKING_KEYPASS="$WORKING_STOREPASS"
-          fi
+          # Use verified WORKING_KEYPASS that successfully decrypted the private key via keytool
+          echo "Using verified key password for alias '$TARGET_ALIAS'." 
 
           echo "Private key for alias '$TARGET_ALIAS' verified successfully."
 
