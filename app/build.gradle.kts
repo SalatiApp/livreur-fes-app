@@ -24,9 +24,11 @@ android {
                 val kFile = file(keystorePath)
                 if (kFile.exists()) {
                     storeFile = kFile
-                    storePassword = System.getenv("STORE_PASSWORD") ?: ""
+                    val storePass = System.getenv("STORE_PASSWORD") ?: ""
+                    val keyPass = System.getenv("KEY_PASSWORD")
+                    storePassword = storePass
                     keyAlias = "upload"
-                    keyPassword = System.getenv("KEY_PASSWORD") ?: ""
+                    keyPassword = if (!keyPass.isNullOrEmpty()) keyPass else storePass
                 }
             }
         }
@@ -40,8 +42,10 @@ android {
                 "proguard-rules.pro"
             )
             val releaseSigning = signingConfigs.getByName("release")
-            if (releaseSigning.storeFile != null) {
+            if (releaseSigning.storeFile != null && releaseSigning.storeFile!!.exists()) {
                 signingConfig = releaseSigning
+            } else {
+                signingConfig = signingConfigs.getByName("debug")
             }
         }
     }

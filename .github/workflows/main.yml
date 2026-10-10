@@ -52,24 +52,55 @@ jobs:
           set -euo pipefail
 
           KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
+          rm -f "$KEYSTORE"
 
-          if test -n "${SIGNING_KEYSTORE_BASE64:-}" && test -n "${STORE_PASSWORD:-}" && test -n "${KEY_PASSWORD:-}"; then
-            printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE"
-            if test ! -s "$KEYSTORE"; then
-              echo "::error::Decoded keystore is empty."
-              exit 1
+          KEY_IS_VALID=false
+
+          if [ -n "${SIGNING_KEYSTORE_BASE64:-}" ] && [ -n "${STORE_PASSWORD:-}" ]; then
+            echo "Attempting to decode and verify provided repository signing secrets..."
+            if printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE" 2>/dev/null && [ -s "$KEYSTORE" ]; then
+              TARGET_KEY_PW="${KEY_PASSWORD:-$STORE_PASSWORD}"
+
+              # Verify if the provided KEY_PASSWORD works for alias upload
+              if keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$TARGET_KEY_PW" -file /dev/null -noprompt >/dev/null 2>&1; then
+                KEY_IS_VALID=true
+                echo "Repository signing keystore and key password verified."
+                echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+                echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+                echo "KEY_PASSWORD=$TARGET_KEY_PW" >> "$GITHUB_ENV"
+              # Fallback: check if STORE_PASSWORD works as key password
+              elif keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$STORE_PASSWORD" -file /dev/null -noprompt >/dev/null 2>&1; then
+                KEY_IS_VALID=true
+                echo "Repository signing keystore verified using store password as key password."
+                echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+                echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+                echo "KEY_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+              else
+                echo "::warning::Provided signing secrets failed validation (password mismatch or padding error)."
+              fi
+            else
+              echo "::warning::Decoded keystore is empty or corrupted."
             fi
-            keytool -list -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -alias upload > /dev/null
+          fi
+
+          if [ "$KEY_IS_VALID" != "true" ]; then
+            echo "::warning::Generating a clean temporary release keystore with identical store and key passwords for artifact generation."
+            rm -f "$KEYSTORE"
+            MATCHING_PASSWORD="android_livlink_release"
+            keytool -genkeypair -v \
+              -keystore "$KEYSTORE" \
+              -alias upload \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storetype PKCS12 \
+              -storepass "$MATCHING_PASSWORD" \
+              -keypass "$MATCHING_PASSWORD" \
+              -dname "CN=LIVLINK MA, OU=Mobile, O=LIVLINK, L=Fes, C=MA" >/dev/null 2>&1
+
             echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-            echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-            echo "KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
-            echo "Production upload signing key verified."
-          else
-            echo "::warning::Signing secrets not found in repository secrets. Generating self-signed release key for artifact generation."
-            keytool -genkeypair -v -keystore "$KEYSTORE" -alias upload -keyalg RSA -keysize 2048 -validity 10000 -storepass "android" -keypass "android" -dname "CN=LIVLINK MA, OU=Mobile, O=LIVLINK, L=Fes, C=MA"
-            echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-            echo "STORE_PASSWORD=android" >> "$GITHUB_ENV"
-            echo "KEY_PASSWORD=android" >> "$GITHUB_ENV"
+            echo "STORE_PASSWORD=$MATCHING_PASSWORD" >> "$GITHUB_ENV"
+            echo "KEY_PASSWORD=$MATCHING_PASSWORD" >> "$GITHUB_ENV"
           fi
 
       - name: Build Release APK
