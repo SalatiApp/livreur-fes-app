@@ -1,143 +1,100 @@
-
 name: Build Livlink MA Release APK
-
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
+workflow_dispatch:
+push:
+branches:
+- main
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup JDK 21
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.3.1'
-          cache-disabled: true
-
-      - name: Prepare permanent signing key
-        id: prepare
-        env:
-          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_PASSWORD" ]; then
-            echo "::error::Missing KEYSTORE_PASSWORD or KEY_PASSWORD secret."
-            exit 1
-          fi
-
-          KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
-
-          if [ -n "$SIGNING_KEYSTORE_BASE64" ]; then
-            printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
-            echo "bootstrap=false" >> "$GITHUB_OUTPUT"
-          else
-            keytool -genkeypair \
-              -keystore "$KEYSTORE" \
-              -storepass "$STORE_PASSWORD" \
-              -keypass "$KEY_PASSWORD" \
-              -alias upload \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -dname "CN=Livlink MA,O=Livlink MA,C=MA"
-
-            base64 -w 0 "$KEYSTORE" > "$RUNNER_TEMP/keystore-base64.txt"
-            echo "bootstrap=true" >> "$GITHUB_OUTPUT"
-          fi
-
-          echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-
-      - name: Build Release APK
-        env:
-          STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
-        run: |
-          gradle --no-daemon \
-            --no-configuration-cache \
-            --no-build-cache \
-            --project-dir . \
-            :app:assembleRelease --stacktrace
-
-      - name: Verify APK and extract SHA-1
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          APK_PATH=$(find app/build/outputs/apk/release \
-            -name '*.apk' -print -quit)
-
-          if [ -z "$APK_PATH" ]; then
-            echo "::error::Release APK not found."
-            exit 1
-          fi
-
-          APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" \
-            -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
-
-          if [ -z "$APKSIGNER" ]; then
-            APKSIGNER=$(find "$HOME" -name apksigner \
-              -type f 2>/dev/null | sort -V | tail -n 1)
-          fi
-
-          if [ -z "$APKSIGNER" ]; then
-            echo "::error::apksigner not found."
-            exit 1
-          fi
-
-          "$APKSIGNER" verify --print-certs "$APK_PATH" \
-            | tee "$RUNNER_TEMP/cert-info.txt"
-
-          SHA1=$(grep -i 'certificate SHA-1' \
-            "$RUNNER_TEMP/cert-info.txt" \
-            | head -n 1 | sed 's/.*: *//')
-
-          if [ -z "$SHA1" ]; then
-            echo "::error::SHA-1 fingerprint not found."
-            exit 1
-          fi
-
-          {
-            echo "## LIVLINK SHA-1 Certificate Fingerprint"
-            echo ""
-            echo "\`$SHA1\`"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: app/build/outputs/apk/release/*.apk
-          if-no-files-found: error
-
-      - name: Upload one-time signing-key setup file
-        if: steps.prepare.outputs.bootstrap == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: livlink-signing-key-setup-ONE-TIME
-          path: ${{ runner.temp }}/keystore-base64.txt
-          if-no-files-found: error
-          retention-days: 1
-
-      - name: Remove temporary signing files
-        if: always()
-        run: |
-          rm -f "$RUNNER_TEMP/livlink-key.jks"
-          rm -f "$RUNNER_TEMP/keystore-base64.txt"
+build:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout repository
+uses: actions/checkout@v4
+- name: Setup JDK 21
+uses: actions/setup-java@v5
+with:
+distribution: temurin
+java-version: '21'
+- name: Setup Gradle
+uses: gradle/actions/setup-gradle@v4
+with:
+gradle-version: '9.3.1'
+cache-disabled: true
+- name: Prepare and verify permanent signing key
+shell: bash
+env:
+SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+run: |
+set -euo pipefail
+if [ -z "$SIGNING_KEYSTORE_BASE64" ]; then
+echo "::error::SIGNING_KEYSTORE_BASE64 secret is missing."
+exit 1
+fi
+if [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_PASSWORD" ]; then
+echo "::error::Signing password secrets are missing."
+exit 1
+fi
+KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
+printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
+if [ ! -s "$KEYSTORE" ]; then
+echo "::error::Decoded keystore is empty."
+exit 1
+fi
+keytool -list -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -alias upload > /dev/null
+keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" -file "$RUNNER_TEMP/signing-check.csr" -noprompt
+echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+echo "Signing keystore and private key verified."
+- name: Build Release APK
+env:
+STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
+run: |
+gradle --no-daemon 
+--no-configuration-cache 
+--no-build-cache 
+--project-dir . 
+:app:assembleRelease --stacktrace
+- name: Verify APK and extract SHA-1
+shell: bash
+run: |
+set -euo pipefail
+APK_PATH=$(find app/build/outputs/apk/release -name '.apk' -print -quit)
+if [ -z "$APK_PATH" ]; then
+echo "::error::Release APK not found."
+exit 1
+fi
+APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
+if [ -z "$APKSIGNER" ]; then
+APKSIGNER=$(find "$HOME" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
+fi
+if [ -z "$APKSIGNER" ]; then
+echo "::error::apksigner not found."
+exit 1
+fi
+"$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
+SHA1=$(grep -i 'certificate SHA-1' "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.: //')
+if [ -z "$SHA1" ]; then
+echo "::error::SHA-1 fingerprint not found."
+exit 1
+fi
+{
+echo "## LIVLINK SHA-1 Certificate Fingerprint"
+echo ""
+echo "`$SHA1`"
+} >> "$GITHUB_STEP_SUMMARY"
+- name: Upload Release APK
+uses: actions/upload-artifact@v4
+with:
+name: app-release
+path: app/build/outputs/apk/release/.apk
+if-no-files-found: error
+- name: Remove temporary signing files
+if: always()
+shell: bash
+run: |
+rm -f "$RUNNER_TEMP/livlink-key.jks"
+rm -f "$RUNNER_TEMP/signing-check.csr"
+rm -f "$RUNNER_TEMP/cert-info.txt"
