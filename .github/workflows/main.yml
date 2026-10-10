@@ -21,9 +21,6 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -61,25 +58,39 @@ jobs:
       - name: Extract SHA-1 Certificate Fingerprint
         shell: bash
         run: |
-          APK_PATH=$(find app/build/outputs/apk/release -name '*.apk' -print -quit)
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)
+          set -euo pipefail
 
-          if [ -z "$APK_PATH" ] || [ -z "$APKSIGNER" ]; then
-            echo "ERROR: APK or apksigner not found"
+          APK_PATH=$(find app/build/outputs/apk/release -name '*.apk' -print -quit)
+
+          if [ -z "$APK_PATH" ]; then
+            echo "ERROR: Release APK not found"
             exit 1
           fi
 
-          "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
+          APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
 
-          SHA1=$(grep -i "certificate SHA-1" "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.*: //')
+          if [ -z "$APKSIGNER" ]; then
+            APKSIGNER=$(find "$HOME" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
+          fi
+
+          if [ -n "$APKSIGNER" ]; then
+            "$APKSIGNER" verify --print-certs "$APK_PATH" | tee "$RUNNER_TEMP/cert-info.txt"
+            SHA1=$(grep -i 'certificate SHA-1' "$RUNNER_TEMP/cert-info.txt" | head -n 1 | sed 's/.*: *//')
+          else
+            echo "ERROR: apksigner not found on this runner"
+            exit 1
+          fi
 
           if [ -z "$SHA1" ]; then
             echo "ERROR: SHA-1 fingerprint not found"
             exit 1
           fi
 
-          echo "## LIVLINK SHA-1 Certificate Fingerprint" >> "$GITHUB_STEP_SUMMARY"
-          echo "\`$SHA1\`" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## LIVLINK SHA-1 Certificate Fingerprint"
+            echo ""
+            echo "\`$SHA1\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
