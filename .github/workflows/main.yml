@@ -28,12 +28,8 @@ STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 run: |
 set -euo pipefail
-if [ -z "$SIGNING_KEYSTORE_BASE64" ]; then
-echo "::error::SIGNING_KEYSTORE_BASE64 secret is missing."
-exit 1
-fi
-if [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_PASSWORD" ]; then
-echo "::error::Signing password secrets are missing."
+if [ -z "$SIGNING_KEYSTORE_BASE64" ] || [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_PASSWORD" ]; then
+echo "::error::One or more signing secrets are missing."
 exit 1
 fi
 KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
@@ -45,30 +41,31 @@ fi
 keytool -list -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -alias upload > /dev/null
 keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" -file "$RUNNER_TEMP/signing-check.csr" -noprompt
 echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-echo "Signing keystore and private key verified."
+echo "Signing key verified."
 - name: Build Release APK
 env:
 STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
 KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 KEYSTORE_PATH: ${{ runner.temp }}/livlink-key.jks
 run: |
-gradle --no-daemon 
---no-configuration-cache 
---no-build-cache 
---project-dir . 
-:app:assembleRelease --stacktrace
+if [ ! -f ./gradlew ]; then
+echo "::error::gradlew is missing from the repository root."
+exit 1
+fi
+chmod +x ./gradlew
+./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease --stacktrace
 - name: Verify APK and extract SHA-1
 shell: bash
 run: |
 set -euo pipefail
-APK_PATH=$(find app/build/outputs/apk/release -name '.apk' -print -quit)
+APK_PATH=$(find app/build/outputs/apk/release -type f -name '.apk' -print -quit)
 if [ -z "$APK_PATH" ]; then
 echo "::error::Release APK not found."
 exit 1
 fi
-APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
+APKSIGNER=$(find "${ANDROID_HOME:-/nonexistent}/build-tools" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
 if [ -z "$APKSIGNER" ]; then
-APKSIGNER=$(find "$HOME" -name apksigner -type f 2>/dev/null | sort -V | tail -n 1)
+APKSIGNER=$(find "$HOME" -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
 fi
 if [ -z "$APKSIGNER" ]; then
 echo "::error::apksigner not found."
@@ -83,7 +80,7 @@ fi
 {
 echo "## LIVLINK SHA-1 Certificate Fingerprint"
 echo ""
-echo "`$SHA1`"
+echo "$SHA1"
 } >> "$GITHUB_STEP_SUMMARY"
 - name: Upload Release APK
 uses: actions/upload-artifact@v4
