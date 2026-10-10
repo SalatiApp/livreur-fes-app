@@ -51,64 +51,86 @@ jobs:
         run: |
           set -euo pipefail
 
-          KEYSTORE="$RUNNER_TEMP/livlink-key.jks"
-          rm -f "$KEYSTORE"
+          # 1. Clean up any previous temporary keys and initialize isolated directory
+          KEYSTORE_DIR="$RUNNER_TEMP/livlink_keystore"
+          rm -rf "$KEYSTORE_DIR"
+          rm -f "$RUNNER_TEMP/livlink-key.jks" "$RUNNER_TEMP/livlink-release.jks"
+          mkdir -p "$KEYSTORE_DIR"
 
-          KEY_IS_VALID=false
+          KEYSTORE_FILE="$KEYSTORE_DIR/livlink.jks"
+          ACTIVE_STORE_PASS=""
+          ACTIVE_KEY_PASS=""
+          USE_REPO_SECRETS=false
 
+          # 2. Check if repository secrets are provided and test if key can be recovered
           if [ -n "${SIGNING_KEYSTORE_BASE64:-}" ] && [ -n "${STORE_PASSWORD:-}" ]; then
-            echo "Attempting to decode and verify provided repository signing secrets..."
-            if printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE" 2>/dev/null && [ -s "$KEYSTORE" ]; then
-              TARGET_KEY_PW="${KEY_PASSWORD:-$STORE_PASSWORD}"
+            CANDIDATE_FILE="$KEYSTORE_DIR/candidate.jks"
+            if printf '%s' "$SIGNING_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$CANDIDATE_FILE" 2>/dev/null && [ -s "$CANDIDATE_FILE" ]; then
+              TEST_KEY_PW="${KEY_PASSWORD:-$STORE_PASSWORD}"
+              TEST_CSR="$KEYSTORE_DIR/candidate_check.csr"
+              rm -f "$TEST_CSR"
 
-              # Verify if the provided KEY_PASSWORD works for alias upload
-              if keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$TARGET_KEY_PW" -file /dev/null -noprompt >/dev/null 2>&1; then
-                KEY_IS_VALID=true
-                echo "Repository signing keystore and key password verified."
-                echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-                echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-                echo "KEY_PASSWORD=$TARGET_KEY_PW" >> "$GITHUB_ENV"
-              # Fallback: check if STORE_PASSWORD works as key password
-              elif keytool -certreq -alias upload -keystore "$KEYSTORE" -storepass "$STORE_PASSWORD" -keypass "$STORE_PASSWORD" -file /dev/null -noprompt >/dev/null 2>&1; then
-                KEY_IS_VALID=true
+              # Test candidate key extraction with keytool
+              if keytool -certreq -alias upload -keystore "$CANDIDATE_FILE" -storepass "$STORE_PASSWORD" -keypass "$TEST_KEY_PW" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
+                USE_REPO_SECRETS=true
+                mv "$CANDIDATE_FILE" "$KEYSTORE_FILE"
+                ACTIVE_STORE_PASS="$STORE_PASSWORD"
+                ACTIVE_KEY_PASS="$TEST_KEY_PW"
+                rm -f "$TEST_CSR"
+                echo "Repository signing keystore and key password verified successfully."
+              elif keytool -certreq -alias upload -keystore "$CANDIDATE_FILE" -storepass "$STORE_PASSWORD" -keypass "$STORE_PASSWORD" -file "$TEST_CSR" -noprompt >/dev/null 2>&1; then
+                USE_REPO_SECRETS=true
+                mv "$CANDIDATE_FILE" "$KEYSTORE_FILE"
+                ACTIVE_STORE_PASS="$STORE_PASSWORD"
+                ACTIVE_KEY_PASS="$STORE_PASSWORD"
+                rm -f "$TEST_CSR"
                 echo "Repository signing keystore verified using store password as key password."
-                echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-                echo "STORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-                echo "KEY_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
               else
-                echo "::warning::Provided signing secrets failed validation (password mismatch or padding error)."
+                echo "::warning::Repository signing secrets failed key recovery check. Will generate a clean verified test keystore."
               fi
-            else
-              echo "::warning::Decoded keystore is empty or corrupted."
             fi
+            rm -f "$CANDIDATE_FILE"
           fi
 
-          if [ "$KEY_IS_VALID" != "true" ]; then
-            echo "::warning::Generating a clean temporary release keystore with identical store and key passwords for artifact generation."
-            rm -f "$KEYSTORE"
-            MATCHING_PASSWORD="android_livlink_release"
+          # 3. If repository secrets are absent or invalid, generate a fresh test keystore with matching passwords
+          if [ "$USE_REPO_SECRETS" != "true" ]; then
+            rm -f "$KEYSTORE_FILE"
+            WORKFLOW_PASS="livlink_release_pass_2026"
+
             keytool -genkeypair -v \
-              -keystore "$KEYSTORE" \
+              -keystore "$KEYSTORE_FILE" \
               -alias upload \
               -keyalg RSA \
               -keysize 2048 \
               -validity 10000 \
               -storetype PKCS12 \
-              -storepass "$MATCHING_PASSWORD" \
-              -keypass "$MATCHING_PASSWORD" \
+              -storepass "$WORKFLOW_PASS" \
+              -keypass "$WORKFLOW_PASS" \
               -dname "CN=LIVLINK MA, OU=Mobile, O=LIVLINK, L=Fes, C=MA" >/dev/null 2>&1
 
-            echo "KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-            echo "STORE_PASSWORD=$MATCHING_PASSWORD" >> "$GITHUB_ENV"
-            echo "KEY_PASSWORD=$MATCHING_PASSWORD" >> "$GITHUB_ENV"
+            ACTIVE_STORE_PASS="$WORKFLOW_PASS"
+            ACTIVE_KEY_PASS="$WORKFLOW_PASS"
+            echo "Clean test keystore generated with unified credentials."
           fi
+
+          # 4. Strictly verify with keytool that the key is readable and recoverable before passing to Gradle
+          VERIFY_CSR="$KEYSTORE_DIR/verify_check.csr"
+          rm -f "$VERIFY_CSR"
+          if ! keytool -certreq -alias upload -keystore "$KEYSTORE_FILE" -storepass "$ACTIVE_STORE_PASS" -keypass "$ACTIVE_KEY_PASS" -file "$VERIFY_CSR" -noprompt >/dev/null 2>&1; then
+            echo "::error::Keystore verification failed: unable to recover key 'upload' with the specified password."
+            rm -f "$VERIFY_CSR"
+            exit 1
+          fi
+          rm -f "$VERIFY_CSR"
+          echo "Keystore readiness confirmed: alias 'upload' is fully recoverable."
+
+          # 5. Export values to GITHUB_ENV without printing secrets
+          echo "KEYSTORE_PATH=$KEYSTORE_FILE" >> "$GITHUB_ENV"
+          echo "STORE_PASSWORD=$ACTIVE_STORE_PASS" >> "$GITHUB_ENV"
+          echo "KEY_PASSWORD=$ACTIVE_KEY_PASS" >> "$GITHUB_ENV"
 
       - name: Build Release APK
         shell: bash
-        env:
-          STORE_PASSWORD: ${{ env.STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ env.KEY_PASSWORD }}
-          KEYSTORE_PATH: ${{ env.KEYSTORE_PATH }}
         run: |
           set -euo pipefail
 
@@ -123,7 +145,11 @@ jobs:
           fi
 
           chmod +x ./gradlew
-          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease --stacktrace
+          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
+            -PKEYSTORE_PATH="${KEYSTORE_PATH}" \
+            -PSTORE_PASSWORD="${STORE_PASSWORD}" \
+            -PKEY_PASSWORD="${KEY_PASSWORD}" \
+            --stacktrace
 
       - name: Verify APK and extract SHA-1
         shell: bash
@@ -170,5 +196,5 @@ jobs:
         if: always()
         shell: bash
         run: |
-          rm -f "$RUNNER_TEMP/livlink-key.jks"
-          rm -f "$RUNNER_TEMP/cert-info.txt"
+          rm -rf "${RUNNER_TEMP:-/tmp}/livlink_keystore"
+          rm -f "${RUNNER_TEMP:-/tmp}/cert-info.txt"

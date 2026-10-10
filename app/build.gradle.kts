@@ -19,16 +19,20 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH")
+            val keystorePath = (project.findProperty("KEYSTORE_PATH") as? String)
+                ?: System.getenv("KEYSTORE_PATH")
             if (!keystorePath.isNullOrEmpty()) {
                 val kFile = file(keystorePath)
                 if (kFile.exists()) {
+                    val storePass = (project.findProperty("STORE_PASSWORD") as? String)
+                        ?: System.getenv("STORE_PASSWORD") ?: ""
+                    val keyPass = (project.findProperty("KEY_PASSWORD") as? String)
+                        ?: System.getenv("KEY_PASSWORD") ?: storePass
+
                     storeFile = kFile
-                    val storePass = System.getenv("STORE_PASSWORD") ?: ""
-                    val keyPass = System.getenv("KEY_PASSWORD")
                     storePassword = storePass
                     keyAlias = "upload"
-                    keyPassword = if (!keyPass.isNullOrEmpty()) keyPass else storePass
+                    keyPassword = if (keyPass.isNotEmpty()) keyPass else storePass
                 }
             }
         }
