@@ -29,6 +29,7 @@ jobs:
           mkdir -p app/src/main/assets
           rm -rf app/src/main/assets/*
           cp -r dist/* app/src/main/assets/
+          sed -i 's/ crossorigin//g' app/src/main/assets/index.html || true
           echo "Web assets successfully compiled and synced to Android assets."
 
       - name: Setup JDK 21
