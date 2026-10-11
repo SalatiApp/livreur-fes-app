@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "Livrer Fes"
+rootProject.name = "LIVLINK MA"
 
 include(":app")

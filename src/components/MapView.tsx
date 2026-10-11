@@ -32,7 +32,7 @@ export const MapView: React.FC = () => {
     const cityData =
       selectedCity !== 'all' && MOROCCO_CITIES[selectedCity]
         ? MOROCCO_CITIES[selectedCity]
-        : MOROCCO_CITIES['fes'] || MOROCCO_CITIES['casablanca'];
+        : MOROCCO_CITIES['all'] || MOROCCO_CITIES['casablanca'];
 
     try {
       const map = L.map(mapContainerRef.current, {
@@ -64,8 +64,8 @@ export const MapView: React.FC = () => {
       const cityMarker = L.marker(cityData.coords, { icon: cityMarkerIcon }).addTo(map);
       cityMarker.bindPopup(`
         <div dir="rtl" style="font-family:'Cairo',sans-serif; font-size:11px; font-weight:bold; text-align:right;">
-          📍 <b>مركز ${cityData.nameAr}</b><br/>
-          <span style="font-size:9.5px; color:#64748b;">منطقة التوصيل والنشاط الحالية</span>
+          📍 <b>${cityData.id === 'all' ? 'المملكة المغربية' : `مركز ${cityData.nameAr}`}</b><br/>
+          <span style="font-size:9.5px; color:#64748b;">${cityData.id === 'all' ? 'تغطية شاملة لجميع المدن المغربية' : 'منطقة التوصيل والنشاط الحالية'}</span>
         </div>
       `);
 

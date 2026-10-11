@@ -50,6 +50,14 @@ interface AppContextType {
 }
 
 const STORAGE_KEYS = {
+  OFFERS: 'livlink_ma_offers_v1',
+  DRIVERS: 'livlink_ma_drivers_v1',
+  ROLE: 'livlink_ma_user_role',
+  CITY: 'livlink_ma_city',
+  THEME: 'livlink_ma_theme'
+};
+
+const LEGACY_STORAGE_KEYS = {
   OFFERS: 'livrer_fes_offers_v1',
   DRIVERS: 'livrer_fes_drivers_v1',
   ROLE: 'livrer_fes_user_role',
@@ -57,25 +65,29 @@ const STORAGE_KEYS = {
   THEME: 'livrer_fes_theme'
 };
 
+const getStoredItem = (key: keyof typeof STORAGE_KEYS): string | null => {
+  return localStorage.getItem(STORAGE_KEYS[key]) || localStorage.getItem(LEGACY_STORAGE_KEYS[key]);
+};
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Theme state
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.THEME);
+    const saved = getStoredItem('THEME');
     if (saved === 'dark' || saved === 'light') return saved;
     return 'dark';
   });
 
   // Role state
   const [userRole, setUserRoleState] = useState<UserRole>(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.ROLE);
+    const saved = getStoredItem('ROLE');
     return (saved === 'shop' || saved === 'driver') ? (saved as UserRole) : 'shop';
   });
 
   // Selected global city
   const [selectedCity, setSelectedCityState] = useState<string>(() => {
-    return localStorage.getItem(STORAGE_KEYS.CITY) || 'all';
+    return getStoredItem('CITY') || 'all';
   });
 
   // Active navigation page
@@ -99,7 +111,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   // Offers state
   const [offers, setOffers] = useState<Offer[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.OFFERS);
+      const saved = getStoredItem('OFFERS');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -113,7 +125,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   // Drivers state
   const [drivers, setDrivers] = useState<Driver[]>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.DRIVERS);
+      const saved = getStoredItem('DRIVERS');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -204,8 +216,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const addOffer = (offerData: Omit<Offer, 'id' | 'createdAt' | 'status'>) => {
     checkOnlineAction(() => {
-      const cityObj = MOROCCO_CITIES[offerData.city];
-      const baseCoords = cityObj ? cityObj.coords : [34.0331, -5.0003];
+      const cityObj = MOROCCO_CITIES[offerData.city] || MOROCCO_CITIES['casablanca'];
+      const baseCoords = cityObj ? cityObj.coords : [31.7917, -7.0926];
       const newOffer: Offer = {
         ...offerData,
         id: 'off-' + Date.now(),
@@ -239,8 +251,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const addDriver = (driverData: Omit<Driver, 'id' | 'createdAt' | 'isAvailable'>) => {
     checkOnlineAction(() => {
-      const cityObj = MOROCCO_CITIES[driverData.city];
-      const baseCoords = cityObj ? cityObj.coords : [34.0331, -5.0003];
+      const cityObj = MOROCCO_CITIES[driverData.city] || MOROCCO_CITIES['casablanca'];
+      const baseCoords = cityObj ? cityObj.coords : [31.7917, -7.0926];
       const newDriver: Driver = {
         ...driverData,
         id: 'drv-' + Date.now(),
@@ -265,6 +277,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const resetAllData = () => {
+    Object.values(LEGACY_STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
     setOffers(INITIAL_OFFERS);
     setDrivers(INITIAL_DRIVERS);
     localStorage.setItem(STORAGE_KEYS.OFFERS, JSON.stringify(INITIAL_OFFERS));

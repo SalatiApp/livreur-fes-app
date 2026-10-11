@@ -8,7 +8,7 @@ export const DeliveryRouteView: React.FC<{ params: DeliveryRouteParams }> = ({ p
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
-  const baseCoords: [number, number] = params.cityCoords || [34.0331, -5.0003];
+  const baseCoords: [number, number] = params.cityCoords || [33.5731, -7.5898];
   const driverLatLng: [number, number] = [baseCoords[0] - 0.009, baseCoords[1] - 0.012];
   const shopLatLng: [number, number] = [baseCoords[0] + 0.006, baseCoords[1] + 0.008];
 

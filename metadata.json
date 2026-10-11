@@ -1,6 +1,6 @@
 {
   "name": "ليفرور فاس",
-  "description": "منصة مجانية تربط بين أصحاب المحلات والليفرورات في مدينة فاس",
+  "description": "منصة LIVLINK MA لربط أصحاب المحلات والليفرورات في جميع مدن المغرب",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

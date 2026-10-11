@@ -11,7 +11,7 @@ export const OfferCard: React.FC<{ offer: Offer }> = ({ offer }) => {
   const waLink = makeWhatsAppLink(offer.whatsapp, `عرض العمل في "${offer.shopName}"`);
 
   const handleOpenDeliveryMap = () => {
-    const cityObj = MOROCCO_CITIES[offer.city] || MOROCCO_CITIES['fes'] || MOROCCO_CITIES['casablanca'];
+    const cityObj = MOROCCO_CITIES[offer.city] || MOROCCO_CITIES['casablanca'] || MOROCCO_CITIES['all'];
     navigateTo('deliveryMap', {
       shopName: offer.shopName,
       shopCity: cityObj.nameAr,

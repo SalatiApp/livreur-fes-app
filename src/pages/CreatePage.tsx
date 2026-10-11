@@ -13,7 +13,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
   }, [initialMode]);
 
   // Default city for form
-  const defaultCityKey = selectedCity !== 'all' ? selectedCity : 'fes';
+  const defaultCityKey = selectedCity !== 'all' ? selectedCity : 'casablanca';
 
   // Offer form state
   const [offShopName, setOffShopName] = useState('');
@@ -41,11 +41,11 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
   const [drvNotes, setDrvNotes] = useState('');
 
   // Districts for Offer form
-  const offCityObj = MOROCCO_CITIES[offCity] || MOROCCO_CITIES['fes'];
+  const offCityObj = MOROCCO_CITIES[offCity] || MOROCCO_CITIES['casablanca'];
   const offDistricts = offCityObj ? offCityObj.districts : [];
 
   // Districts for Driver form
-  const drvCityObj = MOROCCO_CITIES[drvCity] || MOROCCO_CITIES['fes'];
+  const drvCityObj = MOROCCO_CITIES[drvCity] || MOROCCO_CITIES['casablanca'];
   const drvDistricts = drvCityObj ? drvCityObj.districts : [];
 
   const handleOfferSubmit = (e: React.FormEvent) => {
@@ -137,7 +137,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 required
                 value={offShopName}
                 onChange={(e) => setOffShopName(e.target.value)}
-                placeholder="مثال: مطعم الأندلس فاس"
+                placeholder="مثال: مطعم الأندلس / مقهى النخيل"
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
               />
             </div>
