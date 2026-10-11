@@ -27,7 +27,6 @@ android {
       val kPath = (project.findProperty("RELEASE_STORE_FILE") as? String)
         ?: (project.findProperty("KEYSTORE_PATH") as? String)
         ?: System.getenv("KEYSTORE_PATH")
-        ?: "${rootDir}/my-upload-key.jks"
 
       if (!kPath.isNullOrEmpty()) {
         val kFile = file(kPath)
@@ -49,13 +48,16 @@ android {
             ?: System.getenv("KEY_ALIAS")
             ?: "upload"
 
+          val isPkcs12 = sType?.trim()?.equals("pkcs12", ignoreCase = true) == true
+
           storeFile = kFile
           storePassword = storePass.trim()
           keyAlias = kAlias.trim()
-          keyPassword = if (keyPass.trim().isNotEmpty()) {
-            keyPass.trim()
-          } else {
+          // In PKCS12, the key password must match the store password.
+          keyPassword = if (isPkcs12 || keyPass.trim().isEmpty()) {
             storePass.trim()
+          } else {
+            keyPass.trim()
           }
 
           if (!sType.isNullOrEmpty()) {

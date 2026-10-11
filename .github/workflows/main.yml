@@ -23,8 +23,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.3.1'
-          cache-disabled: true
+          cache-read-only: false
 
       - name: Verify and prepare signing key
         shell: bash
@@ -221,8 +220,10 @@ jobs:
             exit 1
           fi
 
-          # Use verified WORKING_KEYPASS that successfully decrypted the private key via keytool
-          echo "Using verified key password for alias '$TARGET_ALIAS'." 
+          # In PKCS12 keystores (standard in Android/Java), the key password is by standard identical to the store password.
+          if [ "${WORKING_STORETYPE,,}" = "pkcs12" ]; then
+            WORKING_KEYPASS="$WORKING_STOREPASS"
+          fi
 
           echo "Private key for alias '$TARGET_ALIAS' verified successfully."
 
@@ -260,13 +261,14 @@ jobs:
             exit 1
           fi
 
-          GRADLE_BIN="gradle"
-          if test -f ./gradlew; then
-            chmod +x ./gradlew
-            GRADLE_BIN="./gradlew"
+          if test ! -f ./gradlew; then
+            echo "::error::gradlew is missing from repository root."
+            exit 1
           fi
 
-          $GRADLE_BIN --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
+          chmod +x ./gradlew
+
+          ./gradlew --no-daemon --no-configuration-cache --no-build-cache :app:assembleRelease \
             -PRELEASE_STORE_FILE="$KEYSTORE_PATH" \
             -PRELEASE_STORE_PASSWORD="$STORE_PASSWORD" \
             -PRELEASE_KEY_PASSWORD="$KEY_PASSWORD" \
