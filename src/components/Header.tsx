@@ -5,10 +5,10 @@ export const Header: React.FC = () => {
   const { userRole, theme, toggleTheme, openRoleModal, navigateTo } = useApp();
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none">
-      <div className="max-w-md mx-auto px-2.5 h-16 flex items-center justify-between gap-2">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f1722]/95 backdrop-blur-md text-white border-b border-slate-800 shadow-xl select-none">
+      <div className="max-w-md mx-auto px-3 h-16 flex items-center justify-between gap-2">
         {/* Left Side (RTL Start): Role Selector & Theme Toggle & Scooter */}
-        <div className="flex items-center justify-between gap-3 flex-1 max-w-[230px]">
+        <div className="flex items-center justify-between gap-2.5 flex-1 max-w-[230px]">
           {/* Role Switcher Button */}
           <button
             onClick={openRoleModal}
@@ -90,7 +90,6 @@ export const Header: React.FC = () => {
               alt="المغرب"
               className="h-full w-full object-contain filter drop-shadow-[0_2px_5px_rgba(200,16,46,0.5)]"
               onError={(e) => {
-                // If png fails, fallback to vector SVG
                 (e.currentTarget as HTMLElement).style.display = 'none';
               }}
             />
