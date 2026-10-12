@@ -36,19 +36,18 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
       {/* Top Header */}
       <Header />
 
-      {/* Main Content View Container - مسافة علوية pt-28 لضمان عدم التداخل مع الهيدر */}
-      <main className="max-w-md mx-auto px-3.5 pt-28 pb-32 space-y-6">
+      {/* Main Content */}
+      <main className="flex-1 max-w-md w-full mx-auto px-3.5 py-4 pb-28 space-y-6">
         {renderCurrentView()}
       </main>
 
-      {/* Bottom Sticky Navigation */}
+      {/* Bottom Navigation */}
       <BottomNav />
 
-      {/* Floating Modals and Toasts */}
       <RoleModal />
       <ConfirmModal />
       <OfflineModal />
