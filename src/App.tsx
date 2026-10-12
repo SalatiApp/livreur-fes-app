@@ -40,8 +40,8 @@ export const App: React.FC = () => {
       {/* Top Header */}
       <Header />
 
-      {/* Main Content View Container */}
-      <main className="max-w-md mx-auto px-3.5 pt-4 pb-safe">
+      {/* Main Content View Container - تم تعديل الهوامش العلوية والسفلية لحل التداخل نهائياً */}
+      <main className="max-w-md mx-auto px-3.5 pt-20 pb-32 space-y-6">
         {renderCurrentView()}
       </main>
 
