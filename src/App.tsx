@@ -40,11 +40,8 @@ export const App: React.FC = () => {
       {/* Top Header */}
       <Header />
 
-      {/* Main Content View Container - إضافة هوامش صريحة لمنع التداخل نهائياً */}
-      <main 
-        className="max-w-md mx-auto px-3.5 space-y-6"
-        style={{ paddingTop: '80px', paddingBottom: '120px' }}
-      >
+      {/* Main Content View Container - مسافة علوية pt-28 لضمان عدم التداخل مع الهيدر */}
+      <main className="max-w-md mx-auto px-3.5 pt-28 pb-32 space-y-6">
         {renderCurrentView()}
       </main>
 
