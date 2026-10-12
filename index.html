@@ -31,6 +31,26 @@
     body {
       font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      /* منع تداخل المحتوى مع الأشرطة الثابتة علوياً وسفلياً */
+      padding-top: 4.5rem;
+      padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+      background-color: #020617;
+      color: #f1f5f9;
+    }
+    /* ضمان ظهور الأشرطة العلوية والسفلية في الطبقة العليا ودون تداخل */
+    header, .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+    nav.bottom-nav, .fixed-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
     }
     .pb-safe {
       padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
