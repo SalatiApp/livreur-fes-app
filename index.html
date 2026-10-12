@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>LIVLINK MA | منصة التوصيل بجميع مدن المغرب</title>
   <meta name="description" content="منصة LIVLINK MA لربط أصحاب المحلات والمطاعم بسائقي التوصيل في جميع مدن المغرب" />
-  <meta property="og:title" content="LIVLINK MA | منصة التوصيل بجميع مدن المغرب" />
-  <meta property="og:description" content="منصة LIVLINK MA لربط أصحاب المحلات والمطاعم بسائقي التوصيل في جميع مدن المغرب" />
   
   <!-- Favicon / Icon -->
   <link rel="icon" type="image/png" href="/livlink_ma.png" />
@@ -35,51 +33,19 @@
       background-color: #020617;
       color: #f1f5f9;
       overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
 
-    /* 
-      إعطاء مساحة أمان علوية وسفلية للجسم بالكامل (Body) 
-      لتجنب تغطية الأشرطة الثابتة (Header & Bottom Nav) للمحتوى 
-    */
-    body {
-      padding-top: 4.2rem;
-      padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
-    }
-
-    /* تثبيت الهيدر العلوي بـ Z-index عالي ومسافة مريحة */
-    header, .app-header, nav.top-nav {
-      position: fixed !important;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background-color: rgba(2, 6, 23, 0.95);
-      backdrop-filter: blur(8px);
-    }
-
-    /* تثبيت الشريط السفلي وزر الإضافة العائم فوق كل العناصر */
-    nav.bottom-nav, .fixed-bottom-nav, div[class*="fixed bottom"] {
-      position: fixed !important;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-    }
-
-    /* تخصيص الحاوية العامة لضمان عدم التصاق العناصر بالحواف */
     #root {
       width: 100%;
-      max-width: 100%;
-      margin: 0 auto;
-      padding: 0 0.75rem;
-    }
-
-    .pb-safe {
-      padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen transition-colors duration-200">
+<body class="bg-slate-950 text-slate-100 min-h-screen">
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
