@@ -5,10 +5,10 @@ export const Header: React.FC = () => {
   const { userRole, theme, toggleTheme, openRoleModal, navigateTo } = useApp();
 
   return (
-    <header className="w-full bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none pt-7 pb-2.5 px-2.5">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none pt-8 pb-2 px-2.5">
       <div className="max-w-md mx-auto flex items-center justify-between gap-2">
         {/* Left Side: Role & Theme & Scooter */}
-        <div className="flex items-center justify-between gap-3 flex-1 max-w-[230px]">
+        <div className="flex items-center justify-between gap-2.5 flex-1 max-w-[230px]">
           <button
             onClick={openRoleModal}
             className="bg-white hover:bg-slate-50 text-slate-900 rounded-full px-2.5 py-1.5 shadow-md flex items-center gap-1 border border-slate-200 shrink-0 active:scale-95 transition-all cursor-pointer"
