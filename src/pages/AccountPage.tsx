@@ -37,19 +37,19 @@ export const AccountPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" dir="rtl">
       {/* Profile Header Card */}
-      <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-3.5">
-        <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
+      <div className="bg-[#09152b] p-4 sm:p-5 rounded-2xl border border-blue-900/40 shadow-lg flex items-center gap-3.5">
+        <div className="w-13 h-13 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
           <i className="fa-solid fa-user-gear"></i>
         </div>
         <div>
-          <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+          <h2 className="text-base font-black text-white">
             إدارة الحساب والمنصة
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400 mt-0.5">
             الوضع النشط حالياً:{' '}
-            <span className="font-extrabold text-blue-600 dark:text-blue-400">
+            <span className="font-extrabold text-blue-400">
               {userRole === 'shop' ? 'صاحب محل' : 'ليفرور'}
             </span>
           </p>
@@ -57,19 +57,19 @@ export const AccountPage: React.FC = () => {
       </div>
 
       {/* Switch Application Mode */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
-        <h3 className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-          <i className="fa-solid fa-repeat text-blue-600"></i>
+      <div className="bg-[#09152b] p-4 rounded-2xl border border-blue-900/40 shadow-lg space-y-2.5">
+        <h3 className="text-xs font-black text-white flex items-center gap-2">
+          <i className="fa-solid fa-repeat text-blue-400"></i>
           <span>تبديل نوع الاستخدام</span>
         </h3>
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => setUserRole('shop')}
-            className={`py-3 px-3 rounded-2xl border-2 text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`py-3 px-3 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               userRole === 'shop'
-                ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
-                : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                ? 'border-blue-500 bg-blue-600/30 text-white shadow-md'
+                : 'border-slate-800 text-slate-400 hover:border-slate-700'
             }`}
           >
             <i className="fa-solid fa-store"></i>
@@ -78,10 +78,10 @@ export const AccountPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setUserRole('driver')}
-            className={`py-3 px-3 rounded-2xl border-2 text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`py-3 px-3 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               userRole === 'driver'
-                ? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300'
-                : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                ? 'border-amber-500 bg-amber-500/30 text-amber-300 shadow-md'
+                : 'border-slate-800 text-slate-400 hover:border-slate-700'
             }`}
           >
             <i className="fa-solid fa-motorcycle"></i>
@@ -91,16 +91,16 @@ export const AccountPage: React.FC = () => {
       </div>
 
       {/* Theme Setting */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between">
+      <div className="bg-[#09152b] p-4 rounded-2xl border border-blue-900/40 shadow-lg flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-sm">
+          <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-sm border border-slate-800">
             {theme === 'dark' ? '🌙' : '☀️'}
           </div>
           <div>
-            <h4 className="text-xs font-extrabold text-slate-900 dark:text-white">
+            <h4 className="text-xs font-black text-white">
               مظهر التطبيق
             </h4>
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-slate-400">
               {theme === 'dark' ? 'الوضع الليلي مفعّل' : 'الوضع النهاري مفعّل'}
             </p>
           </div>
@@ -108,25 +108,25 @@ export const AccountPage: React.FC = () => {
         <button
           type="button"
           onClick={toggleTheme}
-          className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-all cursor-pointer"
+          className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white transition-all cursor-pointer border border-slate-700/60"
         >
           {theme === 'dark' ? 'تحويل لنهاري ☀️' : 'تحويل لليلي 🌙'}
         </button>
       </div>
 
       {/* Default City Selector */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
-        <h3 className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-          <i className="fa-solid fa-city text-emerald-600"></i>
+      <div className="bg-[#09152b] p-4 rounded-2xl border border-blue-900/40 shadow-lg space-y-2">
+        <h3 className="text-xs font-black text-white flex items-center gap-2">
+          <i className="fa-solid fa-city text-emerald-400"></i>
           <span>المدينة الافتراضية للتصفح</span>
         </h3>
         <select
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
-          className="w-full text-xs font-bold py-2.5 px-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer"
+          className="w-full text-xs font-bold py-2.5 px-3 rounded-xl bg-[#050d1c] border border-blue-900/50 text-white focus:outline-none cursor-pointer"
         >
           {Object.keys(MOROCCO_CITIES).map((key) => (
-            <option key={key} value={key}>
+            <option key={key} value={key} className="bg-slate-900">
               {MOROCCO_CITIES[key].nameAr}
             </option>
           ))}
@@ -134,10 +134,10 @@ export const AccountPage: React.FC = () => {
       </div>
 
       {/* Manage Offers */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+      <div className="bg-[#09152b] p-4 rounded-2xl border border-blue-900/40 shadow-lg space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-            <i className="fa-solid fa-list-check text-blue-600"></i>
+          <h3 className="text-xs font-black text-white flex items-center gap-2">
+            <i className="fa-solid fa-list-check text-blue-400"></i>
             <span>إدارة العروض المسجلة ({offers.length})</span>
           </h3>
         </div>
@@ -147,13 +147,13 @@ export const AccountPage: React.FC = () => {
             offers.map((offer) => (
               <div
                 key={offer.id}
-                className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between text-xs"
+                className="p-3 rounded-xl bg-[#050d1c] border border-blue-950 flex items-center justify-between text-xs"
               >
                 <div>
-                  <h5 className="font-bold text-slate-900 dark:text-white">
+                  <h5 className="font-black text-white">
                     {offer.shopName}
                   </h5>
-                  <span className="text-[10px] text-slate-500">
+                  <span className="text-[10px] text-slate-400">
                     {getCityName(offer.city)} • {offer.district || 'وسط المدينة'}
                   </span>
                 </div>
@@ -163,8 +163,8 @@ export const AccountPage: React.FC = () => {
                     onClick={() => toggleOfferStatus(offer.id)}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-bold cursor-pointer ${
                       offer.status === 'open'
-                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
-                        : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                        ? 'bg-amber-950 text-amber-300 border border-amber-600/40'
+                        : 'bg-emerald-950 text-emerald-300 border border-emerald-600/40'
                     }`}
                   >
                     {offer.status === 'open' ? 'إغلاق' : 'تنشيط'}
@@ -172,7 +172,7 @@ export const AccountPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteOffer(offer.id, offer.shopName)}
-                    className="w-7 h-7 rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center cursor-pointer active:scale-95"
+                    className="w-7 h-7 rounded-lg bg-red-950/80 border border-red-800/50 text-red-400 flex items-center justify-center cursor-pointer active:scale-95"
                     title="حذف"
                   >
                     <i className="fa-solid fa-trash text-xs"></i>
@@ -181,7 +181,7 @@ export const AccountPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <p className="text-xs text-slate-500 text-center py-2">
+            <p className="text-xs text-slate-400 text-center py-4">
               لا توجد عروض مسجلة بحسابك حالياً.
             </p>
           )}
@@ -189,17 +189,17 @@ export const AccountPage: React.FC = () => {
       </div>
 
       {/* Reset Platform Data */}
-      <div className="p-4 rounded-3xl bg-red-50/50 dark:bg-red-950/20 border border-red-200/60 dark:border-red-900/40 space-y-2.5">
-        <h4 className="text-xs font-bold text-red-700 dark:text-red-400">
+      <div className="p-4 rounded-2xl bg-red-950/20 border border-red-900/40 space-y-2.5">
+        <h4 className="text-xs font-bold text-red-400">
           منطقة الضبط وإعادة التعيين
         </h4>
-        <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">
+        <p className="text-[11px] text-slate-400 leading-normal">
           تفريغ التخزين المؤقت واستعادة بيانات وعروض المنصة الأولية.
         </p>
         <button
           type="button"
           onClick={handleResetData}
-          className="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5"
+          className="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5"
         >
           <i className="fa-solid fa-rotate-left"></i>
           <span>مسح وإعادة ضبط البيانات</span>

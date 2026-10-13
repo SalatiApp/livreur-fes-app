@@ -36,21 +36,21 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 antialiased selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-[#020617] text-slate-100 flex flex-col transition-colors duration-200 antialiased selection:bg-blue-600 selection:text-white">
       {/* Top Header Fixed */}
       <Header />
 
-      {/* Main Content:
-          pt-[calc(3.5rem+env(safe-area-inset-top,0px)+0.75rem)]:
-          3.5rem (56px Header) + safe-area-inset-top + 12px (0.75rem) comfortable breathing room
-          pb-[calc(4rem+env(safe-area-inset-bottom,0px)+1rem)]:
-          prevents bottom nav overlap completely without giant blank spaces
+      {/* Main Content Container:
+          pt-[calc(62px+env(safe-area-inset-top,0px)+12px)]:
+          62px (Header bar) + safe-area-inset-top + 12px comfortable margin
+          pb-[calc(58px+env(safe-area-inset-bottom,0px)+16px)]:
+          58px (Bottom nav) + safe-area-inset-bottom + 16px bottom breathing room
       */}
-      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-[calc(4.25rem+env(safe-area-inset-top,0px))] pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] space-y-4">
+      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-[calc(74px+env(safe-area-inset-top,0px))] pb-[calc(74px+env(safe-area-inset-bottom,0px))]">
         {renderCurrentView()}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation Fixed */}
       <BottomNav />
 
       {/* Modals & Overlays */}

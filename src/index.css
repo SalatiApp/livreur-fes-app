@@ -9,26 +9,32 @@
   }
 }
 
-/* Safe Area Inset Helpers - gracefully handles both Android WebView (0px fallback) and Edge-to-Edge */
+/* Safe Area Inset Helpers for Android and Notch devices */
 .pt-header-safe {
   padding-top: max(env(safe-area-inset-top, 0px), 0px);
 }
 
 .pb-nav-safe {
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 6px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
 }
 
-/* Custom styling for leaflet and scrollbars */
+/* Custom styling for Leaflet & tile clean up */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   z-index: 10;
   font-family: 'Cairo', system-ui, sans-serif;
 }
 
 .leaflet-routing-container {
   display: none !important;
+}
+
+/* Custom City & Store Pins */
+.custom-city-pin, .store-pin, .driver-pin, .my-pin {
+  background: transparent !important;
+  border: none !important;
 }
 
 /* Smooth fade-in animations */
