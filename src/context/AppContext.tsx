@@ -136,12 +136,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return INITIAL_DRIVERS;
   });
 
-  // Sync theme with document element
+  // Sync theme with document element and body
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
     }
     localStorage.setItem(STORAGE_KEYS.THEME, theme);
   }, [theme]);

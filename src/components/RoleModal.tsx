@@ -7,8 +7,14 @@ export const RoleModal: React.FC = () => {
   if (!isRoleModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up">
+    <div
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+      onClick={closeRoleModal}
+    >
+      <div
+        className="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-slate-100 dark:border-slate-800 text-center animate-scale-up"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-1">
           اختر نوع الاستخدام
         </h3>
