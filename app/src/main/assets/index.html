@@ -2,11 +2,9 @@
 <html lang="ar" dir="rtl" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>LIVLINK MA | منصة التوصيل بجميع مدن المغرب</title>
   <meta name="description" content="منصة LIVLINK MA لربط أصحاب المحلات والمطاعم بسائقي التوصيل في جميع مدن المغرب" />
-  <meta property="og:title" content="LIVLINK MA | منصة التوصيل بجميع مدن المغرب" />
-  <meta property="og:description" content="منصة LIVLINK MA لربط أصحاب المحلات والمطاعم بسائقي التوصيل في جميع مدن المغرب" />
   
   <!-- Favicon / Icon -->
   <link rel="icon" type="image/png" href="./livlink_ma.png" />
@@ -28,18 +26,28 @@
       margin: 0;
       padding: 0;
     }
-    body {
+    
+    html, body {
       font-family: 'Cairo', system-ui, -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      background-color: #020617;
+      color: #f1f5f9;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
-    .pb-safe {
-      padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+
+    #root {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
   </style>
-  <script type="module" src="./assets/index-BGVNa4i4.js"></script>
-  <link rel="stylesheet" href="./assets/index-BPCBZRro.css">
+  <script type="module" src="./assets/index-fXYxtnuW.js"></script>
+  <link rel="stylesheet" href="./assets/index-CEiRorgU.css">
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen transition-colors duration-200">
+<body class="bg-slate-950 text-slate-100 min-h-screen">
   <div id="root"></div>
 </body>
 </html>

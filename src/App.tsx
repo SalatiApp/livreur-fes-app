@@ -36,18 +36,19 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
-      {/* Top Header Fixed */}
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 antialiased selection:bg-blue-500 selection:text-white">
+      {/* Top Header Fixed with Safe Inset */}
       <Header />
 
-      {/* Main Content with top padding to prevent header overlap */}
-      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-28 pb-32 space-y-6">
+      {/* Main Content with proper responsive top & bottom padding */}
+      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-20 sm:pt-24 pb-28 space-y-5">
         {renderCurrentView()}
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation with Safe Area Support */}
       <BottomNav />
 
+      {/* Modals & Overlays */}
       <RoleModal />
       <ConfirmModal />
       <OfflineModal />

@@ -1,37 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { MOROCCO_CITIES, VEHICLE_TYPES, PAYMENT_TYPES } from '../data/cities';
+
+const SHOP_TYPES = [
+  'مطعم / مأكولات سريعة',
+  'سناك / وجبات خفيفة',
+  'مقهى / عصائر',
+  'مخبزة / حلويات',
+  'صيدلية',
+  'سوبرماركت / بقالة',
+  'متجر إلكتروني',
+  'محل ورود وهدايا',
+  'أخرى'
+];
 
 export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
   initialMode = 'offer'
 }) => {
-  const { addOffer, addDriver, selectedCity } = useApp();
-  const [activeTab, setActiveTab] = useState<'offer' | 'driver'>(initialMode);
+  const { addOffer, addDriver } = useApp();
+  const [mode, setMode] = useState<'offer' | 'driver'>(initialMode);
 
-  useEffect(() => {
-    setActiveTab(initialMode);
-  }, [initialMode]);
+  // Shop Offer form state
+  const [shopName, setShopName] = useState('');
+  const [shopType, setShopType] = useState(SHOP_TYPES[0]);
+  const [city, setCity] = useState(Object.keys(MOROCCO_CITIES)[1] || 'casablanca');
+  const [district, setDistrict] = useState('');
+  const [vehicle, setVehicle] = useState(VEHICLE_TYPES[0]);
+  const [paymentType, setPaymentType] = useState(PAYMENT_TYPES[0]);
+  const [price, setPrice] = useState('150');
+  const [phone, setPhone] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [description, setDescription] = useState('');
+  const [notes, setNotes] = useState('');
 
-  // Default city for form
-  const defaultCityKey = selectedCity !== 'all' ? selectedCity : 'casablanca';
-
-  // Offer form state
-  const [offShopName, setOffShopName] = useState('');
-  const [offShopType, setOffShopType] = useState('');
-  const [offCity, setOffCity] = useState(defaultCityKey);
-  const [offDistrict, setOffDistrict] = useState('');
-  const [offVehicle, setOffVehicle] = useState(VEHICLE_TYPES[0]);
-  const [offPaymentType, setOffPaymentType] = useState(PAYMENT_TYPES[0]);
-  const [offPrice, setOffPrice] = useState('');
-  const [offWorkingHours, setOffWorkingHours] = useState('');
-  const [offPhone, setOffPhone] = useState('');
-  const [offWhatsapp, setOffWhatsapp] = useState('');
-  const [offDescription, setOffDescription] = useState('');
-  const [offNotes, setOffNotes] = useState('');
-
-  // Driver form state
+  // Driver Profile form state
   const [drvName, setDrvName] = useState('');
-  const [drvCity, setDrvCity] = useState(defaultCityKey);
+  const [drvCity, setDrvCity] = useState(Object.keys(MOROCCO_CITIES)[1] || 'casablanca');
   const [drvDistrict, setDrvDistrict] = useState('');
   const [drvVehicle, setDrvVehicle] = useState(VEHICLE_TYPES[0]);
   const [drvPhone, setDrvPhone] = useState('');
@@ -40,134 +44,135 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
   const [drvExperience, setDrvExperience] = useState('');
   const [drvNotes, setDrvNotes] = useState('');
 
-  // Districts for Offer form
-  const offCityObj = MOROCCO_CITIES[offCity] || MOROCCO_CITIES['casablanca'];
-  const offDistricts = offCityObj ? offCityObj.districts : [];
+  const currentCityObj = MOROCCO_CITIES[city] || MOROCCO_CITIES['casablanca'];
+  const availableDistricts = currentCityObj ? currentCityObj.districts : [];
 
-  // Districts for Driver form
   const drvCityObj = MOROCCO_CITIES[drvCity] || MOROCCO_CITIES['casablanca'];
   const drvDistricts = drvCityObj ? drvCityObj.districts : [];
 
   const handleOfferSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addOffer({
-      shopName: offShopName.trim(),
-      shopType: offShopType.trim(),
-      city: offCity,
-      district: offDistrict,
-      vehicle: offVehicle,
-      paymentType: offPaymentType,
-      price: Number(offPrice) || 0,
-      workingHours: offWorkingHours.trim(),
-      phone: offPhone.trim(),
-      whatsapp: offWhatsapp.trim(),
-      description: offDescription.trim(),
-      notes: offNotes.trim()
+      shopName,
+      shopType,
+      city,
+      district,
+      vehicle,
+      paymentType,
+      price: parseFloat(price) || 0,
+      phone,
+      whatsapp: whatsapp || phone,
+      description,
+      notes
     });
   };
 
   const handleDriverSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     addDriver({
-      name: drvName.trim(),
+      name: drvName,
       city: drvCity,
       district: drvDistrict,
       vehicle: drvVehicle,
-      phone: drvPhone.trim(),
-      whatsapp: drvWhatsapp.trim(),
-      freeHours: drvFreeHours.trim(),
-      experience: drvExperience.trim(),
-      notes: drvNotes.trim()
+      phone: drvPhone,
+      whatsapp: drvWhatsapp || drvPhone,
+      freeHours: drvFreeHours,
+      experience: drvExperience,
+      notes: drvNotes
     });
   };
 
   return (
     <div className="space-y-4">
-      {/* Tab Switcher */}
-      <div className="flex p-1.5 bg-slate-200/80 dark:bg-slate-800/80 rounded-2xl gap-1">
+      {/* Mode Switcher Tabs */}
+      <div className="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center gap-1.5">
         <button
           type="button"
-          onClick={() => setActiveTab('offer')}
-          className={`flex-1 py-2.5 px-2 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-            activeTab === 'offer'
-              ? 'bg-slate-900 text-white dark:bg-slate-950 dark:text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+          onClick={() => setMode('offer')}
+          className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            mode === 'offer'
+              ? 'bg-blue-600 text-white shadow-sm'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <i className="fa-solid fa-shop"></i>
-          <span>نشر عرض عمل للمحلات</span>
+          <i className="fa-solid fa-store"></i>
+          <span>نشر طلب ليفرور (محل)</span>
         </button>
 
         <button
           type="button"
-          onClick={() => setActiveTab('driver')}
-          className={`flex-1 py-2.5 px-2 rounded-xl font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-            activeTab === 'driver'
-              ? 'bg-slate-900 text-amber-400 dark:bg-slate-950 dark:text-amber-400 shadow-md font-black'
-              : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+          onClick={() => setMode('driver')}
+          className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            mode === 'driver'
+              ? 'bg-amber-500 text-slate-950 shadow-sm'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
           }`}
         >
-          <i className="fa-solid fa-id-card"></i>
-          <span>التسجيل كليفرور</span>
+          <i className="fa-solid fa-motorcycle"></i>
+          <span>تسجيل سائق توصيل</span>
         </button>
       </div>
 
-      {/* Forms Container */}
-      {activeTab === 'offer' ? (
+      {mode === 'offer' ? (
         <form
           onSubmit={handleOfferSubmit}
           className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4"
         >
           <div>
             <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
-              إضافة عرض عمل جديد
+              نشر طلب توصيل أو عرض عمل
             </h3>
-            <p className="text-xs text-slate-500">
-              ادخل معلومات المحل أو المطعم للعثور على ليفرور مناسب
+            <p className="text-xs text-slate-500 mt-0.5">
+              سيظهر عرضك فوراً لليفرورات المتواجدين في نفس المدينة والحي
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                اسم المحل / المطعم *
+                اسم المحل أو المطعم *
               </label>
               <input
                 type="text"
                 required
-                value={offShopName}
-                onChange={(e) => setOffShopName(e.target.value)}
-                placeholder="مثال: مطعم الأندلس / مقهى النخيل"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                نوع المحل
-              </label>
-              <input
-                type="text"
-                value={offShopType}
-                onChange={(e) => setOffShopType(e.target.value)}
-                placeholder="مطعم / سناك / صيدلية / ملابس..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                value={shopName}
+                onChange={(e) => setShopName(e.target.value)}
+                placeholder="مثال: مطعم الأندلس، سناك البركة..."
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  نوع النشاط *
+                </label>
+                <select
+                  required
+                  value={shopType}
+                  onChange={(e) => setShopType(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+                >
+                  {SHOP_TYPES.map((t: string) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   المدينة *
                 </label>
                 <select
                   required
-                  value={offCity}
+                  value={city}
                   onChange={(e) => {
-                    setOffCity(e.target.value);
-                    setOffDistrict('');
+                    setCity(e.target.value);
+                    setDistrict('');
                   }}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500 cursor-pointer"
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 cursor-pointer"
                 >
                   {Object.keys(MOROCCO_CITIES)
                     .filter((k) => k !== 'all')
@@ -178,37 +183,37 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                     ))}
                 </select>
               </div>
+            </div>
 
+            <div className="grid grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  الحي *
+                  الحي / المنطقة *
                 </label>
                 <select
                   required
-                  value={offDistrict}
-                  onChange={(e) => setOffDistrict(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500 cursor-pointer"
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 cursor-pointer"
                 >
                   <option value="">اختر الحي</option>
-                  {offDistricts.map((d) => (
+                  {availableDistricts.map((d) => (
                     <option key={d} value={d}>
                       {d}
                     </option>
                   ))}
                 </select>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  وسيلة النقل المطلوبة *
+                  المركبة المطلوبة *
                 </label>
                 <select
                   required
-                  value={offVehicle}
-                  onChange={(e) => setOffVehicle(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500 cursor-pointer"
+                  value={vehicle}
+                  onChange={(e) => setVehicle(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 cursor-pointer"
                 >
                   {VEHICLE_TYPES.map((v) => (
                     <option key={v} value={v}>
@@ -217,16 +222,18 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                   ))}
                 </select>
               </div>
+            </div>
 
+            <div className="grid grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  طريقة الدفع *
+                  طريقة المحاسبة *
                 </label>
                 <select
                   required
-                  value={offPaymentType}
-                  onChange={(e) => setOffPaymentType(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500 cursor-pointer"
+                  value={paymentType}
+                  onChange={(e) => setPaymentType(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 cursor-pointer"
                 >
                   {PAYMENT_TYPES.map((p) => (
                     <option key={p} value={p}>
@@ -235,9 +242,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                   ))}
                 </select>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   المبلغ المقترح (درهم) *
@@ -245,23 +250,10 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 <input
                   type="number"
                   required
-                  value={offPrice}
-                  onChange={(e) => setOffPrice(e.target.value)}
-                  placeholder="180"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  أوقات العمل
-                </label>
-                <input
-                  type="text"
-                  value={offWorkingHours}
-                  onChange={(e) => setOffWorkingHours(e.target.value)}
-                  placeholder="12:00 - 23:00"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="150"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -274,10 +266,10 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 <input
                   type="tel"
                   required
-                  value={offPhone}
-                  onChange={(e) => setOffPhone(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="0612345678"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -288,38 +280,38 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 <input
                   type="tel"
                   required
-                  value={offWhatsapp}
-                  onChange={(e) => setOffWhatsapp(e.target.value)}
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
                   placeholder="0612345678"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                وصف العمل *
+                تفاصيل العرض وأوقات العمل *
               </label>
               <textarea
                 required
-                rows={3}
-                value={offDescription}
-                onChange={(e) => setOffDescription(e.target.value)}
-                placeholder="اكتب تفاصيل الطلب والشروط المطلوب توفرها في السائق..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                rows={2}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="مثال: مطلوب ليفرور من 17:00 إلى 00:00 يومياً، المحاسبة نهاية كل أسبوع..."
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                ملاحظات أو امتيازات إضافية
+                امتيازات إضافية (اختياري)
               </label>
               <input
                 type="text"
-                value={offNotes}
-                onChange={(e) => setOffNotes(e.target.value)}
-                placeholder="البنزين مدفوع + وجبة غداء + بونص"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-blue-500"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="مثال: البنزين مدفوع + وجبة غداء + بونص"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
@@ -341,12 +333,12 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
             <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
               تسجيل سائق توصيل جديد
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 mt-0.5">
               أنشئ ملفك الشخصي ليجدك أصحاب المحلات والمطاعم بسهولة
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 الاسم الكامل *
@@ -357,7 +349,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 value={drvName}
                 onChange={(e) => setDrvName(e.target.value)}
                 placeholder="مثال: يوسف العلمي"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -373,7 +365,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                     setDrvCity(e.target.value);
                     setDrvDistrict('');
                   }}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500 cursor-pointer"
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer"
                 >
                   {Object.keys(MOROCCO_CITIES)
                     .filter((k) => k !== 'all')
@@ -393,7 +385,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                   required
                   value={drvDistrict}
                   onChange={(e) => setDrvDistrict(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500 cursor-pointer"
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer"
                 >
                   <option value="">اختر الحي</option>
                   {drvDistricts.map((d) => (
@@ -413,7 +405,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 required
                 value={drvVehicle}
                 onChange={(e) => setDrvVehicle(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500 cursor-pointer"
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer"
               >
                 {VEHICLE_TYPES.map((v) => (
                   <option key={v} value={v}>
@@ -434,7 +426,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                   value={drvPhone}
                   onChange={(e) => setDrvPhone(e.target.value)}
                   placeholder="0612345678"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
                 />
               </div>
 
@@ -448,7 +440,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                   value={drvWhatsapp}
                   onChange={(e) => setDrvWhatsapp(e.target.value)}
                   placeholder="0612345678"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
                 />
               </div>
             </div>
@@ -462,7 +454,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 value={drvFreeHours}
                 onChange={(e) => setDrvFreeHours(e.target.value)}
                 placeholder="مساءً (18:00 - 01:00) أو تفرغ تام"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -475,7 +467,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 value={drvExperience}
                 onChange={(e) => setDrvExperience(e.target.value)}
                 placeholder="سنتان في التوصيل الحر مع المطاعم"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -488,7 +480,7 @@ export const CreatePage: React.FC<{ initialMode?: 'offer' | 'driver' }> = ({
                 value={drvNotes}
                 onChange={(e) => setDrvNotes(e.target.value)}
                 placeholder="أذكر متطلباتك أو مميزاتك..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-xs focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-amber-500"
               />
             </div>
           </div>
