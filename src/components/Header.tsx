@@ -7,8 +7,8 @@ export const Header: React.FC = () => {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none pt-safe">
-      <div className="max-w-md mx-auto pt-2 pb-2.5 px-3 flex items-center justify-between gap-2">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f1722] text-white border-b border-slate-800 shadow-md select-none pt-header-safe">
+      <div className="max-w-md mx-auto h-14 px-3 flex items-center justify-between gap-2">
         {/* Left Side: Role Selector, Dark/Light Mode, Scooter Icon */}
         <div className="flex items-center gap-2">
           {/* User Role Selector Button */}
@@ -48,7 +48,7 @@ export const Header: React.FC = () => {
             onClick={() => navigateTo('home')}
             title="الرئيسية"
           >
-            <svg viewBox="0 0 120 85" className="w-11 h-9 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 120 85" className="w-10 h-8 shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="65" y="22" width="19" height="17" rx="3" fill="#334155" />
               <text x="74.5" y="33" fontSize="5.5" fill="#ffffff" textAnchor="middle" fontWeight="bold">ليفرور</text>
               <circle cx="22" cy="67" r="9.5" fill="#1e293b" stroke="#64748b" strokeWidth="2.5" />
@@ -73,7 +73,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Moroccan Map Container - with absolute fallback */}
-          <div className="h-10 w-8 shrink-0 flex items-center justify-center relative">
+          <div className="h-9 w-7 shrink-0 flex items-center justify-center relative">
             {!imgError ? (
               <img
                 src={MOROCCO_MAP_BASE64}
@@ -82,7 +82,7 @@ export const Header: React.FC = () => {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <svg viewBox="0 0 100 120" className="w-8 h-10 filter drop-shadow-[0_2px_6px_rgba(220,38,38,0.7)]">
+              <svg viewBox="0 0 100 120" className="w-7 h-9 filter drop-shadow-[0_2px_6px_rgba(220,38,38,0.7)]">
                 <path
                   d="M48 5 C55 8, 65 10, 75 8 C80 15, 78 25, 70 30 C72 38, 68 45, 60 48 C58 55, 52 62, 48 70 C42 80, 38 95, 30 110 C25 115, 20 112, 22 100 C24 85, 28 72, 32 60 C30 50, 25 40, 28 30 C30 20, 38 12, 48 5 Z"
                   fill="#c8102e"

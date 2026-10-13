@@ -37,15 +37,20 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 antialiased selection:bg-blue-500 selection:text-white">
-      {/* Top Header Fixed with Safe Inset */}
+      {/* Top Header Fixed */}
       <Header />
 
-      {/* Main Content with proper responsive top & bottom padding */}
-      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-20 sm:pt-24 pb-28 space-y-5">
+      {/* Main Content:
+          pt-[calc(3.5rem+env(safe-area-inset-top,0px)+0.75rem)]:
+          3.5rem (56px Header) + safe-area-inset-top + 12px (0.75rem) comfortable breathing room
+          pb-[calc(4rem+env(safe-area-inset-bottom,0px)+1rem)]:
+          prevents bottom nav overlap completely without giant blank spaces
+      */}
+      <main className="flex-1 max-w-md w-full mx-auto px-3.5 pt-[calc(4.25rem+env(safe-area-inset-top,0px))] pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] space-y-4">
         {renderCurrentView()}
       </main>
 
-      {/* Bottom Navigation with Safe Area Support */}
+      {/* Bottom Navigation */}
       <BottomNav />
 
       {/* Modals & Overlays */}

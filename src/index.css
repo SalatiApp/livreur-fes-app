@@ -9,13 +9,13 @@
   }
 }
 
-/* Safe Area Paddings for Android Status Bar & Gesture Navigation */
-.pb-safe {
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 16px));
+/* Safe Area Inset Helpers - gracefully handles both Android WebView (0px fallback) and Edge-to-Edge */
+.pt-header-safe {
+  padding-top: max(env(safe-area-inset-top, 0px), 0px);
 }
 
-.pt-safe {
-  padding-top: env(safe-area-inset-top, 0px);
+.pb-nav-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 6px);
 }
 
 /* Custom styling for leaflet and scrollbars */
@@ -51,9 +51,11 @@
   width: 4px;
   height: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.25);
   border-radius: 9999px;
